@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Brand → MijnFinn Funnel</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #fff; min-height: 100vh; padding: 40px 20px; }
+
+  h1 { text-align: center; font-size: 28px; margin-bottom: 8px; color: #fff; }
+  .subtitle { text-align: center; color: #8b8fa3; font-size: 15px; margin-bottom: 50px; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* Two brand boxes at top */
+  .brands { display: flex; justify-content: center; gap: 40px; margin-bottom: 50px; }
+  .brand-box { padding: 20px 32px; border-radius: 14px; text-align: center; min-width: 200px; }
+  .brand-personal { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+  .brand-mijnfinn { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+  .brand-box h2 { font-size: 18px; margin-bottom: 4px; }
+  .brand-box p { font-size: 13px; opacity: 0.85; }
+
+  /* Connection */
+  .connection { text-align: center; margin-bottom: 40px; }
+  .connection .label { display: inline-block; background: #1e2030; padding: 8px 20px; border-radius: 20px; font-size: 13px; color: #a5b4fc; border: 1px solid #3730a3; }
+
+  /* Funnel shared */
+  .funnel-stage {
+    margin: 0 auto 2px;
+    padding: 18px 24px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s;
+  }
+  .funnel-stage:hover { transform: scale(1.02); }
+  .stage-icon { font-size: 24px; width: 40px; text-align: center; flex-shrink: 0; }
+  .stage-content h3 { font-size: 15px; margin-bottom: 3px; }
+  .stage-content p { font-size: 12px; opacity: 0.7; }
+  .stage-tag { margin-left: auto; font-size: 11px; padding: 4px 10px; border-radius: 12px; background: rgba(255,255,255,0.1); white-space: nowrap; }
+
+  .s1 { background: linear-gradient(90deg, #312e81, #3730a3); max-width: 100%; }
+  .s2 { background: linear-gradient(90deg, #3b0764, #6b21a8); max-width: 92%; }
+  .s3 { background: linear-gradient(90deg, #701a75, #a21caf); max-width: 84%; }
+  .s4 { background: linear-gradient(90deg, #831843, #be185d); max-width: 76%; }
+
+  .funnel-arrow { text-align: center; color: #4b5563; font-size: 14px; margin: 6px 0; }
+
+  .section-label {
+    text-align: center;
+    margin: 30px 0 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #6b7280;
+  }
+
+  /* Split section */
+  .split-label {
+    text-align: center;
+    margin: 35px 0 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #f59e0b;
+    position: relative;
+  }
+  .split-label::before, .split-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 25%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #f59e0b40, transparent);
+  }
+  .split-label::before { left: 5%; }
+  .split-label::after { right: 5%; }
+
+  .split-tracks {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    max-width: 950px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .track {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .track-header {
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .track-header.mass { background: #1e1b4b; color: #a5b4fc; border: 1px solid #3730a3; }
+  .track-header.premium { background: #1c1917; color: #fbbf24; border: 1px solid #92400e; }
+
+  .track .funnel-stage { max-width: 100% !important; }
+
+  .track-left .s5 { background: linear-gradient(90deg, #7c2d12, #c2410c); }
+  .track-left .s6 { background: linear-gradient(90deg, #0f766e, #14b8a6); }
+
+  .track-right .s5p { background: linear-gradient(90deg, #78350f, #b45309); }
+  .track-right .s6p { background: linear-gradient(90deg, #713f12, #a16207); }
+  .track-right .s7p { background: linear-gradient(90deg, #0f766e, #14b8a6); }
+
+  .or-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+    gap: 8px;
+  }
+  .or-badge {
+    background: #f59e0b;
+    color: #000;
+    font-weight: 700;
+    font-size: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .or-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(180deg, #f59e0b40, transparent);
+  }
+
+  /* Result boxes */
+  .results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 800px;
+    margin: 30px auto 0;
+  }
+  .result {
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+  }
+  .result h3 { font-size: 15px; margin-bottom: 4px; }
+  .result p { font-size: 12px; opacity: 0.8; }
+  .result-mass { background: linear-gradient(135deg, #065f46, #047857); border: 1px solid #10b981; }
+  .result-premium { background: linear-gradient(135deg, #78350f, #92400e); border: 1px solid #f59e0b; }
+
+  /* Cross-sell arrow */
+  .crosssell {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 500px;
+    background: #1e2030;
+    border: 1px dashed #4b5563;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 13px;
+    color: #9ca3af;
+  }
+  .crosssell strong { color: #f59e0b; }
+
+  /* Annotations */
+  .annotations {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 900px;
+    margin: 50px auto 0;
+    gap: 20px;
+  }
+  .annotation {
+    background: #1e2030;
+    border: 1px solid #2d3048;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 12px;
+  }
+  .annotation h4 { color: #a5b4fc; margin-bottom: 8px; font-size: 13px; }
+  .annotation li { margin-bottom: 4px; color: #9ca3af; list-style: none; }
+  .annotation li::before { content: "→ "; color: #6366f1; }
+  .annotation.premium-note h4 { color: #fbbf24; }
+  .annotation.premium-note li::before { color: #f59e0b; }
+
+  /* Pricing comparison */
+  .pricing {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 960px;
+    margin: 30px auto 0;
+    gap: 12px;
+  }
+  .price-box {
+    background: #1e2030;
+    border: 1px solid #2d3048;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .price-box.highlight { border-color: #f59e0b; }
+  .price-box h4 { font-size: 14px; margin-bottom: 8px; }
+  .price-box .price { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .price-box .price-sub { font-size: 11px; color: #6b7280; }
+  .price-box .price-desc { font-size: 12px; color: #9ca3af; margin-top: 8px; }
+  .price-mass .price { color: #34d399; }
+  .price-mid .price { color: #a5b4fc; }
+  .price-premium .price { color: #fbbf24; }
+
+  /* Content Engine */
+  .content-engine {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    background: #161825;
+    border: 1px solid #2d3048;
+    border-radius: 16px;
+    padding: 30px;
+  }
+  .content-engine h2 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .content-engine .ce-sub {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 24px;
+  }
+
+  .ce-flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .ce-step {
+    background: #1e2030;
+    border: 1px solid #2d3048;
+    border-radius: 12px;
+    padding: 16px;
+    width: 160px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .ce-step.input { border-color: #6366f1; }
+  .ce-step.agent { border-color: #f59e0b; background: #1c1917; }
+  .ce-step .ce-icon { font-size: 28px; margin-bottom: 8px; }
+  .ce-step h4 { font-size: 13px; margin-bottom: 4px; }
+  .ce-step p { font-size: 11px; color: #6b7280; }
+  .ce-step .ce-time { font-size: 10px; color: #f59e0b; margin-top: 6px; font-weight: 600; }
+
+  .ce-arrow {
+    color: #4b5563;
+    font-size: 20px;
+    padding-top: 30px;
+    flex-shrink: 0;
+  }
+
+  .ce-outputs {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .ce-output {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1e2030;
+    border: 1px solid #2d3048;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  .ce-output.li { border-color: #0077b5; }
+  .ce-output.x { border-color: #1d9bf0; }
+  .ce-output.ig { border-color: #e1306c; }
+  .ce-output.yt { border-color: #ff0000; }
+  .ce-output.nl { border-color: #34d399; }
+  .ce-output .platform-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ce-output.li .platform-dot { background: #0077b5; }
+  .ce-output.x .platform-dot { background: #1d9bf0; }
+  .ce-output.ig .platform-dot { background: #e1306c; }
+  .ce-output.yt .platform-dot { background: #ff0000; }
+  .ce-output.nl .platform-dot { background: #34d399; }
+  .ce-output span { color: #9ca3af; }
+  .ce-output strong { color: #e5e7eb; font-weight: 500; }
+
+  .ce-tools {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .ce-tool {
+    background: #0f1117;
+    border: 1px solid #2d3048;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 11px;
+    color: #6b7280;
+  }
+  .ce-tool strong { color: #a5b4fc; }
+
+  .ce-weekly {
+    margin-top: 20px;
+    background: #0f1117;
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .ce-weekly h4 { font-size: 13px; color: #f59e0b; margin-bottom: 10px; text-align: center; }
+  .ce-weekly-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .ce-day {
+    text-align: center;
+    background: #1e2030;
+    border-radius: 8px;
+    padding: 10px 6px;
+  }
+  .ce-day .day-name { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .ce-day .day-content { font-size: 11px; color: #e5e7eb; }
+  .ce-day .day-platform { font-size: 10px; color: #6b7280; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Personal Brand × MijnFinn Funnel</h1>
+  <p class="subtitle">Van thought leadership naar MijnFinn klanten + CFO Premium via cursus & community</p>
+
+  <!-- Two brands -->
+  <div class="brands">
+    <div class="brand-box brand-personal">
+      <h2>Phuong Do</h2>
+      <p>Personal Brand</p>
+      <p style="font-size:11px; margin-top:6px;">AI + Finance thought leader</p>
+    </div>
+    <div class="brand-box brand-mijnfinn">
+      <h2>MijnFinn</h2>
+      <p>Product Suite</p>
+      <p style="font-size:11px; margin-top:6px;">AI boekhouder + CFO diensten</p>
+    </div>
+  </div>
+
+  <div class="connection">
+    <div class="label">Personal brand = top of funnel voor het hele MijnFinn ecosysteem</div>
+  </div>
+
+  <!-- CONTENT ENGINE -->
+  <div class="content-engine">
+    <h2>Content Engine — 1x maken, 5x distribueren</h2>
+    <p class="ce-sub">Jij maakt 1 stuk kerncontent per week. AI agents doen de rest.</p>
+
+    <div class="ce-flow">
+      <div class="ce-step input">
+        <div class="ce-icon">🎤</div>
+        <h4>Jij: Kerncontent</h4>
+        <p>Voice memo, video, of geschreven stuk over 1 topic</p>
+        <div class="ce-time">30-60 min/week</div>
+      </div>
+
+      <div class="ce-arrow">→</div>
+
+      <div class="ce-step agent">
+        <div class="ce-icon">🤖</div>
+        <h4>AI Content Agent</h4>
+        <p>Herformat, herschrijft tone-of-voice per platform</p>
+        <div class="ce-time">Automatisch</div>
+      </div>
+
+      <div class="ce-arrow">→</div>
+
+      <div class="ce-outputs">
+        <div class="ce-output li">
+          <div class="platform-dot"></div>
+          <strong>LinkedIn</strong>
+          <span>— thought leadership post</span>
+        </div>
+        <div class="ce-output x">
+          <div class="platform-dot"></div>
+          <strong>X / Twitter</strong>
+          <span>— thread of punchy take</span>
+        </div>
+        <div class="ce-output ig">
+          <div class="platform-dot"></div>
+          <strong>Instagram</strong>
+          <span>— carousel of reel script</span>
+        </div>
+        <div class="ce-output yt">
+          <div class="platform-dot"></div>
+          <strong>YouTube</strong>
+          <span>— shorts script of long-form</span>
+        </div>
+        <div class="ce-output nl">
+          <div class="platform-dot"></div>
+          <strong>Newsletter</strong>
+          <span>— weekly deep dive email</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ce-tools">
+      <div class="ce-tool"><strong>Claude</strong> — schrijven & herformatten</div>
+      <div class="ce-tool"><strong>n8n</strong> — scheduling & posting</div>
+      <div class="ce-tool"><strong>Canva/Figma</strong> — visuals</div>
+      <div class="ce-tool"><strong>Buffer/Typefully</strong> — queue & analytics</div>
+    </div>
+
+    <div class="ce-weekly">
+      <h4>Voorbeeld weekritme — 1 topic, 5 outputs</h4>
+      <div class="ce-weekly-grid">
+        <div class="ce-day">
+          <div class="day-name">Maandag</div>
+          <div class="day-content">Opnemen</div>
+          <div class="day-platform">Voice memo / video</div>
+        </div>
+        <div class="ce-day">
+          <div class="day-name">Dinsdag</div>
+          <div class="day-content">LinkedIn post</div>
+          <div class="day-platform">Thought leadership</div>
+        </div>
+        <div class="ce-day">
+          <div class="day-name">Woensdag</div>
+          <div class="day-content">X thread</div>
+          <div class="day-platform">+ IG carousel</div>
+        </div>
+        <div class="ce-day">
+          <div class="day-name">Donderdag</div>
+          <div class="day-content">YT short</div>
+          <div class="day-platform">Korte video clip</div>
+        </div>
+        <div class="ce-day">
+          <div class="day-name">Vrijdag</div>
+          <div class="day-content">Newsletter</div>
+          <div class="day-platform">Weekly deep dive</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP FUNNEL - shared -->
+  <div class="section-label">Awareness — Bereik</div>
+
+  <div class="funnel-stage s1">
+    <div class="stage-icon">📱</div>
+    <div class="stage-content">
+      <h3>Social Content</h3>
+      <p>LinkedIn posts, korte video's, threads over AI + finance + ondernemen</p>
+    </div>
+    <div class="stage-tag">LinkedIn / X / TikTok</div>
+  </div>
+
+  <div class="funnel-arrow">▼</div>
+
+  <div class="funnel-stage s2">
+    <div class="stage-icon">🎙️</div>
+    <div class="stage-content">
+      <h3>Long-form Content</h3>
+      <p>Podcast, blog, YouTube — diepere inzichten over AI-gedreven financiën</p>
+    </div>
+    <div class="stage-tag">Authority building</div>
+  </div>
+
+  <div class="funnel-arrow">▼</div>
+
+  <div class="section-label">Lead Magnet — Capturen</div>
+
+  <div class="funnel-stage s3">
+    <div class="stage-icon">🎁</div>
+    <div class="stage-content">
+      <h3>Gratis Cursus / Webinar</h3>
+      <p>"De 3 getallen die elke ondernemer elke maandag moet checken" — inzichten + bewustzijn, geen templates</p>
+    </div>
+    <div class="stage-tag">Email opt-in</div>
+  </div>
+
+  <div class="funnel-arrow">▼</div>
+
+  <div class="section-label">Nurture — Vertrouwen</div>
+
+  <div class="funnel-stage s4">
+    <div class="stage-icon">📧</div>
+    <div class="stage-content">
+      <h3>Email Sequence + Community</h3>
+      <p>Waardevolle tips, case studies, finance hacks — warm de lead op</p>
+    </div>
+    <div class="stage-tag">Drip campaign</div>
+  </div>
+
+  <!-- SPLIT POINT -->
+  <div class="split-label">⚡ Funnel split — op basis van klantprofiel</div>
+
+  <div class="split-tracks">
+
+    <!-- LEFT TRACK: Mass market -->
+    <div class="track track-left">
+      <div class="track-header mass">Self-Serve Track — ZZP'ers</div>
+
+      <div class="funnel-stage s5">
+        <div class="stage-icon">📚</div>
+        <div class="stage-content">
+          <h3>Betaalde Cursus</h3>
+          <p>"Bouw je eigen financieel dashboard" — stap-voor-stap zelf je sheet bouwen (handmatig, niet geautomatiseerd)</p>
+        </div>
+        <div class="stage-tag">€99-€199</div>
+      </div>
+
+      <div class="funnel-arrow">▼</div>
+
+      <div class="funnel-stage s6">
+        <div class="stage-icon">🤖</div>
+        <div class="stage-content">
+          <h3>MijnFinn Onboarding</h3>
+          <p>"Dit kostte je 6 weken handmatig. MijnFinn doet dit automatisch via WhatsApp."</p>
+        </div>
+        <div class="stage-tag">€99/maand</div>
+      </div>
+    </div>
+
+    <!-- OR divider -->
+    <div class="or-divider">
+      <div class="or-line"></div>
+      <div class="or-badge">OF</div>
+      <div class="or-line"></div>
+    </div>
+
+    <!-- RIGHT TRACK: Premium -->
+    <div class="track track-right">
+      <div class="track-header premium">Premium Track — Founders & MKB</div>
+
+      <div class="funnel-stage s5p">
+        <div class="stage-icon">📞</div>
+        <div class="stage-content">
+          <h3>Discovery Call</h3>
+          <p>Intake gesprek: business model, doelen, pijnpunten in kaart</p>
+        </div>
+        <div class="stage-tag">Gratis / 30 min</div>
+      </div>
+
+      <div class="funnel-arrow">▼</div>
+
+      <div class="funnel-stage s6p">
+        <div class="stage-icon">📊</div>
+        <div class="stage-content">
+          <h3>CFO Insights Product</h3>
+          <p>Volledig business model in Google Sheets — P&L, cashflow, KPIs, forecasting</p>
+        </div>
+        <div class="stage-tag">€2.500-€5.000</div>
+      </div>
+
+      <div class="funnel-arrow">▼</div>
+
+      <div class="funnel-stage s7p">
+        <div class="stage-icon">🔄</div>
+        <div class="stage-content">
+          <h3>MijnFinn + Retainer</h3>
+          <p>Doorlopende sync & updates via MijnFinn + kwartaal review</p>
+        </div>
+        <div class="stage-tag">€299-€499/maand</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Results -->
+  <div class="results">
+    <div class="result result-mass">
+      <h3>Volume: ZZP Klanten</h3>
+      <p>Hoog volume, lage touch → €99/maand recurring</p>
+    </div>
+    <div class="result result-premium">
+      <h3>Premium: CFO Klanten</h3>
+      <p>Laag volume, hoge waarde → €2.5K setup + €299+/maand</p>
+    </div>
+  </div>
+
+  <!-- Cross-sell -->
+  <div class="crosssell">
+    <strong>↔ Cross-sell:</strong> CFO klanten verwijzen ZZP'ers uit hun netwerk → MijnFinn.
+    MijnFinn klanten die groeien naar MKB → upgraden naar CFO Product.
+  </div>
+
+  <!-- Pricing ladder -->
+  <div class="section-label" style="margin-top:40px;">💎 Productladder — van inzicht naar autopilot</div>
+  <div class="pricing">
+    <div class="price-box price-mass">
+      <h4>Gratis Cursus</h4>
+      <div class="price">€0</div>
+      <div class="price-sub">Lead magnet</div>
+      <div class="price-desc">Inzichten & bewustzijn — het WAT en WAAROM</div>
+    </div>
+    <div class="price-box price-mid">
+      <h4>Betaalde Cursus</h4>
+      <div class="price">€99-€199</div>
+      <div class="price-sub">Eenmalig</div>
+      <div class="price-desc">Zelf je sheet bouwen — het HOE (handmatig)</div>
+    </div>
+    <div class="price-box" style="border-color: #14b8a6;">
+      <h4>MijnFinn</h4>
+      <div class="price" style="color: #14b8a6;">€99/mo</div>
+      <div class="price-sub">SaaS recurring</div>
+      <div class="price-desc">Automatische boekhouding — de AUTOPILOT</div>
+    </div>
+    <div class="price-box price-premium highlight">
+      <h4>CFO Product</h4>
+      <div class="price">€2.5K-€5K</div>
+      <div class="price-sub">+ retainer</div>
+      <div class="price-desc">Done-for-you + strategie — de EXPERT</div>
+    </div>
+  </div>
+
+  <!-- Annotations -->
+  <div class="annotations">
+    <div class="annotation">
+      <h4>🔄 Flywheel Effect</h4>
+      <ul>
+        <li>Cursisten delen succesverhalen</li>
+        <li>CFO klanten = case studies voor content</li>
+        <li>MijnFinn klanten worden ambassadeurs</li>
+        <li>Referral programma beide tracks</li>
+      </ul>
+    </div>
+    <div class="annotation premium-note">
+      <h4>📊 CFO Product — Deliverables</h4>
+      <ul>
+        <li>Business model in Google Sheets</li>
+        <li>P&L, cashflow, balans overzicht</li>
+        <li>KPI dashboard + forecasting</li>
+        <li>Exact Online / boekhoud sync</li>
+        <li>Kwartaal review & bijsturing</li>
+      </ul>
+    </div>
+    <div class="annotation">
+      <h4>🎯 Kwalificatie Criteria</h4>
+      <ul>
+        <li><strong style="color:#a5b4fc">Self-serve:</strong> ZZP, &lt;€200K omzet</li>
+        <li><strong style="color:#fbbf24">Premium:</strong> Founder/MKB, €200K+ omzet</li>
+        <li>Nurture fase kwalificeert automatisch</li>
+        <li>Discovery call = laatste filter</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
