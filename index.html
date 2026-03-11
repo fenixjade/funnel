@@ -343,6 +343,113 @@
   .ce-day .day-name { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
   .ce-day .day-content { font-size: 11px; color: #e5e7eb; }
   .ce-day .day-platform { font-size: 10px; color: #6b7280; margin-top: 2px; }
+
+  /* Traffic Sources */
+  .traffic-sources {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto 20px;
+  }
+  .traffic-src {
+    background: #1e2030;
+    border: 1px solid #2d3048;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .traffic-src .t-icon { font-size: 16px; }
+  .traffic-src strong { color: #e5e7eb; font-weight: 500; }
+  .traffic-src.organic { border-color: #6366f1; }
+  .traffic-src.paid { border-color: #ef4444; }
+  .traffic-src.partner { border-color: #f59e0b; }
+
+  /* Community step */
+  .community-step {
+    max-width: 76%;
+    margin: 0 auto;
+    background: linear-gradient(90deg, #4c1d95, #7c3aed);
+    padding: 18px 24px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s;
+  }
+  .community-step:hover { transform: scale(1.02); }
+
+  /* Scan routing */
+  .scan-routing {
+    max-width: 80%;
+    margin: 10px auto 0;
+    background: #1e2030;
+    border: 1px dashed #8b5cf6;
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 12px;
+  }
+  .route-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .route-arrow { color: #6b7280; font-size: 16px; }
+  .route-label { color: #9ca3af; }
+  .route-label strong { font-weight: 600; }
+  .route-label .score-low strong { color: #14b8a6; }
+  .route-label .score-high strong { color: #fbbf24; }
+
+  /* Referral section */
+  .referral-section {
+    max-width: 800px;
+    margin: 30px auto 0;
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    border: 1px solid #4338ca;
+    border-radius: 14px;
+    padding: 24px 30px;
+    text-align: center;
+  }
+  .referral-section h3 { font-size: 16px; margin-bottom: 12px; color: #a5b4fc; }
+  .referral-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+  .referral-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .referral-card h4 { font-size: 13px; margin-bottom: 6px; }
+  .referral-card p { font-size: 11px; color: #9ca3af; }
+  .referral-card.zzp-ref h4 { color: #14b8a6; }
+  .referral-card.cfo-ref h4 { color: #fbbf24; }
+  .referral-arrow { font-size: 24px; color: #6366f1; text-align: center; }
+
+  /* Upsell path */
+  .upsell-path {
+    max-width: 600px;
+    margin: 16px auto 0;
+    background: #1c1917;
+    border: 1px solid #92400e;
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #fbbf24;
+  }
+  .upsell-path .upsell-trigger { font-size: 11px; color: #9ca3af; margin-top: 6px; }
 </style>
 </head>
 <body>
@@ -461,6 +568,29 @@
     </div>
   </div>
 
+  <!-- TRAFFIC SOURCES -->
+  <div class="section-label">Traffic Sources — Waar komen ze vandaan?</div>
+  <div class="traffic-sources">
+    <div class="traffic-src organic">
+      <span class="t-icon">📱</span>
+      <strong>Organisch</strong> — LinkedIn, X, IG, YouTube
+    </div>
+    <div class="traffic-src paid">
+      <span class="t-icon">💰</span>
+      <strong>Paid</strong> — LinkedIn Ads, Meta retargeting
+    </div>
+    <div class="traffic-src partner">
+      <span class="t-icon">🤝</span>
+      <strong>Partners</strong> — Boekhouders, KvK, ZZP-platforms
+    </div>
+    <div class="traffic-src partner">
+      <span class="t-icon">🎤</span>
+      <strong>Events</strong> — Podcasts, webinars, spreekbeurten
+    </div>
+  </div>
+
+  <div class="funnel-arrow">▼</div>
+
   <!-- TOP FUNNEL - shared -->
   <div class="section-label">Awareness — Bereik</div>
 
@@ -505,6 +635,35 @@
       </div>
       <div class="stage-tag">30-60 min · Dieper</div>
     </div>
+  </div>
+
+  <!-- Scan routing logic -->
+  <div class="scan-routing">
+    <div class="route-option">
+      <span>🔍 Scan score</span>
+      <span class="route-arrow">→</span>
+      <span class="route-label"><span class="score-low"><strong>Laag risico</strong></span> → Self-serve track</span>
+    </div>
+    <div style="color:#4b5563;">|</div>
+    <div class="route-option">
+      <span>🔍 Scan score</span>
+      <span class="route-arrow">→</span>
+      <span class="route-label"><span class="score-high"><strong>Hoog / complex</strong></span> → Discovery call</span>
+    </div>
+  </div>
+
+  <div class="funnel-arrow">▼</div>
+
+  <!-- Community layer -->
+  <div class="section-label">Community — Verbinden</div>
+
+  <div class="community-step">
+    <div class="stage-icon">💬</div>
+    <div class="stage-content">
+      <h3>WhatsApp Community</h3>
+      <p>Gratis groep voor ondernemers — wekelijkse tips, Q&A, peer support. Houdt leads warm en bouwt vertrouwen.</p>
+    </div>
+    <div class="stage-tag">Gratis · Altijd open</div>
   </div>
 
   <div class="funnel-arrow">▼</div>
@@ -611,6 +770,30 @@
   <div class="crosssell">
     <strong>↔ Cross-sell:</strong> CFO klanten verwijzen ZZP'ers uit hun netwerk → MijnFinn.
     MijnFinn klanten die groeien naar MKB → upgraden naar CFO Product.
+  </div>
+
+  <!-- Upsell path -->
+  <div class="upsell-path">
+    📈 Retentie & Upsell: MijnFinn ZZP'er groeit → omzet stijgt boven €200K → trigger: "Je groeit uit MijnFinn — tijd voor een CFO?"
+    <div class="upsell-trigger">Automatische trigger op basis van omzetdata in MijnFinn → persoonlijke outreach</div>
+  </div>
+
+  <!-- Referral section -->
+  <div class="referral-section">
+    <h3>🔄 Referral Engine — Mond-tot-mond als groeimotor</h3>
+    <div class="referral-grid">
+      <div class="referral-card zzp-ref">
+        <h4>ZZP Referral</h4>
+        <p>MijnFinn klant nodigt collega-ZZP'er uit → <strong style="color:#14b8a6">1 maand gratis</strong> voor beiden</p>
+        <p style="margin-top:8px; font-size:10px; color:#6b7280;">WhatsApp share button · "Stuur naar een collega"</p>
+      </div>
+      <div class="referral-arrow">⇄</div>
+      <div class="referral-card cfo-ref">
+        <h4>CFO Referral</h4>
+        <p>CFO klant verwijst founder → <strong style="color:#fbbf24">10% korting</strong> op retainer voor verwijzer</p>
+        <p style="margin-top:8px; font-size:10px; color:#6b7280;">Persoonlijke intro · "Ken je iemand die dit nodig heeft?"</p>
+      </div>
+    </div>
   </div>
 
   <!-- Pricing ladder -->
