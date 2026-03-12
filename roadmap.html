@@ -354,6 +354,123 @@
   .milestone-tag.launch { background: rgba(74,222,128,0.15); color: #4ade80; }
   .milestone-tag.checkpoint { background: rgba(251,146,60,0.15); color: #fb923c; }
 
+  /* Start Here */
+  .start-here {
+    margin-bottom: 40px;
+    background: #1a1a1a;
+    border: 1px solid #7c3aed;
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .start-here::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7c3aed, #c084fc, #7c3aed);
+  }
+  .start-here h2 {
+    font-size: 18px;
+    color: #c084fc;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .start-here .sh-sub {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 24px;
+  }
+  .sh-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .sh-step {
+    background: #242424;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  .sh-step.active {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 20px rgba(245,158,11,0.15);
+  }
+  .sh-step .sh-week {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .sh-step h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .sh-step.s1 h3 { color: #f59e0b; }
+  .sh-step.s2 h3 { color: #ec4899; }
+  .sh-step.s3 h3 { color: #818cf8; }
+  .sh-step .sh-why {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .sh-step ul {
+    list-style: none;
+    font-size: 12px;
+  }
+  .sh-step li {
+    padding: 3px 0;
+    color: #aaa;
+  }
+  .sh-step li .who {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    margin-left: 4px;
+  }
+  .sh-step.s1 li .who { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .sh-step.s2 li .who { background: rgba(236,72,153,0.15); color: #ec4899; }
+  .sh-step.s3 li .who { background: rgba(129,140,248,0.15); color: #818cf8; }
+  .sh-step .sh-badge {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  .sh-step.active .sh-badge {
+    background: rgba(245,158,11,0.2);
+    color: #f59e0b;
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .sh-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #444;
+    padding: 0 8px;
+  }
+  @media (max-width: 768px) {
+    .sh-flow { grid-template-columns: 1fr; gap: 8px; }
+    .sh-arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+
   /* Legend */
   .legend {
     display: flex;
@@ -448,6 +565,61 @@
       <div class="progress-fill" style="width: 10%;"></div>
     </div>
     <div class="progress-label">2 / 20 tasks completed</div>
+  </div>
+
+  <!-- Start Here -->
+  <div class="start-here">
+    <h2>&#x1F3AF; Start Here — Priority Order</h2>
+    <p class="sh-sub">Work in this order. Each phase unlocks the next — don't skip ahead.</p>
+    <div class="sh-flow">
+
+      <div class="sh-step s1 active">
+        <div class="sh-week">Week 1-2 (now)</div>
+        <h3>1. Product First</h3>
+        <p class="sh-why">"Je kunt pas verkopen wat je hebt"</p>
+        <ul>
+          <li>&#x2460; Pakketten definieren (Scan / Basis / Premium) <span class="who">Phuong</span></li>
+          <li>&#x2461; One-pager schrijven <span class="who">Phuong</span></li>
+          <li>&#x2462; Intake formulier (Google Form, 10 vragen) <span class="who">Phuong</span></li>
+          <li>&#x2463; Template sheet klaarzetten <span class="who">Claude</span></li>
+          <li>&#x2464; Onboarding checklist <span class="who">Claude</span></li>
+        </ul>
+        <span class="sh-badge">&#x2190; Start hier maandag</span>
+      </div>
+
+      <div class="sh-arrow">&#x25B6;</div>
+
+      <div class="sh-step s2">
+        <div class="sh-week">Week 2-3</div>
+        <h3>2. Masterclass Prep</h3>
+        <p class="sh-why">"Pas als product 80%+ af is"</p>
+        <ul>
+          <li>&#x2460; Ten Women / netwerken benaderen <span class="who">Phuong</span></li>
+          <li>&#x2461; Masterclass outline (60-90 min) <span class="who">Phuong</span></li>
+          <li>&#x2462; Slide deck bouwen <span class="who">Both</span></li>
+          <li>&#x2463; QR &#x2192; Gratis Scan flow <span class="who">Claude</span></li>
+          <li>&#x2464; Pitch email naar netwerken <span class="who">Phuong</span></li>
+        </ul>
+        <span class="sh-badge" style="background:rgba(236,72,153,0.1);color:#ec4899;">Wacht op product</span>
+      </div>
+
+      <div class="sh-arrow">&#x25B6;</div>
+
+      <div class="sh-step s3">
+        <div class="sh-week">Week 3-5</div>
+        <h3>3. Online Funnel</h3>
+        <p class="sh-why">"Ongoing — heeft de andere twee als fundament"</p>
+        <ul>
+          <li>&#x2460; LinkedIn profiel updaten (rewrite is klaar) <span class="who">Phuong</span></li>
+          <li>&#x2461; Eerste 3 posts schrijven + publiceren <span class="who">Both</span></li>
+          <li>&#x2462; Landing page + email capture <span class="who">Claude</span></li>
+          <li>&#x2463; Email nurture sequence <span class="who">Claude</span></li>
+          <li>&#x2464; End-to-end funnel test <span class="who">Both</span></li>
+        </ul>
+        <span class="sh-badge" style="background:rgba(129,140,248,0.1);color:#818cf8;">Wacht op masterclass</span>
+      </div>
+
+    </div>
   </div>
 
   <!-- Legend -->
