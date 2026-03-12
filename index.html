@@ -369,6 +369,68 @@
   .traffic-src.organic { border-color: #6366f1; }
   .traffic-src.paid { border-color: #ef4444; }
   .traffic-src.partner { border-color: #f59e0b; }
+  .traffic-src.masterclass { border-color: #ec4899; }
+
+  /* Awareness split - online + offline */
+  .awareness-split {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    gap: 0;
+    max-width: 100%;
+    margin: 0 auto 2px;
+    align-items: start;
+  }
+  .awareness-track {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .awareness-track-label {
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .awareness-track-label.online { background: #1e1b4b; color: #a5b4fc; border: 1px solid #3730a3; }
+  .awareness-track-label.offline { background: #831843; color: #f9a8d4; border: 1px solid #ec4899; }
+  .awareness-plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+    font-size: 20px;
+    color: #6b7280;
+    font-weight: 700;
+  }
+  .awareness-track .funnel-stage { max-width: 100% !important; }
+  .s-mc { background: linear-gradient(90deg, #831843, #be185d); }
+  .s-mc2 { background: linear-gradient(90deg, #701a75, #a21caf); }
+
+  /* Masterclass QR flow */
+  .mc-flow {
+    max-width: 90%;
+    margin: 10px auto 0;
+    background: #1e2030;
+    border: 1px dashed #ec4899;
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 12px;
+    align-items: center;
+  }
+  .mc-flow-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #9ca3af;
+  }
+  .mc-flow-step strong { color: #f9a8d4; }
+  .mc-flow-arrow { color: #ec4899; font-size: 16px; }
 
   /* Community step */
   .community-step {
@@ -456,7 +518,7 @@
 <div class="container">
 
   <h1>Personal Brand × MijnFinn Funnel</h1>
-  <p class="subtitle">Van thought leadership naar MijnFinn klanten + CFO Premium via cursus & community</p>
+  <p class="subtitle">Van masterclass & thought leadership naar CFO Premium + MijnFinn via online & offline kanalen</p>
 
   <!-- Two brands -->
   <div class="brands">
@@ -575,43 +637,85 @@
       <span class="t-icon">📱</span>
       <strong>Organisch</strong> — LinkedIn, X, IG, YouTube
     </div>
-    <div class="traffic-src paid">
-      <span class="t-icon">💰</span>
-      <strong>Paid</strong> — LinkedIn Ads, Meta retargeting
+    <div class="traffic-src masterclass">
+      <span class="t-icon">🎓</span>
+      <strong>Masterclasses</strong> — Ten Women, netwerk-events, in-company
     </div>
     <div class="traffic-src partner">
       <span class="t-icon">🤝</span>
       <strong>Partners</strong> — Boekhouders, KvK, ZZP-platforms
     </div>
-    <div class="traffic-src partner">
-      <span class="t-icon">🎤</span>
-      <strong>Events</strong> — Podcasts, webinars, spreekbeurten
+    <div class="traffic-src paid">
+      <span class="t-icon">💰</span>
+      <strong>Paid</strong> — LinkedIn Ads, Meta retargeting (later)
     </div>
   </div>
 
   <div class="funnel-arrow">▼</div>
 
-  <!-- TOP FUNNEL - shared -->
+  <!-- TOP FUNNEL - split online + offline -->
   <div class="section-label">Awareness — Bereik</div>
 
-  <div class="funnel-stage s1">
-    <div class="stage-icon">📱</div>
-    <div class="stage-content">
-      <h3>Social Content</h3>
-      <p>LinkedIn posts, korte video's, threads over AI + finance + ondernemen</p>
+  <div class="awareness-split">
+    <!-- Online track -->
+    <div class="awareness-track">
+      <div class="awareness-track-label online">Online</div>
+      <div class="funnel-stage s1">
+        <div class="stage-icon">📱</div>
+        <div class="stage-content">
+          <h3>Social Content</h3>
+          <p>LinkedIn posts, video's, threads over AI + finance + ondernemen</p>
+        </div>
+        <div class="stage-tag">LinkedIn first</div>
+      </div>
+      <div class="funnel-arrow">▼</div>
+      <div class="funnel-stage s2">
+        <div class="stage-icon">🎙️</div>
+        <div class="stage-content">
+          <h3>Long-form Content</h3>
+          <p>Podcast, blog, YouTube — diepere inzichten</p>
+        </div>
+        <div class="stage-tag">Authority</div>
+      </div>
     </div>
-    <div class="stage-tag">LinkedIn / X / TikTok</div>
+
+    <!-- Plus divider -->
+    <div class="awareness-plus">+</div>
+
+    <!-- Offline track -->
+    <div class="awareness-track">
+      <div class="awareness-track-label offline">Offline</div>
+      <div class="funnel-stage s-mc">
+        <div class="stage-icon">🎓</div>
+        <div class="stage-content">
+          <h3>Masterclasses</h3>
+          <p>"De 3 getallen die elke ondernemer moet kennen" — 45-60 min bij netwerken</p>
+        </div>
+        <div class="stage-tag">Ten Women / events</div>
+      </div>
+      <div class="funnel-arrow">▼</div>
+      <div class="funnel-stage s-mc2">
+        <div class="stage-icon">📄</div>
+        <div class="stage-content">
+          <h3>Handout + QR Code</h3>
+          <p>Key takeaways one-pager met QR → Gratis Scan</p>
+        </div>
+        <div class="stage-tag">Leave-behind</div>
+      </div>
+    </div>
   </div>
 
-  <div class="funnel-arrow">▼</div>
-
-  <div class="funnel-stage s2">
-    <div class="stage-icon">🎙️</div>
-    <div class="stage-content">
-      <h3>Long-form Content</h3>
-      <p>Podcast, blog, YouTube — diepere inzichten over AI-gedreven financiën</p>
-    </div>
-    <div class="stage-tag">Authority building</div>
+  <!-- Masterclass → Scan flow -->
+  <div class="mc-flow">
+    <div class="mc-flow-step"><strong>Masterclass</strong></div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-step"><strong>QR code</strong></div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-step"><strong>Gratis Scan</strong></div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-step"><strong>Email capture</strong></div>
+    <div class="mc-flow-arrow">→</div>
+    <div class="mc-flow-step"><strong>Nurture / Discovery Call</strong></div>
   </div>
 
   <div class="funnel-arrow">▼</div>
@@ -797,41 +901,48 @@
   </div>
 
   <!-- Pricing ladder -->
-  <div class="section-label" style="margin-top:40px;">💎 Productladder — van inzicht naar autopilot</div>
-  <div class="pricing">
+  <div class="section-label" style="margin-top:40px;">💎 Productladder — van podium naar autopilot</div>
+  <div class="pricing" style="grid-template-columns: repeat(6, 1fr);">
+    <div class="price-box" style="border-color: #ec4899;">
+      <h4>Masterclass</h4>
+      <div class="price" style="color: #ec4899;">€0</div>
+      <div class="price-sub">Betaald door netwerk</div>
+      <div class="price-desc">Live presentatie — de EERSTE INDRUK</div>
+      <div class="price-not">Geen 1-op-1, geen tools</div>
+    </div>
     <div class="price-box" style="border-color: #8b5cf6;">
       <h4>Gratis Scan</h4>
       <div class="price" style="color: #8b5cf6;">€0</div>
       <div class="price-sub">5 min vragenlijst</div>
       <div class="price-desc">Score + rapport — de WAKE-UP CALL</div>
-      <div class="price-not">Geen advies, geen tools, geen templates</div>
+      <div class="price-not">Geen advies, geen tools</div>
     </div>
     <div class="price-box price-mass">
       <h4>Gratis Cursus</h4>
       <div class="price">€0</div>
       <div class="price-sub">Lead magnet</div>
-      <div class="price-desc">Inzichten & bewustzijn — het WAT en WAAROM</div>
-      <div class="price-not">Geen templates, geen stap-voor-stap</div>
+      <div class="price-desc">Inzichten — het WAT en WAAROM</div>
+      <div class="price-not">Geen templates</div>
     </div>
     <div class="price-box price-mid">
       <h4>Betaalde Cursus</h4>
       <div class="price">€99-€199</div>
       <div class="price-sub">Eenmalig</div>
-      <div class="price-desc">Zelf je sheet bouwen — het HOE (handmatig)</div>
-      <div class="price-not">Geen automatisering, geen strategie</div>
+      <div class="price-desc">Zelf bouwen — het HOE</div>
+      <div class="price-not">Geen automatisering</div>
     </div>
     <div class="price-box" style="border-color: #14b8a6;">
       <h4>MijnFinn</h4>
       <div class="price" style="color: #14b8a6;">€99/mo</div>
       <div class="price-sub">SaaS recurring</div>
-      <div class="price-desc">Automatische boekhouding — de AUTOPILOT</div>
-      <div class="price-not">Geen business model, geen pricing strategie</div>
+      <div class="price-desc">Automatisch — de AUTOPILOT</div>
+      <div class="price-not">Geen strategie</div>
     </div>
     <div class="price-box price-premium highlight">
       <h4>CFO Product</h4>
       <div class="price">€2.5K-€5K</div>
       <div class="price-sub">+ retainer</div>
-      <div class="price-desc">Done-for-you + strategie — de EXPERT</div>
+      <div class="price-desc">Done-for-you — de EXPERT</div>
       <div class="price-not" style="color: #10b981;">Alles inbegrepen ✓</div>
     </div>
   </div>
@@ -841,10 +952,10 @@
     <div class="annotation">
       <h4>🔄 Flywheel Effect</h4>
       <ul>
-        <li>Cursisten delen succesverhalen</li>
+        <li>Masterclass → QR scan → email → discovery call</li>
+        <li>Masterclass content hergebruiken als LinkedIn posts</li>
         <li>CFO klanten = case studies voor content</li>
-        <li>MijnFinn klanten worden ambassadeurs</li>
-        <li>Referral programma beide tracks</li>
+        <li>Netwerken boeken je opnieuw na succes</li>
       </ul>
     </div>
     <div class="annotation premium-note">
