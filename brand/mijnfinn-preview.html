@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MijnFinn — Lunare vs L'ilot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;1,6..96,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.6; }
+
+    /* ===== STYLE SWITCHER ===== */
+    .style-switch {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1001;
+      display: flex; justify-content: center; gap: 0; background: #000;
+    }
+    .style-switch a {
+      flex: 1; text-align: center; padding: 0.75rem;
+      text-decoration: none; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s;
+    }
+    .style-switch a:first-child { background: #0F0F1A; color: #B8955C; border-bottom: 2px solid #B8955C; }
+    .style-switch a:last-child { background: #032C35; color: #9C6C46; border-bottom: 2px solid #9C6C46; }
+
+    /* ===== SHARED LAYOUT ===== */
+    .site { scroll-margin-top: 2.5rem; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Sticky nav */
+    .nav {
+      position: sticky; top: 2.5rem; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; backdrop-filter: blur(12px);
+    }
+    .nav-logo { font-family: 'Bodoni Moda', serif; font-weight: 300; font-size: 1.5rem; text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { text-decoration: none; font-size: 0.8125rem; font-weight: 400; }
+    .nav-cta {
+      padding: 0.5rem 1.25rem; font-size: 0.75rem; font-weight: 500;
+      text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+
+    /* Hero */
+    .hero { padding: 5rem 0 4rem; display: flex; align-items: center; }
+    .hero-content { flex: 1; }
+    .hero-visual { flex: 1; display: flex; justify-content: center; }
+    .hero-label { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .hero h1 {
+      font-family: 'Bodoni Moda', serif; font-weight: 400;
+      font-size: clamp(2rem, 3.5vw, 2.75rem); line-height: 1.15;
+      margin-bottom: 1.25rem; letter-spacing: 0.01em;
+    }
+    .hero h1 em { font-style: italic; }
+    .hero p { font-size: 1rem; line-height: 1.75; max-width: 440px; margin-bottom: 2rem; }
+    .hero-form { display: flex; gap: 0.5rem; max-width: 400px; }
+    .hero-form input {
+      flex: 1; padding: 0.8rem 1rem; font-size: 0.875rem; font-family: 'Inter', sans-serif;
+      border: 1px solid; border-radius: 0; outline: none; background: transparent;
+    }
+    .hero-form button {
+      padding: 0.8rem 1.5rem; font-size: 0.6875rem; font-weight: 600; font-family: 'Inter', sans-serif;
+      letter-spacing: 0.08em; text-transform: uppercase; border: none; cursor: pointer; white-space: nowrap;
+    }
+    .hero-note { font-size: 0.6875rem; margin-top: 0.75rem; }
+
+    /* WhatsApp mockup */
+    .phone-mockup {
+      width: 280px; border-radius: 24px; padding: 1.5rem 1rem 1rem; position: relative;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    }
+    .phone-header { text-align: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .phone-header-name { font-size: 0.8125rem; font-weight: 500; }
+    .phone-header-status { font-size: 0.625rem; }
+    .chat-bubble {
+      padding: 0.625rem 0.875rem; border-radius: 12px; margin-bottom: 0.5rem;
+      font-size: 0.75rem; line-height: 1.5; max-width: 85%;
+      opacity: 0; animation: fadeInUp 0.4s ease forwards;
+    }
+    .chat-bubble.user { margin-left: auto; text-align: right; animation-delay: 0.5s; }
+    .chat-bubble.finn { animation-delay: 1.5s; }
+    .chat-bubble.finn2 { animation-delay: 2.8s; }
+    .chat-time { font-size: 0.5625rem; margin-top: 0.25rem; text-align: right; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Social proof bar */
+    .social-proof { padding: 2.5rem 0; text-align: center; }
+    .social-proof p { font-size: 0.8125rem; font-weight: 400; letter-spacing: 0.03em; }
+    .avatars { display: flex; justify-content: center; gap: -0.5rem; margin-bottom: 0.75rem; }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%; display: inline-flex;
+      align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 600;
+      margin-left: -6px;
+    }
+    .avatar:first-child { margin-left: 0; }
+
+    /* Pain section */
+    .pain-section { padding: 4rem 0; }
+    .pain-section h2 {
+      font-family: 'Bodoni Moda', serif; font-weight: 400;
+      font-size: clamp(1.5rem, 2.5vw, 2rem); text-align: center; margin-bottom: 3rem;
+    }
+    .pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .pain-card { padding: 2rem; border-radius: 12px; text-align: center; }
+    .pain-card .pain-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+    .pain-card h3 { font-family: 'Bodoni Moda', serif; font-weight: 400; font-size: 1.125rem; margin-bottom: 0.75rem; }
+    .pain-card p { font-size: 0.875rem; line-height: 1.65; }
+
+    /* How it works */
+    .steps-section { padding: 5rem 0; }
+    .steps-section h2 {
+      font-family: 'Bodoni Moda', serif; font-weight: 400;
+      font-size: clamp(1.5rem, 2.5vw, 2rem); text-align: center; margin-bottom: 1rem;
+    }
+    .steps-section > .container > p { text-align: center; max-width: 480px; margin: 0 auto 3.5rem; font-size: 1rem; }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .step { text-align: center; }
+    .step-number {
+      font-family: 'DM Mono', monospace; font-size: 0.6875rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .step-chat {
+      width: 100%; padding: 1.25rem; border-radius: 16px; margin-bottom: 1.25rem;
+      text-align: left; font-size: 0.75rem; line-height: 1.6; min-height: 120px;
+    }
+    .step h3 { font-family: 'Bodoni Moda', serif; font-weight: 400; font-size: 1.125rem; margin-bottom: 0.5rem; }
+    .step p { font-size: 0.875rem; line-height: 1.6; }
+
+    /* Features */
+    .features-section { padding: 5rem 0; }
+    .features-section h2 {
+      font-family: 'Bodoni Moda', serif; font-weight: 400;
+      font-size: clamp(1.5rem, 2.5vw, 2rem); text-align: center; margin-bottom: 3rem;
+    }
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; }
+    .feature-card { padding: 2.5rem; }
+    .feature-card h3 { font-family: 'Bodoni Moda', serif; font-weight: 400; font-size: 1.125rem; margin-bottom: 0.75rem; }
+    .feature-card h3 span { }
+    .feature-card p { font-size: 0.9rem; line-height: 1.65; }
+
+    /* Testimonial */
+    .testimonial-section { padding: 4.5rem 0; text-align: center; }
+    .testimonial-section blockquote {
+      font-family: 'Bodoni Moda', serif; font-weight: 400;
+      font-size: clamp(1.25rem, 2.2vw, 1.5rem); font-style: italic;
+      line-height: 1.6; max-width: 580px; margin: 0 auto 1.5rem;
+    }
+    .testimonial-section .author { font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.06em; }
+    .testimonial-section .role { font-size: 0.75rem; margin-top: 0.25rem; }
+
+    /* Founder section */
+    .founder-section { padding: 4rem 0; }
+    .founder-inner { display: flex; gap: 3rem; align-items: center; max-width: 800px; margin: 0 auto; }
+    .founder-avatar {
+      width: 80px; height: 80px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bodoni Moda', serif; font-size: 1.75rem; font-weight: 300;
+    }
+    .founder-text h3 { font-family: 'Bodoni Moda', serif; font-weight: 400; font-size: 1.125rem; margin-bottom: 0.5rem; }
+    .founder-text p { font-size: 0.9rem; line-height: 1.7; }
+    .founder-text .founder-name { font-size: 0.8125rem; font-weight: 500; margin-top: 1rem; }
+    .founder-text .founder-role { font-size: 0.75rem; }
+
+    /* FAQ */
+    .faq-section { padding: 4rem 0; }
+    .faq-section h2 {
+      font-family: 'Bodoni Moda', serif; font-weight: 400;
+      font-size: clamp(1.5rem, 2.5vw, 2rem); text-align: center; margin-bottom: 3rem;
+    }
+    .faq-list { max-width: 640px; margin: 0 auto; }
+    .faq-item { padding: 1.25rem 0; cursor: pointer; }
+    .faq-q { font-size: 0.9375rem; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+    .faq-q::after { content: "+"; font-size: 1.25rem; font-weight: 300; }
+    .faq-a { font-size: 0.875rem; line-height: 1.7; margin-top: 0.75rem; display: none; }
+
+    /* Final CTA */
+    .final-cta { padding: 5rem 0; text-align: center; }
+    .final-cta h2 {
+      font-family: 'Bodoni Moda', serif; font-weight: 400;
+      font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: 1rem;
+    }
+    .final-cta p { max-width: 480px; margin: 0 auto 0.5rem; font-size: 1rem; line-height: 1.75; }
+    .final-cta .price-compare {
+      font-family: 'DM Mono', monospace; font-size: 0.8125rem; margin: 1.5rem auto 2.5rem;
+    }
+    .final-cta .cta-form { display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; justify-content: center; }
+    .final-cta input {
+      flex: 1; padding: 0.8rem 1rem; font-size: 0.875rem; font-family: 'Inter', sans-serif;
+      border: 1px solid; border-radius: 0; outline: none; background: transparent;
+    }
+    .final-cta button {
+      padding: 0.8rem 1.5rem; font-size: 0.6875rem; font-weight: 600; font-family: 'Inter', sans-serif;
+      letter-spacing: 0.08em; text-transform: uppercase; border: none; cursor: pointer; white-space: nowrap;
+    }
+
+    /* Footer */
+    .footer { padding: 2.5rem 0; text-align: center; }
+    .footer-logo { font-family: 'Bodoni Moda', serif; font-weight: 300; font-size: 1.25rem; margin-bottom: 0.25rem; }
+    .footer p { font-size: 0.6875rem; }
+    .footer a { text-decoration: none; font-size: 0.6875rem; }
+
+    /* Divider */
+    .divider { width: 40px; height: 1px; margin: 0 auto; }
+
+    /* ======================================= */
+    /* LUNARE THEME                             */
+    /* ======================================= */
+    #lunare { --dk: #0F0F1A; --acc: #B8955C; --bl: #EEDDD6; --cr: #FAF7F4; --wh: #FFFFFF; --mu: #8A857E; --card: #1A1A28; }
+
+    #lunare .nav { background: rgba(238,221,214,0.92); border-bottom: 1px solid #E0C8BE; }
+    #lunare .nav-logo { color: var(--dk); }
+    #lunare .nav-links a { color: #5A4A42; }
+    #lunare .nav-cta { background: var(--dk); color: var(--bl); }
+
+    /* Hero: blush */
+    #lunare .hero { background: var(--bl); color: var(--dk); }
+    #lunare .hero-label { color: var(--acc); }
+    #lunare .hero h1 em { color: var(--acc); }
+    #lunare .hero p { color: #5A4A42; }
+    #lunare .hero-form input { border-color: #C8B0A5; color: var(--dk); background: rgba(255,255,255,0.5); }
+    #lunare .hero-form input::placeholder { color: #9A8A82; }
+    #lunare .hero-form button { background: var(--dk); color: var(--bl); }
+    #lunare .hero-note { color: #9A8A82; }
+    #lunare .phone-mockup { background: var(--card); }
+    #lunare .phone-header-name { color: var(--cr); }
+    #lunare .phone-header-status { color: var(--acc); }
+    #lunare .chat-bubble.user { background: var(--acc); color: var(--dk); }
+    #lunare .chat-bubble.finn { background: #252538; color: var(--cr); }
+    #lunare .chat-bubble.finn2 { background: #252538; color: var(--cr); }
+    #lunare .chat-time { color: var(--mu); }
+
+    /* Social proof: dark */
+    #lunare .social-proof { background: var(--dk); color: var(--cr); }
+    #lunare .social-proof p span { color: var(--acc); font-weight: 600; }
+    #lunare .avatar { background: var(--card); color: var(--acc); border: 2px solid var(--dk); }
+
+    /* Pain: white */
+    #lunare .pain-section { background: var(--wh); color: var(--dk); }
+    #lunare .pain-card { background: var(--cr); border: 1px solid #F0EBE6; }
+    #lunare .pain-card h3 { color: var(--dk); }
+    #lunare .pain-card p { color: var(--mu); }
+    #lunare .divider { background: var(--acc); }
+
+    /* Steps: white */
+    #lunare .steps-section { background: var(--wh); color: var(--dk); }
+    #lunare .steps-section > .container > p { color: var(--mu); }
+    #lunare .step-number { color: var(--acc); }
+    #lunare .step-chat { background: var(--dk); color: var(--cr); }
+    #lunare .step p { color: var(--mu); }
+
+    /* Features: dark (contrast) */
+    #lunare .features-section { background: var(--dk); color: var(--cr); }
+    #lunare .features-grid { background: var(--card); }
+    #lunare .feature-card { background: var(--dk); }
+    #lunare .feature-card h3 span { color: var(--acc); }
+    #lunare .feature-card p { color: var(--mu); }
+
+    /* Testimonial: blush */
+    #lunare .testimonial-section { background: var(--bl); color: var(--dk); }
+    #lunare .testimonial-section .role { color: #5A4A42; }
+
+    /* Founder: light cream */
+    #lunare .founder-section { background: var(--cr); color: var(--dk); }
+    #lunare .founder-avatar { background: var(--dk); color: var(--acc); }
+    #lunare .founder-text p { color: var(--mu); }
+    #lunare .founder-text .founder-role { color: var(--mu); }
+
+    /* FAQ: white */
+    #lunare .faq-section { background: var(--wh); color: var(--dk); }
+    #lunare .faq-item { border-bottom: 1px solid #EDE8E3; }
+    #lunare .faq-q { color: var(--dk); }
+    #lunare .faq-a { color: var(--mu); }
+
+    /* Final CTA: dark */
+    #lunare .final-cta { background: var(--dk); color: var(--cr); }
+    #lunare .final-cta p { color: var(--mu); }
+    #lunare .final-cta .price-compare { color: var(--acc); }
+    #lunare .final-cta input { border-color: #2A2A3A; color: var(--cr); }
+    #lunare .final-cta input::placeholder { color: var(--mu); }
+    #lunare .final-cta button { background: var(--acc); color: var(--dk); }
+
+    /* Footer: dark */
+    #lunare .footer { background: var(--dk); color: var(--mu); border-top: 1px solid var(--card); }
+    #lunare .footer-logo { color: var(--acc); }
+    #lunare .footer a { color: var(--mu); }
+
+    /* ======================================= */
+    /* L'ILOT THEME                             */
+    /* ======================================= */
+    #lilot { --dk: #032C35; --acc: #9C6C46; --sg: #D7E5E2; --cr: #F2F6F5; --wh: #FFFFFF; --mu: #506E64; --card: #84968F; --olive: #47483A; }
+
+    /* Nav: sage */
+    #lilot .nav { background: rgba(215,229,226,0.92); border-bottom: 1px solid #ACBBB0; }
+    #lilot .nav-logo { color: var(--dk); }
+    #lilot .nav-links a { color: var(--mu); }
+    #lilot .nav-cta { background: var(--dk); color: var(--sg); }
+
+    /* Hero: sage */
+    #lilot .hero { background: var(--sg); color: var(--dk); }
+    #lilot .hero-label { color: var(--acc); }
+    #lilot .hero h1 em { color: var(--acc); }
+    #lilot .hero p { color: var(--mu); }
+    #lilot .hero-form input { border-color: #ACBBB0; color: var(--dk); background: rgba(255,255,255,0.5); }
+    #lilot .hero-form input::placeholder { color: var(--card); }
+    #lilot .hero-form button { background: var(--dk); color: var(--sg); }
+    #lilot .hero-note { color: var(--card); }
+    #lilot .phone-mockup { background: var(--dk); }
+    #lilot .phone-header-name { color: var(--sg); }
+    #lilot .phone-header-status { color: var(--acc); }
+    #lilot .chat-bubble.user { background: var(--acc); color: #FFF; }
+    #lilot .chat-bubble.finn { background: #0A3E4A; color: var(--sg); }
+    #lilot .chat-bubble.finn2 { background: #0A3E4A; color: var(--sg); }
+    #lilot .chat-time { color: var(--card); }
+
+    /* Social proof: white */
+    #lilot .social-proof { background: var(--wh); color: var(--dk); border-bottom: 1px solid #ACBBB0; }
+    #lilot .social-proof p span { color: var(--acc); font-weight: 600; }
+    #lilot .avatar { background: var(--dk); color: var(--acc); border: 2px solid var(--wh); }
+
+    /* Pain: white */
+    #lilot .pain-section { background: var(--wh); color: var(--dk); }
+    #lilot .pain-card { background: var(--cr); border: 1px solid #ACBBB0; }
+    #lilot .pain-card h3 { color: var(--dk); }
+    #lilot .pain-card p { color: var(--mu); }
+    #lilot .divider { background: var(--acc); }
+
+    /* Steps: white */
+    #lilot .steps-section { background: var(--wh); color: var(--dk); }
+    #lilot .steps-section > .container > p { color: var(--mu); }
+    #lilot .step-number { color: var(--acc); }
+    #lilot .step-chat { background: var(--dk); color: #D8E5DF; }
+    #lilot .step p { color: var(--mu); }
+
+    /* Features: cream */
+    #lilot .features-section { background: var(--cr); color: var(--dk); }
+    #lilot .features-grid { background: #ACBBB0; }
+    #lilot .feature-card { background: var(--cr); }
+    #lilot .feature-card h3 span { color: var(--acc); }
+    #lilot .feature-card p { color: var(--mu); }
+
+    /* Testimonial: sage */
+    #lilot .testimonial-section { background: var(--sg); color: var(--dk); }
+    #lilot .testimonial-section .role { color: var(--mu); }
+
+    /* Founder: cream */
+    #lilot .founder-section { background: var(--cr); color: var(--dk); }
+    #lilot .founder-avatar { background: var(--dk); color: var(--acc); }
+    #lilot .founder-text p { color: var(--mu); }
+    #lilot .founder-text .founder-role { color: var(--mu); }
+
+    /* FAQ: white */
+    #lilot .faq-section { background: var(--wh); color: var(--dk); }
+    #lilot .faq-item { border-bottom: 1px solid #ACBBB0; }
+    #lilot .faq-q { color: var(--dk); }
+    #lilot .faq-a { color: var(--mu); }
+
+    /* Final CTA: sage */
+    #lilot .final-cta { background: var(--sg); color: var(--dk); }
+    #lilot .final-cta p { color: var(--mu); }
+    #lilot .final-cta .price-compare { color: var(--acc); }
+    #lilot .final-cta input { border-color: #ACBBB0; color: var(--dk); background: rgba(255,255,255,0.5); }
+    #lilot .final-cta input::placeholder { color: var(--card); }
+    #lilot .final-cta button { background: var(--dk); color: var(--sg); }
+
+    /* Footer: white */
+    #lilot .footer { background: var(--wh); color: var(--mu); border-top: 1px solid #ACBBB0; }
+    #lilot .footer-logo { color: var(--dk); }
+    #lilot .footer a { color: var(--mu); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { flex-direction: column; text-align: center; }
+      .hero p { margin-left: auto; margin-right: auto; }
+      .hero-form { max-width: 100%; }
+      .pain-grid, .steps-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .founder-inner { flex-direction: column; text-align: center; }
+    }
+    html { scroll-behavior: smooth; scroll-padding-top: 2.5rem; }
+  </style>
+</head>
+<body>
+
+<nav class="style-switch">
+  <a href="#lunare">Stijl 1 — Lunare</a>
+  <a href="#lilot">Stijl 2 — L'ilot</a>
+</nav>
+
+<!-- ============================================ -->
+<!-- LUNARE VERSION                                -->
+<!-- ============================================ -->
+<div id="lunare" class="site" style="padding-top: 2.5rem;">
+
+  <nav class="nav"><a href="#" class="nav-logo">finn</a><div class="nav-links"><a href="#">Hoe het werkt</a><a href="#">Voor wie</a><a href="#" class="nav-cta">Vraag access aan</a></div></nav>
+
+  <section class="hero"><div class="container" style="display:flex;align-items:center;gap:3rem;">
+    <div class="hero-content">
+      <div class="hero-label">Jouw financiele partner</div>
+      <h1>Nooit meer stress over je <em>administratie</em></h1>
+      <p>Finn is je persoonlijke financieel partner via WhatsApp. Stel een vraag, krijg direct helder antwoord.</p>
+      <div class="hero-form"><input type="email" placeholder="jouw@email.nl"><button>Krijg early access</button></div>
+      <div class="hero-note">Gratis tijdens early access. Daarna vanaf €83/maand.</div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-mockup">
+        <div class="phone-header"><div class="phone-header-name">Finn</div><div class="phone-header-status">online</div></div>
+        <div class="chat-bubble user">Finn, hoeveel BTW moet ik deze maand afdragen?</div>
+        <div class="chat-bubble finn">Op basis van je facturen dit kwartaal: €2.340. Je deadline is 31 januari.<div class="chat-time">14:32</div></div>
+        <div class="chat-bubble finn2">Zal ik je btw-aangifte alvast klaarzetten?<div class="chat-time">14:32</div></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="social-proof"><div class="container">
+    <div class="avatars"><div class="avatar">PD</div><div class="avatar">SV</div><div class="avatar">MJ</div><div class="avatar">LK</div><div class="avatar">+</div></div>
+    <p>Sluit je aan bij <span>127 ondernemers</span> die al toegang hebben aangevraagd</p>
+  </div></section>
+
+  <section class="pain-section"><div class="container">
+    <h2>Herkenbaar?</h2>
+    <div class="pain-grid">
+      <div class="pain-card"><div class="pain-icon">⏰</div><h3>BTW-deadline vergeten</h3><p>Weer een boete omdat je de aangifte vergeten bent. Je wist niet eens hoeveel het moest zijn.</p></div>
+      <div class="pain-card"><div class="pain-icon">📊</div><h3>Geen idee van je cijfers</h3><p>Hoeveel moet je reserveren dit kwartaal? Wat is je winst eigenlijk? Geen flauw idee.</p></div>
+      <div class="pain-card"><div class="pain-icon">😤</div><h3>Uren kwijt aan admin</h3><p>Bonnetjes zoeken, spreadsheets bijwerken, facturen sturen. Tijd die je liever in je vak steekt.</p></div>
+    </div>
+  </div></section>
+
+  <div class="divider"></div>
+
+  <section class="steps-section"><div class="container">
+    <h2>Zo werkt Finn</h2>
+    <p>Drie stappen. Geen app te downloaden. Gewoon WhatsApp.</p>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">Stap 01</div>
+        <div class="step-chat"><strong>Jij:</strong> Stuur een foto van je bon of stel een vraag</div>
+        <h3>Stuur een bericht</h3>
+        <p>Via WhatsApp — het enige dat je nodig hebt is je telefoon.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">Stap 02</div>
+        <div class="step-chat"><strong>Finn:</strong> Dit is een zakelijke lunch, €47,50. Ik boek het als representatiekosten.</div>
+        <h3>Finn analyseert</h3>
+        <p>Automatische verwerking, categorisering en boekhouding in realtime.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">Stap 03</div>
+        <div class="step-chat"><strong>Finn:</strong> Je winst deze maand is €4.230. BTW-aangifte staat klaar.</div>
+        <h3>Helder inzicht</h3>
+        <p>Altijd weten waar je staat. Proactieve waarschuwingen voor deadlines.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="features-section"><div class="container">
+    <h2>Wat Finn voor je doet</h2>
+    <div class="features-grid">
+      <div class="feature-card"><h3>BTW & <span>belasting</span> inzicht</h3><p>Automatische btw-tracking, tijdige waarschuwingen en je aangifte altijd voorbereid. Nooit meer verrassingen.</p></div>
+      <div class="feature-card"><h3>Facturen in <span>30 seconden</span></h3><p>Beschrijf wat je hebt geleverd. Finn maakt de factuur, verstuurt hem en stuurt herinneringen.</p></div>
+      <div class="feature-card"><h3>Realtime <span>overzicht</span></h3><p>Vraag Finn naar je omzet, uitgaven of maandwinst. Altijd actueel, altijd begrijpelijk.</p></div>
+      <div class="feature-card"><h3>Veilig en <span>betrouwbaar</span></h3><p>Bankgraad beveiliging, AVG-compliant, data in de EU. Jouw gegevens zijn veilig.</p></div>
+    </div>
+  </div></section>
+
+  <section class="testimonial-section"><div class="container">
+    <blockquote>"Finn voelt alsof ik eindelijk een financieel adviseur heb die me echt begrijpt. Geen jargon, geen gedoe — gewoon duidelijkheid."</blockquote>
+    <div class="author">Sophie de Vries</div>
+    <div class="role">Creatief ondernemer & consultant</div>
+  </div></section>
+
+  <section class="founder-section"><div class="container">
+    <div class="founder-inner">
+      <div class="founder-avatar">PD</div>
+      <div class="founder-text">
+        <h3>Waarom ik Finn bouw</h3>
+        <p>"Als financieel strateeg heb ik jarenlang gezien hoe creatieve ondernemers vastlopen op hun administratie. Niet omdat ze het niet kunnen, maar omdat de tools niet voor hen gemaakt zijn. Finn wel."</p>
+        <div class="founder-name">Phuong Do</div>
+        <div class="founder-role">Founder & financieel strateeg — Finn & Subcurrents</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="faq-section"><div class="container">
+    <h2>Veelgestelde vragen</h2>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">Hoe werkt Finn precies?</div><div class="faq-a">Finn is een AI-financieel partner die je bereikt via WhatsApp. Stuur een bon, stel een vraag, of vraag om een factuur — Finn handelt het af.</div></div>
+      <div class="faq-item"><div class="faq-q">Hoe verschilt Finn van mijn boekhouder?</div><div class="faq-a">Je boekhouder kijkt achteruit. Finn kijkt mee in realtime. Bovendien is Finn 24/7 bereikbaar en kost een fractie van een traditionele boekhouder.</div></div>
+      <div class="faq-item"><div class="faq-q">Is mijn data veilig?</div><div class="faq-a">Ja. Bankgraad encryptie, AVG-compliant, en al je data blijft in de EU. We delen nooit gegevens met derden.</div></div>
+      <div class="faq-item"><div class="faq-q">Wat kost het?</div><div class="faq-a">Finn kost €1.000 per jaar (€83/maand). Ter vergelijking: een boekhouder kost al snel €3.000+/jaar. Tijdens early access is Finn gratis.</div></div>
+      <div class="faq-item"><div class="faq-q">Voor wie is Finn bedoeld?</div><div class="faq-a">ZZP'ers, freelancers, consultants en creatieve ondernemers die hun administratie willen vereenvoudigen zonder in te leveren op kwaliteit.</div></div>
+    </div>
+  </div></section>
+
+  <section class="final-cta"><div class="container">
+    <h2>Word founding member</h2>
+    <p>Finn lanceert binnenkort voor een selecte groep ondernemers. Vraag nu early access aan.</p>
+    <div class="price-compare">Je boekhouder: €3.000/jaar → Finn: €1.000/jaar</div>
+    <div class="cta-form"><input type="email" placeholder="jouw@email.nl"><button>Krijg early access</button></div>
+  </div></section>
+
+  <footer class="footer"><div class="container">
+    <div class="footer-logo">finn</div>
+    <p>Jouw financiele partner via WhatsApp</p>
+    <p style="margin-top:0.75rem;"><a href="#">Privacy</a> · <a href="#">Voorwaarden</a> · <a href="#">hallo@mijnfinn.nl</a></p>
+    <p style="margin-top:0.5rem;">KvK 12345678 · © 2026 MijnFinn</p>
+  </div></footer>
+
+</div>
+
+<!-- ============================================ -->
+<!-- L'ILOT VERSION                                -->
+<!-- ============================================ -->
+<div id="lilot" class="site">
+
+  <nav class="nav"><a href="#" class="nav-logo">finn</a><div class="nav-links"><a href="#">Hoe het werkt</a><a href="#">Voor wie</a><a href="#" class="nav-cta">Vraag access aan</a></div></nav>
+
+  <section class="hero"><div class="container" style="display:flex;align-items:center;gap:3rem;">
+    <div class="hero-content">
+      <div class="hero-label">Jouw financiele partner</div>
+      <h1>Nooit meer stress over je <em>administratie</em></h1>
+      <p>Finn is je persoonlijke financieel partner via WhatsApp. Stel een vraag, krijg direct helder antwoord.</p>
+      <div class="hero-form"><input type="email" placeholder="jouw@email.nl"><button>Krijg early access</button></div>
+      <div class="hero-note">Gratis tijdens early access. Daarna vanaf €83/maand.</div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-mockup">
+        <div class="phone-header"><div class="phone-header-name">Finn</div><div class="phone-header-status">online</div></div>
+        <div class="chat-bubble user">Finn, hoeveel BTW moet ik deze maand afdragen?</div>
+        <div class="chat-bubble finn">Op basis van je facturen dit kwartaal: €2.340. Je deadline is 31 januari.<div class="chat-time">14:32</div></div>
+        <div class="chat-bubble finn2">Zal ik je btw-aangifte alvast klaarzetten?<div class="chat-time">14:32</div></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="social-proof"><div class="container">
+    <div class="avatars"><div class="avatar">PD</div><div class="avatar">SV</div><div class="avatar">MJ</div><div class="avatar">LK</div><div class="avatar">+</div></div>
+    <p>Sluit je aan bij <span>127 ondernemers</span> die al toegang hebben aangevraagd</p>
+  </div></section>
+
+  <section class="pain-section"><div class="container">
+    <h2>Herkenbaar?</h2>
+    <div class="pain-grid">
+      <div class="pain-card"><div class="pain-icon">⏰</div><h3>BTW-deadline vergeten</h3><p>Weer een boete omdat je de aangifte vergeten bent. Je wist niet eens hoeveel het moest zijn.</p></div>
+      <div class="pain-card"><div class="pain-icon">📊</div><h3>Geen idee van je cijfers</h3><p>Hoeveel moet je reserveren dit kwartaal? Wat is je winst eigenlijk? Geen flauw idee.</p></div>
+      <div class="pain-card"><div class="pain-icon">😤</div><h3>Uren kwijt aan admin</h3><p>Bonnetjes zoeken, spreadsheets bijwerken, facturen sturen. Tijd die je liever in je vak steekt.</p></div>
+    </div>
+  </div></section>
+
+  <div class="divider"></div>
+
+  <section class="steps-section"><div class="container">
+    <h2>Zo werkt Finn</h2>
+    <p>Drie stappen. Geen app te downloaden. Gewoon WhatsApp.</p>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">Stap 01</div>
+        <div class="step-chat"><strong>Jij:</strong> Stuur een foto van je bon of stel een vraag</div>
+        <h3>Stuur een bericht</h3>
+        <p>Via WhatsApp — het enige dat je nodig hebt is je telefoon.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">Stap 02</div>
+        <div class="step-chat"><strong>Finn:</strong> Dit is een zakelijke lunch, €47,50. Ik boek het als representatiekosten.</div>
+        <h3>Finn analyseert</h3>
+        <p>Automatische verwerking, categorisering en boekhouding in realtime.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">Stap 03</div>
+        <div class="step-chat"><strong>Finn:</strong> Je winst deze maand is €4.230. BTW-aangifte staat klaar.</div>
+        <h3>Helder inzicht</h3>
+        <p>Altijd weten waar je staat. Proactieve waarschuwingen voor deadlines.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="features-section"><div class="container">
+    <h2>Wat Finn voor je doet</h2>
+    <div class="features-grid">
+      <div class="feature-card"><h3>BTW & <span>belasting</span> inzicht</h3><p>Automatische btw-tracking, tijdige waarschuwingen en je aangifte altijd voorbereid. Nooit meer verrassingen.</p></div>
+      <div class="feature-card"><h3>Facturen in <span>30 seconden</span></h3><p>Beschrijf wat je hebt geleverd. Finn maakt de factuur, verstuurt hem en stuurt herinneringen.</p></div>
+      <div class="feature-card"><h3>Realtime <span>overzicht</span></h3><p>Vraag Finn naar je omzet, uitgaven of maandwinst. Altijd actueel, altijd begrijpelijk.</p></div>
+      <div class="feature-card"><h3>Veilig en <span>betrouwbaar</span></h3><p>Bankgraad beveiliging, AVG-compliant, data in de EU. Jouw gegevens zijn veilig.</p></div>
+    </div>
+  </div></section>
+
+  <section class="testimonial-section"><div class="container">
+    <blockquote>"Finn voelt alsof ik eindelijk een financieel adviseur heb die me echt begrijpt. Geen jargon, geen gedoe — gewoon duidelijkheid."</blockquote>
+    <div class="author">Sophie de Vries</div>
+    <div class="role">Creatief ondernemer & consultant</div>
+  </div></section>
+
+  <section class="founder-section"><div class="container">
+    <div class="founder-inner">
+      <div class="founder-avatar">PD</div>
+      <div class="founder-text">
+        <h3>Waarom ik Finn bouw</h3>
+        <p>"Als financieel strateeg heb ik jarenlang gezien hoe creatieve ondernemers vastlopen op hun administratie. Niet omdat ze het niet kunnen, maar omdat de tools niet voor hen gemaakt zijn. Finn wel."</p>
+        <div class="founder-name">Phuong Do</div>
+        <div class="founder-role">Founder & financieel strateeg — Finn & Subcurrents</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="faq-section"><div class="container">
+    <h2>Veelgestelde vragen</h2>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">Hoe werkt Finn precies?</div><div class="faq-a">Finn is een AI-financieel partner die je bereikt via WhatsApp. Stuur een bon, stel een vraag, of vraag om een factuur — Finn handelt het af.</div></div>
+      <div class="faq-item"><div class="faq-q">Hoe verschilt Finn van mijn boekhouder?</div><div class="faq-a">Je boekhouder kijkt achteruit. Finn kijkt mee in realtime. Bovendien is Finn 24/7 bereikbaar en kost een fractie van een traditionele boekhouder.</div></div>
+      <div class="faq-item"><div class="faq-q">Is mijn data veilig?</div><div class="faq-a">Ja. Bankgraad encryptie, AVG-compliant, en al je data blijft in de EU. We delen nooit gegevens met derden.</div></div>
+      <div class="faq-item"><div class="faq-q">Wat kost het?</div><div class="faq-a">Finn kost €1.000 per jaar (€83/maand). Ter vergelijking: een boekhouder kost al snel €3.000+/jaar. Tijdens early access is Finn gratis.</div></div>
+      <div class="faq-item"><div class="faq-q">Voor wie is Finn bedoeld?</div><div class="faq-a">ZZP'ers, freelancers, consultants en creatieve ondernemers die hun administratie willen vereenvoudigen zonder in te leveren op kwaliteit.</div></div>
+    </div>
+  </div></section>
+
+  <section class="final-cta"><div class="container">
+    <h2>Word founding member</h2>
+    <p>Finn lanceert binnenkort voor een selecte groep ondernemers. Vraag nu early access aan.</p>
+    <div class="price-compare">Je boekhouder: €3.000/jaar → Finn: €1.000/jaar</div>
+    <div class="cta-form"><input type="email" placeholder="jouw@email.nl"><button>Krijg early access</button></div>
+  </div></section>
+
+  <footer class="footer"><div class="container">
+    <div class="footer-logo">finn</div>
+    <p>Jouw financiele partner via WhatsApp</p>
+    <p style="margin-top:0.75rem;"><a href="#">Privacy</a> · <a href="#">Voorwaarden</a> · <a href="#">hallo@mijnfinn.nl</a></p>
+    <p style="margin-top:0.5rem;">KvK 12345678 · © 2026 MijnFinn</p>
+  </div></footer>
+
+</div>
+
+<script>
+// FAQ toggle
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const answer = item.querySelector('.faq-a');
+    const isOpen = answer.style.display === 'block';
+    // Close all
+    document.querySelectorAll('.faq-a').forEach(a => a.style.display = 'none');
+    document.querySelectorAll('.faq-q').forEach(q => q.style.setProperty('--after', '"+'));
+    if (!isOpen) answer.style.display = 'block';
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MijnFinn — L'îlot vs Gatherers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    .palette-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(20,20,20,0.95);
+      backdrop-filter: blur(10px);
+    }
+    .palette-nav a {
+      padding: 0.6rem 1.5rem;
+      border-radius: 100px;
+      text-decoration: none;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .palette-nav a:first-child { background: #0D2936; color: #A3B1A8; border: 1px solid #163848; }
+    .palette-nav a:last-child { background: #55321E; color: #C3AF9B; border: 1px solid #6E462D; }
+    .palette-nav a:hover { transform: translateY(-1px); }
+
+    /* SHARED */
+    .container { max-width: 1100px; margin: 0 auto; }
+    .gold-divider { width: 40px; height: 1px; margin: 4rem auto; }
+    .swatches { display: flex; gap: 1rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
+    .swatch {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .swatch-circle { width: 72px; height: 72px; border-radius: 50%; }
+    .swatch-name {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .swatch-hex { font-family: 'DM Mono', monospace; font-size: 0.65rem; }
+
+    /* TYPOGRAPHY */
+    h1 {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 400;
+      font-size: clamp(2.75rem, 5.5vw, 4.25rem);
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    h1 em { font-style: italic; }
+    h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 400;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .logo {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      letter-spacing: normal;
+      margin-bottom: 2rem;
+    }
+    .tagline {
+      font-size: 0.8125rem; font-weight: 300;
+      letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .subtitle {
+      font-size: 1.0625rem; line-height: 1.75;
+      max-width: 520px; margin: 0 auto 3rem;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500; font-size: 0.875rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.25s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-outline {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400; font-size: 0.875rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; cursor: pointer;
+      transition: all 0.25s; margin-left: 1rem;
+    }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px; max-width: 960px; margin: 0 auto;
+    }
+    .feature { padding: 2.5rem; text-align: left; }
+    .feature h3 {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 400; font-size: 1.375rem;
+      margin-bottom: 0.75rem;
+    }
+    .feature p { font-size: 0.9375rem; line-height: 1.65; }
+
+    /* PRICE CARD */
+    .price-card {
+      padding: 3.5rem; max-width: 420px;
+      margin: 0 auto 4rem; text-align: center;
+    }
+    .price-card h3 {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 300; font-size: 1.5rem;
+      margin-bottom: 1.5rem; letter-spacing: 0.05em;
+    }
+    .price {
+      font-family: 'DM Mono', monospace;
+      font-size: 2.75rem; font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+    .price-sub { font-size: 0.8125rem; margin-bottom: 2rem; }
+    .price-card ul { list-style: none; text-align: left; margin-bottom: 2.5rem; }
+    .price-card ul li {
+      font-size: 0.9375rem; padding: 0.625rem 0;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .price-card ul li::before { content: "\2013"; font-weight: 500; }
+
+    /* TESTIMONIAL */
+    .testimonial { padding: 3rem; max-width: 600px; margin: 0 auto; text-align: center; }
+    .testimonial blockquote {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 400; font-size: 1.375rem;
+      font-style: italic; line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .testimonial .author { font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+    .testimonial .role { font-size: 0.75rem; margin-top: 0.25rem; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
+
+    /* ========================================= */
+    /* PALETTE 1 — L'ILOT                        */
+    /* Navy + Terracotta + Sage                  */
+    /* ========================================= */
+    #ilot { --i-dark: #0B2A34; --i-accent: #B07A4A; --i-sage: #9DB3A8; --i-cream: #E2DDD4; --i-white: #F0EBE4; --i-muted: #8A9490; }
+
+    #ilot .hero { background: var(--i-dark); color: var(--i-cream); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; }
+    #ilot .hero .logo { color: var(--i-cream); }
+    #ilot .hero .tagline { color: var(--i-sage); }
+
+    #ilot .split { display: grid; grid-template-columns: 1fr 1fr; min-height: 50vh; }
+    #ilot .split-left { background: var(--i-dark); display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; }
+    #ilot .split-left .logo { color: var(--i-cream); font-size: clamp(2rem, 4vw, 3.5rem); margin: 0; }
+    #ilot .split-right { background: var(--i-sage); display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; }
+    #ilot .split-right .mark { font-family: 'Bodoni Moda', serif; font-weight: 300; font-size: 5rem; color: var(--i-dark); }
+
+    #ilot .content-dark { background: var(--i-dark); color: var(--i-cream); padding: 6rem 2rem; text-align: center; }
+    #ilot .content-dark .gold-divider { background: var(--i-accent); }
+    #ilot .content-dark h1 em { color: var(--i-accent); }
+    #ilot .content-dark .subtitle { color: var(--i-muted); }
+    #ilot .content-dark .btn { background: var(--i-accent); color: var(--i-white); }
+    #ilot .content-dark .btn-outline { border: 1px solid var(--i-muted); color: var(--i-cream); }
+    #ilot .content-dark .features { background: #163848; }
+    #ilot .content-dark .feature { background: var(--i-dark); }
+    #ilot .content-dark .feature h3 { color: var(--i-cream); }
+    #ilot .content-dark .feature h3 span { color: var(--i-accent); }
+    #ilot .content-dark .feature p { color: var(--i-muted); }
+
+    #ilot .content-light { background: var(--i-cream); padding: 6rem 2rem; text-align: center; color: var(--i-dark); }
+    #ilot .content-light h2 { color: var(--i-dark); }
+    #ilot .content-light .subtitle { color: #4A5854; }
+    #ilot .content-light .price-card { background: var(--i-dark); color: var(--i-cream); }
+    #ilot .content-light .price { color: var(--i-accent); }
+    #ilot .content-light .price-sub { color: var(--i-muted); }
+    #ilot .content-light .price-card ul li { color: var(--i-muted); border-bottom: 1px solid #163848; }
+    #ilot .content-light .price-card ul li::before { color: var(--i-accent); }
+    #ilot .content-light .price-card .btn { background: var(--i-accent); color: var(--i-white); }
+
+    #ilot .content-sage { background: var(--i-sage); padding: 5rem 2rem; color: var(--i-dark); }
+    #ilot .content-sage .testimonial blockquote { color: var(--i-dark); }
+    #ilot .content-sage .testimonial .role { color: #3A4E48; }
+
+    #ilot .swatches-bar { background: var(--i-dark); padding: 3rem 2rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+    #ilot .swatches-bar .swatch-name, #ilot .swatches-bar .swatch-hex { color: var(--i-muted); }
+
+    /* ========================================= */
+    /* PALETTE 2 — THE GATHERERS                 */
+    /* Chocolate + Kraft + Cream                 */
+    /* ========================================= */
+    #gatherers { --g-dark: #55321E; --g-accent: #6E462D; --g-kraft: #C3AF9B; --g-cream: #E4D8CA; --g-white: #F2EBE2; --g-muted: #9A8B7C; }
+
+    #gatherers .hero { background: var(--g-dark); color: var(--g-cream); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; }
+    #gatherers .hero .logo { color: var(--g-kraft); }
+    #gatherers .hero .tagline { color: var(--g-muted); }
+
+    #gatherers .split { display: grid; grid-template-columns: 1fr 1fr; min-height: 50vh; }
+    #gatherers .split-left { background: var(--g-dark); display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; }
+    #gatherers .split-left .logo { color: var(--g-cream); font-size: clamp(2rem, 4vw, 3.5rem); margin: 0; }
+    #gatherers .split-right { background: var(--g-kraft); display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; }
+    #gatherers .split-right .mark { font-family: 'Bodoni Moda', serif; font-weight: 300; font-size: 5rem; color: var(--g-dark); }
+
+    #gatherers .content-dark { background: var(--g-dark); color: var(--g-cream); padding: 6rem 2rem; text-align: center; }
+    #gatherers .content-dark .gold-divider { background: var(--g-kraft); }
+    #gatherers .content-dark h1 em { color: var(--g-kraft); }
+    #gatherers .content-dark .subtitle { color: var(--g-muted); }
+    #gatherers .content-dark .btn { background: var(--g-kraft); color: var(--g-dark); }
+    #gatherers .content-dark .btn-outline { border: 1px solid var(--g-muted); color: var(--g-cream); }
+    #gatherers .content-dark .features { background: #643C28; }
+    #gatherers .content-dark .feature { background: var(--g-dark); }
+    #gatherers .content-dark .feature h3 { color: var(--g-cream); }
+    #gatherers .content-dark .feature h3 span { color: var(--g-kraft); }
+    #gatherers .content-dark .feature p { color: var(--g-muted); }
+
+    #gatherers .content-light { background: var(--g-cream); padding: 6rem 2rem; text-align: center; color: var(--g-dark); }
+    #gatherers .content-light h2 { color: var(--g-dark); }
+    #gatherers .content-light .subtitle { color: #6B5E52; }
+    #gatherers .content-light .price-card { background: var(--g-dark); color: var(--g-cream); }
+    #gatherers .content-light .price { color: var(--g-kraft); }
+    #gatherers .content-light .price-sub { color: var(--g-muted); }
+    #gatherers .content-light .price-card ul li { color: var(--g-muted); border-bottom: 1px solid #643C28; }
+    #gatherers .content-light .price-card ul li::before { color: var(--g-kraft); }
+    #gatherers .content-light .price-card .btn { background: var(--g-kraft); color: var(--g-dark); }
+
+    #gatherers .content-kraft { background: var(--g-kraft); padding: 5rem 2rem; color: var(--g-dark); }
+    #gatherers .content-kraft .testimonial blockquote { color: var(--g-dark); }
+    #gatherers .content-kraft .testimonial .role { color: #5A4838; }
+
+    #gatherers .swatches-bar { background: var(--g-dark); padding: 3rem 2rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+    #gatherers .swatches-bar .swatch-name, #gatherers .swatches-bar .swatch-hex { color: var(--g-muted); }
+
+    @media (max-width: 768px) {
+      #ilot .split, #gatherers .split { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="palette-nav">
+    <a href="#ilot">1 — L'ilot</a>
+    <a href="#gatherers">2 — The Gatherers</a>
+  </nav>
+
+  <!-- ============================================ -->
+  <!-- PALETTE 1 — L'ILOT                           -->
+  <!-- ============================================ -->
+  <div id="ilot">
+
+    <section class="hero">
+      <div class="logo">finn</div>
+      <div class="tagline">Jouw financiele partner</div>
+    </section>
+
+    <section class="split">
+      <div class="split-left"><div class="logo">finn</div></div>
+      <div class="split-right"><div class="mark">f</div></div>
+    </section>
+
+    <section class="content-dark">
+      <div class="container">
+        <div class="gold-divider"></div>
+        <h1>Jouw financien,<br><em>eindelijk</em> op orde.</h1>
+        <p class="subtitle">Finn is je persoonlijke financiele partner. Geen ingewikkelde spreadsheets, geen stress — gewoon helder inzicht en slim advies dat bij je past.</p>
+        <div style="margin-bottom: 3rem;">
+          <a href="#" class="btn">Start met Finn</a>
+          <a href="#" class="btn-outline">Bekijk hoe het werkt</a>
+        </div>
+        <div class="gold-divider"></div>
+        <div class="features">
+          <div class="feature">
+            <h3>Helder <span>overzicht</span></h3>
+            <p>Al je inkomsten, uitgaven en belastingverplichtingen op een plek. Altijd actueel, altijd begrijpelijk.</p>
+          </div>
+          <div class="feature">
+            <h3>Slim <span>advies</span></h3>
+            <p>Finn denkt met je mee. Van btw-deadlines tot slimme besparingsmogelijkheden — proactief en persoonlijk.</p>
+          </div>
+          <div class="feature">
+            <h3>Altijd <span>bereikbaar</span></h3>
+            <p>Een vraag over je financien? Stuur Finn een bericht. Binnen seconden een helder, betrouwbaar antwoord.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-light">
+      <div class="container">
+        <h2>Een prijs, alles inbegrepen</h2>
+        <p class="subtitle">Transparant en eerlijk. Alles wat je nodig hebt voor je financiele rust.</p>
+        <div class="price-card">
+          <h3>Finn &mdash; Compleet</h3>
+          <div class="price">€83<span style="font-size: 1rem; font-weight: 400;">/mo</span></div>
+          <div class="price-sub">€1.000 per jaar</div>
+          <ul>
+            <li>Persoonlijk financieel dashboard</li>
+            <li>Onbeperkt vragen stellen aan Finn</li>
+            <li>Automatische btw- en belastingreminders</li>
+            <li>Kwartaalrapportages op maat</li>
+          </ul>
+          <a href="#" class="btn">Start met Finn</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-sage">
+      <div class="container">
+        <div class="testimonial">
+          <blockquote>"Finn voelt alsof ik eindelijk een financieel adviseur heb die me echt begrijpt. Geen jargon, geen gedoe — gewoon duidelijkheid."</blockquote>
+          <div class="author">Sophie de Vries</div>
+          <div class="role">Creatief ondernemer & consultant</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="swatches-bar">
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #0D2936; border: 1px solid #163848;"></div>
+        <div class="swatch-name">Navy</div>
+        <div class="swatch-hex">#0D2936</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #966E4B;"></div>
+        <div class="swatch-name">Warm Brown</div>
+        <div class="swatch-hex">#966E4B</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #A3B1A8;"></div>
+        <div class="swatch-name">Sage</div>
+        <div class="swatch-hex">#A3B1A8</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #E2DDD4;"></div>
+        <div class="swatch-name">Cream</div>
+        <div class="swatch-hex">#E2DDD4</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #F0EBE4; border: 1px solid #E2DDD4;"></div>
+        <div class="swatch-name">White</div>
+        <div class="swatch-hex">#F0EBE4</div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============================================ -->
+  <!-- PALETTE 2 — THE GATHERERS                    -->
+  <!-- ============================================ -->
+  <div id="gatherers">
+
+    <section class="hero">
+      <div class="logo">finn</div>
+      <div class="tagline">Jouw financiele partner</div>
+    </section>
+
+    <section class="split">
+      <div class="split-left"><div class="logo">finn</div></div>
+      <div class="split-right"><div class="mark">f</div></div>
+    </section>
+
+    <section class="content-dark">
+      <div class="container">
+        <div class="gold-divider"></div>
+        <h1>Jouw financien,<br><em>eindelijk</em> op orde.</h1>
+        <p class="subtitle">Finn is je persoonlijke financiele partner. Geen ingewikkelde spreadsheets, geen stress — gewoon helder inzicht en slim advies dat bij je past.</p>
+        <div style="margin-bottom: 3rem;">
+          <a href="#" class="btn">Start met Finn</a>
+          <a href="#" class="btn-outline">Bekijk hoe het werkt</a>
+        </div>
+        <div class="gold-divider"></div>
+        <div class="features">
+          <div class="feature">
+            <h3>Helder <span>overzicht</span></h3>
+            <p>Al je inkomsten, uitgaven en belastingverplichtingen op een plek. Altijd actueel, altijd begrijpelijk.</p>
+          </div>
+          <div class="feature">
+            <h3>Slim <span>advies</span></h3>
+            <p>Finn denkt met je mee. Van btw-deadlines tot slimme besparingsmogelijkheden — proactief en persoonlijk.</p>
+          </div>
+          <div class="feature">
+            <h3>Altijd <span>bereikbaar</span></h3>
+            <p>Een vraag over je financien? Stuur Finn een bericht. Binnen seconden een helder, betrouwbaar antwoord.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-light">
+      <div class="container">
+        <h2>Een prijs, alles inbegrepen</h2>
+        <p class="subtitle">Transparant en eerlijk. Alles wat je nodig hebt voor je financiele rust.</p>
+        <div class="price-card">
+          <h3>Finn &mdash; Compleet</h3>
+          <div class="price">€83<span style="font-size: 1rem; font-weight: 400;">/mo</span></div>
+          <div class="price-sub">€1.000 per jaar</div>
+          <ul>
+            <li>Persoonlijk financieel dashboard</li>
+            <li>Onbeperkt vragen stellen aan Finn</li>
+            <li>Automatische btw- en belastingreminders</li>
+            <li>Kwartaalrapportages op maat</li>
+          </ul>
+          <a href="#" class="btn">Start met Finn</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-kraft">
+      <div class="container">
+        <div class="testimonial">
+          <blockquote>"Finn voelt alsof ik eindelijk een financieel adviseur heb die me echt begrijpt. Geen jargon, geen gedoe — gewoon duidelijkheid."</blockquote>
+          <div class="author">Sophie de Vries</div>
+          <div class="role">Creatief ondernemer & consultant</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="swatches-bar">
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #55321E; border: 1px solid #6E462D;"></div>
+        <div class="swatch-name">Chocolate</div>
+        <div class="swatch-hex">#55321E</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #6E462D;"></div>
+        <div class="swatch-name">Warm Brown</div>
+        <div class="swatch-hex">#6E462D</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #C3AF9B;"></div>
+        <div class="swatch-name">Kraft</div>
+        <div class="swatch-hex">#C3AF9B</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #E4D8CA;"></div>
+        <div class="swatch-name">Cream</div>
+        <div class="swatch-hex">#E4D8CA</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-circle" style="background: #F2EBE2; border: 1px solid #E4D8CA;"></div>
+        <div class="swatch-name">White</div>
+        <div class="swatch-hex">#F2EBE2</div>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
