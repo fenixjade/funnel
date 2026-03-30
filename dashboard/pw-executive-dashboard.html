@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CFO Insights — Executive Dashboard Plastic Whale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Arial', sans-serif;
-            background: #f5f6fa;
-            color: #2d3436;
+            font-family: 'Lato', sans-serif;
+            background: #F7FAFC;
+            color: #2D3748;
             padding: 24px;
             font-size: 14px;
         }
@@ -21,26 +22,28 @@
             align-items: center;
             margin-bottom: 24px;
             padding-bottom: 16px;
-            border-bottom: 3px solid #0f7669;
+            border-bottom: 3px solid #00a3e0;
+
         }
         .header h1 {
+            font-family: 'Montserrat', sans-serif;
             font-size: 22px;
-            color: #0f7669;
+            color: #00a3e0;
             font-weight: 700;
         }
         .header .subtitle {
             font-size: 13px;
-            color: #636e72;
+            color: #4A5568;
         }
         .header .period {
             text-align: right;
             font-size: 13px;
-            color: #636e72;
+            color: #718096;
         }
         .header .period strong {
             display: block;
             font-size: 16px;
-            color: #2d3436;
+            color: #2D3748;
         }
 
         /* Status badge */
@@ -82,7 +85,7 @@
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #636e72;
+            color: #718096;
             font-weight: 600;
         }
 
@@ -105,7 +108,7 @@
         }
         .kpi-sub {
             font-size: 12px;
-            color: #636e72;
+            color: #718096;
             margin-top: 4px;
         }
         .kpi-change {
@@ -126,7 +129,7 @@
         }
         .sparkline .bar {
             flex: 1;
-            background: #0f7669;
+            background: #00a3e0;
             border-radius: 2px 2px 0 0;
             min-height: 2px;
             position: relative;
@@ -136,18 +139,18 @@
             align-self: flex-end;
         }
         .sparkline .bar.future {
-            background: #b2dfdb;
+            background: #b3e5fc;
         }
         .sparkline .bar.current {
-            background: #0f7669;
-            outline: 2px solid #0a5c51;
+            background: #00a3e0;
+            outline: 2px solid #0082b3;
         }
 
         /* Section title */
         .section-title {
             font-size: 14px;
             font-weight: 700;
-            color: #0f7669;
+            color: #00a3e0;
             margin: 20px 0 12px 0;
             padding-bottom: 6px;
             border-bottom: 2px solid #e0e0e0;
@@ -166,7 +169,7 @@
             padding: 6px 8px;
             font-size: 11px;
             text-transform: uppercase;
-            color: #636e72;
+            color: #718096;
             border-bottom: 2px solid #e0e0e0;
             font-weight: 600;
         }
@@ -227,7 +230,7 @@
         }
         .waterfall-bar .bar-label {
             font-size: 10px;
-            color: #636e72;
+            color: #718096;
             margin-top: 4px;
             text-align: center;
         }
@@ -243,13 +246,13 @@
         /* Narrative */
         .narrative {
             background: #f8f9fa;
-            border-left: 4px solid #0f7669;
+            border-left: 4px solid #00a3e0;
             padding: 12px 16px;
             font-size: 13px;
             line-height: 1.6;
             margin-bottom: 16px;
         }
-        .narrative strong { color: #0f7669; }
+        .narrative strong { color: #00a3e0; }
 
         /* Risk items */
         .risk-item {
@@ -366,10 +369,10 @@
         .season-labels {
             display: flex;
             font-size: 9px;
-            color: #636e72;
+            color: #718096;
         }
         .season-labels span { flex: 1; text-align: center; }
-        .season-labels span.current-month { font-weight: 700; color: #0f7669; }
+        .season-labels span.current-month { font-weight: 700; color: #00a3e0; }
 
         .highlight-box {
             background: #ffeaea;
@@ -388,9 +391,12 @@
 
 <!-- HEADER -->
 <div class="header">
-    <div>
-        <h1>Executive Dashboard</h1>
-        <div class="subtitle">Plastic Whale B.V. &mdash; CFO Insights</div>
+    <div style="display: flex; align-items: center; gap: 14px;">
+        <img src="https://plasticwhale.com/wp-content/uploads/2022/01/plasticwhale-web-logo.png" alt="Plastic Whale" style="height: 40px; width: auto;">
+        <div>
+            <h1>Executive Dashboard</h1>
+            <div class="subtitle">Plastic Whale B.V. &mdash; CFO Insights</div>
+        </div>
     </div>
     <div style="text-align: center;">
         <span class="status-overall status-red">&#9679; ACTIE VEREIST</span>
@@ -588,7 +594,7 @@
             <span class="light light-amber"></span>
         </div>
 
-        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #636e72;">VOORUIT ONTVANGEN (niet besteedbaar)</div>
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #718096;">VOORUIT ONTVANGEN (niet besteedbaar)</div>
         <div class="obligation-item">
             <span class="obligation-label">Booking.com tegoed</span>
             <span class="obligation-value" style="color:#d63031;">&euro;9.209</span>
@@ -598,7 +604,7 @@
             <span class="obligation-value" style="color:#d63031;">&euro;535</span>
         </div>
 
-        <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #636e72;">SCHULDEN</div>
+        <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #718096;">SCHULDEN</div>
         <div class="obligation-item">
             <span class="obligation-label">Schuld Foundation</span>
             <span class="obligation-value" style="color:#d63031;">~&euro;80.000</span>
@@ -608,7 +614,7 @@
             <span class="obligation-value">&euro;5.955</span>
         </div>
 
-        <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #636e72;">RESERVERINGEN (nog op te bouwen)</div>
+        <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #718096;">RESERVERINGEN (nog op te bouwen)</div>
         <div class="obligation-item">
             <span class="obligation-label">Vakantiegeld reservering</span>
             <span class="obligation-value" style="color:#e17055;">Nog niet gereserveerd</span>
@@ -639,7 +645,7 @@
                 <div>Kosten: &euro;2.585</div>
             </div>
         </div>
-        <div style="margin-top: 8px; font-size: 11px; color: #636e72;">
+        <div style="margin-top: 8px; font-size: 11px; color: #718096;">
             Jan 94% | Feb 78% | Mrt 86%
         </div>
     </div>
