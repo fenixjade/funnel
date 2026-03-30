@@ -4,15 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CFO Insights — Executive Dashboard Plastic Whale</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Jost:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --teal: #032C35;
+            --teal-mid: #2A5C6A;
+            --terra: #C4634A;
+            --terra-deep: #9E4733;
+            --terra-surf: #F2EBE7;
+            --sage: #D7E5E2;
+            --sage-mid: #506E64;
+            --bg: #FFFFFF;
+            --text: #1A2E28;
+            --text-muted: #5A6E68;
+            --border: rgba(3,44,53,0.1);
+            --green: #506E64;
+            --amber: #C4634A;
+            --red: #9E4733;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Lato', sans-serif;
-            background: #F7FAFC;
-            color: #2D3748;
+            font-family: 'Jost', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             padding: 24px;
             font-size: 14px;
+            font-weight: 400;
         }
 
         /* Header */
@@ -22,28 +40,31 @@
             align-items: center;
             margin-bottom: 24px;
             padding-bottom: 16px;
-            border-bottom: 3px solid #00a3e0;
-
+            border-bottom: 2px solid var(--teal);
         }
         .header h1 {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-size: 22px;
-            color: #00a3e0;
+            color: var(--teal);
             font-weight: 700;
         }
         .header .subtitle {
+            font-family: 'Jost', sans-serif;
             font-size: 13px;
-            color: #4A5568;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.03em;
         }
         .header .period {
             text-align: right;
             font-size: 13px;
-            color: #718096;
+            color: var(--text-muted);
         }
         .header .period strong {
             display: block;
             font-size: 16px;
-            color: #2D3748;
+            color: var(--text);
+            font-weight: 600;
         }
 
         /* Status badge */
@@ -52,13 +73,15 @@
             align-items: center;
             gap: 8px;
             padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 13px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
-        .status-red { background: #ffeaea; color: #d63031; }
-        .status-amber { background: #fff3e0; color: #e17055; }
-        .status-green { background: #e8f5e9; color: #27ae60; }
+        .status-red { background: var(--terra-surf); color: var(--terra-deep); }
+        .status-amber { background: var(--terra-surf); color: var(--terra); }
+        .status-green { background: var(--sage); color: var(--sage-mid); }
 
         /* Grid */
         .grid { display: grid; gap: 16px; margin-bottom: 16px; }
@@ -71,9 +94,9 @@
         /* Cards */
         .card {
             background: white;
-            border-radius: 10px;
+            border-radius: 4px;
             padding: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
         }
         .card-header {
             display: flex;
@@ -82,42 +105,46 @@
             margin-bottom: 12px;
         }
         .card-title {
-            font-size: 11px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #718096;
-            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         /* Traffic lights */
         .light {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             display: inline-block;
         }
-        .light-green { background: #27ae60; }
-        .light-amber { background: #f39c12; }
-        .light-red { background: #d63031; }
+        .light-green { background: var(--green); }
+        .light-amber { background: var(--amber); }
+        .light-red { background: var(--red); }
 
         /* KPI values */
         .kpi-value {
+            font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 700;
             line-height: 1.2;
+            color: var(--teal);
         }
         .kpi-sub {
             font-size: 12px;
-            color: #718096;
+            color: var(--text-muted);
             margin-top: 4px;
+            font-weight: 300;
         }
         .kpi-change {
             font-size: 12px;
             font-weight: 600;
             margin-top: 2px;
         }
-        .change-neg { color: #d63031; }
-        .change-pos { color: #27ae60; }
+        .change-neg { color: var(--terra-deep); }
+        .change-pos { color: var(--sage-mid); }
 
         /* Sparkline (CSS-only bar chart) */
         .sparkline {
@@ -129,33 +156,34 @@
         }
         .sparkline .bar {
             flex: 1;
-            background: #00a3e0;
+            background: var(--teal-mid);
             border-radius: 2px 2px 0 0;
             min-height: 2px;
             position: relative;
         }
         .sparkline .bar.negative {
-            background: #d63031;
+            background: var(--terra);
             align-self: flex-end;
         }
         .sparkline .bar.future {
-            background: #b3e5fc;
+            background: var(--sage);
         }
         .sparkline .bar.current {
-            background: #00a3e0;
-            outline: 2px solid #0082b3;
+            background: var(--teal);
+            outline: 2px solid var(--teal-mid);
         }
 
         /* Section title */
         .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #00a3e0;
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--teal);
             margin: 20px 0 12px 0;
             padding-bottom: 6px;
-            border-bottom: 2px solid #e0e0e0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+            text-transform: none;
+            letter-spacing: 0;
         }
 
         /* Table */
@@ -167,31 +195,35 @@
         .table-simple th {
             text-align: left;
             padding: 6px 8px;
-            font-size: 11px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
             text-transform: uppercase;
-            color: #718096;
-            border-bottom: 2px solid #e0e0e0;
-            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--teal);
+            font-weight: 500;
         }
         .table-simple th.num {
             text-align: right;
         }
         .table-simple td {
             padding: 6px 8px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border);
         }
         .table-simple td.num {
             text-align: right;
+            font-family: 'DM Mono', monospace;
             font-variant-numeric: tabular-nums;
+            font-size: 12px;
         }
         .table-simple tr.total td {
             font-weight: 700;
-            border-top: 2px solid #2d3436;
+            border-top: 2px solid var(--teal);
             border-bottom: none;
         }
         .table-simple tr.subtotal td {
             font-weight: 600;
-            background: #f8f9fa;
+            background: var(--sage);
         }
 
         /* Verplichtingen */
@@ -200,12 +232,13 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border);
         }
         .obligation-item:last-child { border-bottom: none; }
         .obligation-label { font-size: 13px; }
         .obligation-value {
-            font-weight: 700;
+            font-family: 'DM Mono', monospace;
+            font-weight: 500;
             font-size: 14px;
             font-variant-numeric: tabular-nums;
         }
@@ -228,18 +261,20 @@
         }
         .waterfall-bar .bar-fill {
             width: 80%;
-            border-radius: 3px 3px 0 0;
+            border-radius: 2px 2px 0 0;
             position: relative;
         }
         .waterfall-bar .bar-label {
-            font-size: 10px;
-            color: #718096;
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            color: var(--text-muted);
             margin-top: 4px;
             text-align: center;
         }
         .waterfall-bar .bar-value {
+            font-family: 'DM Mono', monospace;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 500;
             position: absolute;
             top: -16px;
             width: 100%;
@@ -248,21 +283,22 @@
 
         /* Narrative */
         .narrative {
-            background: #f8f9fa;
-            border-left: 4px solid #00a3e0;
+            background: var(--terra-surf);
+            border-left: 3px solid var(--terra);
             padding: 12px 16px;
             font-size: 13px;
-            line-height: 1.6;
+            line-height: 1.7;
             margin-bottom: 16px;
+            border-radius: 0 4px 4px 0;
         }
-        .narrative strong { color: #00a3e0; }
+        .narrative strong { color: var(--teal); }
 
         /* Risk items */
         .risk-item {
             display: flex;
             gap: 10px;
             padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border);
             font-size: 13px;
         }
         .risk-item:last-child { border-bottom: none; }
@@ -277,8 +313,8 @@
             font-size: 11px;
             flex-shrink: 0;
         }
-        .risk-high { background: #ffeaea; color: #d63031; }
-        .risk-med { background: #fff3e0; color: #e17055; }
+        .risk-high { background: var(--terra-surf); color: var(--terra-deep); }
+        .risk-med { background: var(--sage); color: var(--sage-mid); }
 
         /* Aging buckets */
         .aging-bar {
@@ -292,22 +328,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'DM Mono', monospace;
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 500;
             color: white;
         }
-        .aging-current { background: #27ae60; }
-        .aging-30 { background: #f39c12; }
-        .aging-60 { background: #e17055; }
-        .aging-90 { background: #d63031; }
+        .aging-current { background: var(--sage-mid); }
+        .aging-30 { background: var(--teal-mid); }
+        .aging-60 { background: var(--terra); }
+        .aging-90 { background: var(--terra-deep); }
 
         /* Footer */
         .footer {
             margin-top: 24px;
             padding-top: 12px;
-            border-top: 1px solid #e0e0e0;
-            font-size: 11px;
-            color: #b2bec3;
+            border-top: 1px solid var(--border);
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
             display: flex;
             justify-content: space-between;
         }
@@ -327,8 +365,8 @@
             }
             .header { margin-bottom: 12px; padding-bottom: 8px; }
             .header h1 { font-size: 18px; }
-            .section-title { margin: 12px 0 8px 0; font-size: 12px; }
-            .card { padding: 10px; box-shadow: none; border: 1px solid #e0e0e0; }
+            .section-title { margin: 12px 0 8px 0; font-size: 13px; }
+            .card { padding: 10px; border: 1px solid var(--border); }
             .grid { gap: 8px; margin-bottom: 8px; }
             .grid-6 { grid-template-columns: repeat(6, 1fr); }
             .grid-3 { grid-template-columns: repeat(3, 1fr); }
@@ -366,27 +404,28 @@
             overflow: hidden;
             margin: 8px 0 4px 0;
         }
-        .season-off { background: #dfe6e9; }
-        .season-ramp { background: #ffeaa7; }
-        .season-peak { background: #55efc4; }
+        .season-off { background: var(--sage); }
+        .season-ramp { background: var(--terra-surf); }
+        .season-peak { background: var(--sage-mid); }
         .season-labels {
             display: flex;
+            font-family: 'DM Mono', monospace;
             font-size: 9px;
-            color: #718096;
+            color: var(--text-muted);
         }
         .season-labels span { flex: 1; text-align: center; }
-        .season-labels span.current-month { font-weight: 700; color: #00a3e0; }
+        .season-labels span.current-month { font-weight: 700; color: var(--terra); }
 
         .highlight-box {
-            background: #ffeaea;
-            border: 1px solid #fab1a0;
-            border-radius: 8px;
+            background: var(--terra-surf);
+            border: 1px solid var(--terra);
+            border-radius: 4px;
             padding: 12px 16px;
             margin-bottom: 16px;
         }
         .highlight-box.warning {
-            background: #fff3e0;
-            border-color: #f39c12;
+            background: var(--terra-surf);
+            border-color: var(--terra);
         }
     </style>
 </head>
@@ -523,78 +562,78 @@
         </div>
 
         <!-- Q1 Actual -->
-        <div style="font-size:10px; font-weight:600; color:#718096; text-transform:uppercase; letter-spacing:0.5px;">Q1 Actual (jan-mrt)</div>
+        <div style="font-size:10px; font-weight:600; color:#5A6E68; text-transform:uppercase; letter-spacing:0.5px;">Q1 Actual (jan-mrt)</div>
         <div class="kpi-value" style="margin-top:2px;">&euro;107.0K</div>
         <div style="margin-top: 8px;">
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                <div style="width:12px; height:12px; background:#00a3e0; border-radius:2px;"></div>
+                <div style="width:12px; height:12px; background:#2A5C6A; border-radius:2px;"></div>
                 <span style="font-size:12px; flex:1;">Cleanups</span>
                 <span style="font-size:12px; font-weight:700;">&euro;17.108</span>
-                <span style="font-size:11px; color:#718096;">16%</span>
+                <span style="font-size:11px; color:#5A6E68;">16%</span>
             </div>
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                <div style="width:12px; height:12px; background:#2B6CB0; border-radius:2px;"></div>
+                <div style="width:12px; height:12px; background:#032C35; border-radius:2px;"></div>
                 <span style="font-size:12px; flex:1;">Sponsoring</span>
                 <span style="font-size:12px; font-weight:700;">&euro;40.481</span>
-                <span style="font-size:11px; color:#718096;">38%</span>
+                <span style="font-size:11px; color:#5A6E68;">38%</span>
             </div>
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                <div style="width:12px; height:12px; background:#1A365D; border-radius:2px;"></div>
+                <div style="width:12px; height:12px; background:#C4634A; border-radius:2px;"></div>
                 <span style="font-size:12px; flex:1;">Licenties</span>
                 <span style="font-size:12px; font-weight:700;">&euro;47.505</span>
-                <span style="font-size:11px; color:#718096;">44%</span>
+                <span style="font-size:11px; color:#5A6E68;">44%</span>
             </div>
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                <div style="width:12px; height:12px; background:#b3e5fc; border-radius:2px;"></div>
+                <div style="width:12px; height:12px; background:#D7E5E2; border-radius:2px;"></div>
                 <span style="font-size:12px; flex:1;">Overig</span>
                 <span style="font-size:12px; font-weight:700;">&euro;1.902</span>
-                <span style="font-size:11px; color:#718096;">2%</span>
+                <span style="font-size:11px; color:#5A6E68;">2%</span>
             </div>
         </div>
         <div style="display:flex; height:8px; border-radius:4px; overflow:hidden; margin-top:6px;">
-            <div style="flex:16; background:#00a3e0;"></div>
-            <div style="flex:38; background:#2B6CB0;"></div>
-            <div style="flex:44; background:#1A365D;"></div>
-            <div style="flex:2; background:#b3e5fc;"></div>
+            <div style="flex:16; background:#2A5C6A;"></div>
+            <div style="flex:38; background:#032C35;"></div>
+            <div style="flex:44; background:#C4634A;"></div>
+            <div style="flex:2; background:#D7E5E2;"></div>
         </div>
 
         <!-- Full Year -->
         <div style="border-top:1px solid #E2E8F0; margin-top:14px; padding-top:12px;">
-            <div style="font-size:10px; font-weight:600; color:#718096; text-transform:uppercase; letter-spacing:0.5px;">Heel jaar 2026 (geboekt)</div>
-            <div style="font-size:24px; font-weight:800; color:#2D3748; margin-top:2px;">&euro;235.2K</div>
+            <div style="font-size:10px; font-weight:600; color:#5A6E68; text-transform:uppercase; letter-spacing:0.5px;">Heel jaar 2026 (geboekt)</div>
+            <div style="font-size:24px; font-weight:800; color:#1A2E28; margin-top:2px;">&euro;235.2K</div>
             <div style="margin-top: 8px;">
                 <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                    <div style="width:12px; height:12px; background:#2B6CB0; border-radius:2px;"></div>
+                    <div style="width:12px; height:12px; background:#032C35; border-radius:2px;"></div>
                     <span style="font-size:12px; flex:1;">Sponsoring</span>
                     <span style="font-size:12px; font-weight:700;">&euro;143.567</span>
-                    <span style="font-size:11px; color:#718096;">61%</span>
+                    <span style="font-size:11px; color:#5A6E68;">61%</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                    <div style="width:12px; height:12px; background:#1A365D; border-radius:2px;"></div>
+                    <div style="width:12px; height:12px; background:#C4634A; border-radius:2px;"></div>
                     <span style="font-size:12px; flex:1;">Licenties</span>
                     <span style="font-size:12px; font-weight:700;">&euro;47.505</span>
-                    <span style="font-size:11px; color:#718096;">20%</span>
+                    <span style="font-size:11px; color:#5A6E68;">20%</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                    <div style="width:12px; height:12px; background:#00a3e0; border-radius:2px;"></div>
+                    <div style="width:12px; height:12px; background:#2A5C6A; border-radius:2px;"></div>
                     <span style="font-size:12px; flex:1;">Cleanups</span>
                     <span style="font-size:12px; font-weight:700;">&euro;42.074</span>
-                    <span style="font-size:11px; color:#718096;">18%</span>
+                    <span style="font-size:11px; color:#5A6E68;">18%</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                    <div style="width:12px; height:12px; background:#b3e5fc; border-radius:2px;"></div>
+                    <div style="width:12px; height:12px; background:#D7E5E2; border-radius:2px;"></div>
                     <span style="font-size:12px; flex:1;">Overig</span>
                     <span style="font-size:12px; font-weight:700;">&euro;2.061</span>
-                    <span style="font-size:11px; color:#718096;">1%</span>
+                    <span style="font-size:11px; color:#5A6E68;">1%</span>
                 </div>
             </div>
             <div style="display:flex; height:8px; border-radius:4px; overflow:hidden; margin-top:6px;">
-                <div style="flex:61; background:#2B6CB0;"></div>
-                <div style="flex:20; background:#1A365D;"></div>
-                <div style="flex:18; background:#00a3e0;"></div>
-                <div style="flex:1; background:#b3e5fc;"></div>
+                <div style="flex:61; background:#032C35;"></div>
+                <div style="flex:20; background:#C4634A;"></div>
+                <div style="flex:18; background:#2A5C6A;"></div>
+                <div style="flex:1; background:#D7E5E2;"></div>
             </div>
-            <div style="font-size:10px; color:#718096; margin-top:6px;">Sponsoring loopt heel jaar door (maandelijkse partnerbijdragen)</div>
+            <div style="font-size:10px; color:#5A6E68; margin-top:6px;">Sponsoring loopt heel jaar door (maandelijkse partnerbijdragen)</div>
         </div>
     </div>
 
@@ -607,9 +646,9 @@
         <div class="kpi-value">&euro;3.870</div>
         <div class="kpi-sub">Cumulatief jan-mrt</div>
         <div style="margin-top: 8px; font-size: 12px;">
-            <span style="display:inline-block; width:36px;">Jan</span> <span style="color:#d63031; font-weight:600;">-&euro;9.5K</span><br>
-            <span style="display:inline-block; width:36px;">Feb</span> <span style="color:#27ae60; font-weight:600;">+&euro;14.8K</span><br>
-            <span style="display:inline-block; width:36px;">Mrt</span> <span style="color:#d63031; font-weight:600;">-&euro;1.4K</span>
+            <span style="display:inline-block; width:36px;">Jan</span> <span style="color:#9E4733; font-weight:600;">-&euro;9.5K</span><br>
+            <span style="display:inline-block; width:36px;">Feb</span> <span style="color:#506E64; font-weight:600;">+&euro;14.8K</span><br>
+            <span style="display:inline-block; width:36px;">Mrt</span> <span style="color:#9E4733; font-weight:600;">-&euro;1.4K</span>
         </div>
     </div>
 </div>
@@ -647,9 +686,9 @@
         </div>
         <div style="flex:1; font-size: 12px;">
             <table style="width:100%; font-size: 11px;">
-                <tr><td>BTW stand jan</td><td style="text-align:right">&euro;12.725</td><td style="text-align:right; font-size:10px; color:#718096;">schuld</td></tr>
-                <tr><td>BTW stand feb</td><td style="text-align:right">-&euro;706</td><td style="text-align:right; font-size:10px; color:#718096;">vordering</td></tr>
-                <tr><td>BTW stand mrt</td><td style="text-align:right">&euro;4.550</td><td style="text-align:right; font-size:10px; color:#718096;">schuld</td></tr>
+                <tr><td>BTW stand jan</td><td style="text-align:right">&euro;12.725</td><td style="text-align:right; font-size:10px; color:#5A6E68;">schuld</td></tr>
+                <tr><td>BTW stand feb</td><td style="text-align:right">-&euro;706</td><td style="text-align:right; font-size:10px; color:#5A6E68;">vordering</td></tr>
+                <tr><td>BTW stand mrt</td><td style="text-align:right">&euro;4.550</td><td style="text-align:right; font-size:10px; color:#5A6E68;">schuld</td></tr>
             </table>
             <div style="margin-top: 8px; font-size: 11px; color: #d63031; font-weight: 600;">
                 Deadline: uiterlijk 30 april 2026
@@ -681,7 +720,7 @@
             <div class="aging-60" style="flex: 2;" title="60-90 dagen">2%</div>
             <div class="aging-90" style="flex: 65;" title="> 90 dagen">65%</div>
         </div>
-        <div style="display:flex; justify-content:space-between; font-size:10px; color:#636e72;">
+        <div style="display:flex; justify-content:space-between; font-size:10px; color:#5A6E68;">
             <span>&#9632; < 30d</span>
             <span>&#9632; 30-60d</span>
             <span>&#9632; 60-90d</span>
@@ -691,10 +730,10 @@
         <div style="margin-top: 12px; font-size: 12px;">
             <strong>Top verlopen facturen:</strong>
             <table class="table-simple" style="margin-top: 4px;">
-                <tr><td>Amphion (TUC)</td><td class="num">&euro;42.350</td><td style="color:#d63031; font-size:11px;">67d verlopen</td></tr>
-                <tr><td>HJ Heinz SellCo</td><td class="num">&euro;42.350</td><td style="color:#d63031; font-size:11px;">10d verlopen</td></tr>
-                <tr><td>BTC Impact Holding</td><td class="num">&euro;3.893</td><td style="color:#d63031; font-size:11px;">63d verlopen</td></tr>
-                <tr><td>Genmab</td><td class="num">&euro;2.722</td><td style="color:#d63031; font-size:11px;">42d verlopen</td></tr>
+                <tr><td>Amphion (TUC)</td><td class="num">&euro;42.350</td><td style="color:#9E4733; font-size:11px;">67d verlopen</td></tr>
+                <tr><td>HJ Heinz SellCo</td><td class="num">&euro;42.350</td><td style="color:#9E4733; font-size:11px;">10d verlopen</td></tr>
+                <tr><td>BTC Impact Holding</td><td class="num">&euro;3.893</td><td style="color:#9E4733; font-size:11px;">63d verlopen</td></tr>
+                <tr><td>Genmab</td><td class="num">&euro;2.722</td><td style="color:#9E4733; font-size:11px;">42d verlopen</td></tr>
             </table>
         </div>
     </div>
@@ -709,36 +748,36 @@
         <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #718096;">SCHULDEN</div>
         <div class="obligation-item">
             <span class="obligation-label">Schuld Foundation
-                <span style="font-size:9px; color:#718096; display:block;">48 termijnen &times; &euro;1.881/mnd (6% annuitair)</span>
+                <span style="font-size:9px; color:#5A6E68; display:block;">48 termijnen &times; &euro;1.881/mnd (6% annuitair)</span>
             </span>
-            <span class="obligation-value" style="color:#d63031;">&euro;77.889</span>
+            <span class="obligation-value" style="color:#9E4733;">&euro;77.889</span>
         </div>
 
         <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #718096;">CORONA / BELASTINGDIENST</div>
         <div class="obligation-item">
             <span class="obligation-label">NOW terugbetaling (UWV)
-                <span style="font-size:9px; color:#718096; display:block;">60 termijnen &times; &euro;372/mnd</span>
+                <span style="font-size:9px; color:#5A6E68; display:block;">60 termijnen &times; &euro;372/mnd</span>
             </span>
-            <span class="obligation-value" style="color:#d63031;">&euro;6.698</span>
+            <span class="obligation-value" style="color:#9E4733;">&euro;6.698</span>
         </div>
         <div class="obligation-item">
             <span class="obligation-label">Loonheffing BD (betalingsregeling)
-                <span style="font-size:9px; color:#718096; display:block;">3 aanslagen 2020-2021, incl. &euro;2.212 rente</span>
+                <span style="font-size:9px; color:#5A6E68; display:block;">3 aanslagen 2020-2021, incl. &euro;2.212 rente</span>
             </span>
-            <span class="obligation-value" style="color:#d63031;">&euro;22.142</span>
+            <span class="obligation-value" style="color:#9E4733;">&euro;22.142</span>
         </div>
 
         <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #718096;">RESERVERINGEN (nog op te bouwen)</div>
         <div class="obligation-item">
             <span class="obligation-label">Vakantiegeld mei 2026
-                <span style="font-size:9px; color:#718096; display:block;">Guido &euro;3.696 + Jorien &euro;2.246 (Aron al afgerekend)</span>
+                <span style="font-size:9px; color:#5A6E68; display:block;">Guido &euro;3.696 + Jorien &euro;2.246 (Aron al afgerekend)</span>
             </span>
-            <span class="obligation-value" style="color:#d63031;">&euro;5.942</span>
+            <span class="obligation-value" style="color:#9E4733;">&euro;5.942</span>
         </div>
 
         <div class="obligation-item" style="border-top: 2px solid #2D3748; margin-top: 8px; padding-top: 12px;">
             <span class="obligation-label" style="font-weight: 700;">Crediteuren openstaand
-                <span style="font-size:9px; color:#718096; display:block;">Excl. Stichting PW (&euro;46.845) &amp; Bright New Day (&euro;347)</span>
+                <span style="font-size:9px; color:#5A6E68; display:block;">Excl. Stichting PW (&euro;46.845) &amp; Bright New Day (&euro;347)</span>
             </span>
             <span class="obligation-value">&euro;19.152</span>
         </div>
@@ -752,11 +791,11 @@
         </div>
         <div class="obligation-item">
             <span class="obligation-label">Booking.com</span>
-            <span class="obligation-value" style="color:#e17055;">&euro;9.209</span>
+            <span class="obligation-value" style="color:#C4634A;">&euro;9.209</span>
         </div>
         <div class="obligation-item">
             <span class="obligation-label">Vattenfall</span>
-            <span class="obligation-value" style="color:#e17055;">&euro;535</span>
+            <span class="obligation-value" style="color:#C4634A;">&euro;535</span>
         </div>
         <div class="obligation-item" style="border-top: 2px solid #2D3748; margin-top: 8px; padding-top: 8px;">
             <span class="obligation-label" style="font-weight: 700;">Totaal</span>
@@ -883,11 +922,11 @@
             </tr>
             <tr>
                 <td>&nbsp;&nbsp;&nbsp;wv. Inhuur derden</td>
-                <td class="num" style="color:#636e72;">16.500</td>
-                <td class="num" style="color:#636e72;">16.500</td>
-                <td class="num" style="color:#636e72;">12.500</td>
-                <td class="num" style="color:#636e72;">45.500</td>
-                <td class="num" style="color:#636e72;">43%</td>
+                <td class="num" style="color:#5A6E68;">16.500</td>
+                <td class="num" style="color:#5A6E68;">16.500</td>
+                <td class="num" style="color:#5A6E68;">12.500</td>
+                <td class="num" style="color:#5A6E68;">45.500</td>
+                <td class="num" style="color:#5A6E68;">43%</td>
                 <td></td>
             </tr>
             <tr>
@@ -910,9 +949,9 @@
             </tr>
             <tr class="total">
                 <td>EBITDA</td>
-                <td class="num" style="color:#d63031;">-9.536</td>
-                <td class="num" style="color:#27ae60;">14.775</td>
-                <td class="num" style="color:#d63031;">-1.369</td>
+                <td class="num" style="color:#9E4733;">-9.536</td>
+                <td class="num" style="color:#506E64;">14.775</td>
+                <td class="num" style="color:#9E4733;">-1.369</td>
                 <td class="num"><strong>3.870</strong></td>
                 <td class="num"><strong>4%</strong></td>
                 <td><span class="light light-amber"></span></td>
@@ -942,35 +981,35 @@
                 <td class="num">755.000</td>
                 <td class="num">188.750</td>
                 <td class="num">106.996</td>
-                <td class="num" style="color:#d63031;">-81.754</td>
-                <td class="num" style="color:#d63031;">-43%</td>
+                <td class="num" style="color:#9E4733;">-81.754</td>
+                <td class="num" style="color:#9E4733;">-43%</td>
                 <td><span class="light light-red"></span></td>
             </tr>
             <tr>
                 <td>&nbsp;&nbsp;wv. Company Fishing</td>
-                <td class="num" style="color:#636e72;">350.000</td>
-                <td class="num" style="color:#636e72;">87.500</td>
-                <td class="num" style="color:#636e72;">17.108</td>
-                <td class="num" style="color:#d63031;">-70.392</td>
-                <td class="num" style="color:#d63031;">-80%</td>
+                <td class="num" style="color:#5A6E68;">350.000</td>
+                <td class="num" style="color:#5A6E68;">87.500</td>
+                <td class="num" style="color:#5A6E68;">17.108</td>
+                <td class="num" style="color:#9E4733;">-70.392</td>
+                <td class="num" style="color:#9E4733;">-80%</td>
                 <td><span class="light light-red"></span></td>
             </tr>
             <tr>
                 <td>&nbsp;&nbsp;wv. Sponsoring</td>
-                <td class="num" style="color:#636e72;">200.000</td>
-                <td class="num" style="color:#636e72;">50.000</td>
-                <td class="num" style="color:#636e72;">40.481</td>
-                <td class="num" style="color:#d63031;">-9.519</td>
-                <td class="num" style="color:#d63031;">-19%</td>
+                <td class="num" style="color:#5A6E68;">200.000</td>
+                <td class="num" style="color:#5A6E68;">50.000</td>
+                <td class="num" style="color:#5A6E68;">40.481</td>
+                <td class="num" style="color:#9E4733;">-9.519</td>
+                <td class="num" style="color:#9E4733;">-19%</td>
                 <td><span class="light light-red"></span></td>
             </tr>
             <tr>
                 <td>&nbsp;&nbsp;wv. Schoolvissen</td>
-                <td class="num" style="color:#636e72;">50.000</td>
-                <td class="num" style="color:#636e72;">12.500</td>
-                <td class="num" style="color:#636e72;">1.192</td>
-                <td class="num" style="color:#d63031;">-11.308</td>
-                <td class="num" style="color:#d63031;">-90%</td>
+                <td class="num" style="color:#5A6E68;">50.000</td>
+                <td class="num" style="color:#5A6E68;">12.500</td>
+                <td class="num" style="color:#5A6E68;">1.192</td>
+                <td class="num" style="color:#9E4733;">-11.308</td>
+                <td class="num" style="color:#9E4733;">-90%</td>
                 <td><span class="light light-red"></span></td>
             </tr>
             <tr>
@@ -978,8 +1017,8 @@
                 <td class="num">241.600</td>
                 <td class="num">60.400</td>
                 <td class="num">10.641</td>
-                <td class="num" style="color:#27ae60;">+49.759</td>
-                <td class="num" style="color:#27ae60;">+82%</td>
+                <td class="num" style="color:#506E64;">+49.759</td>
+                <td class="num" style="color:#506E64;">+82%</td>
                 <td><span class="light light-green"></span></td>
             </tr>
             <tr>
@@ -987,8 +1026,8 @@
                 <td class="num">397.700</td>
                 <td class="num">99.425</td>
                 <td class="num">73.636</td>
-                <td class="num" style="color:#27ae60;">+25.789</td>
-                <td class="num" style="color:#27ae60;">+26%</td>
+                <td class="num" style="color:#506E64;">+25.789</td>
+                <td class="num" style="color:#506E64;">+26%</td>
                 <td><span class="light light-green"></span></td>
             </tr>
             <tr>
@@ -996,8 +1035,8 @@
                 <td class="num">112.400</td>
                 <td class="num">28.100</td>
                 <td class="num">18.846</td>
-                <td class="num" style="color:#27ae60;">+9.254</td>
-                <td class="num" style="color:#27ae60;">+33%</td>
+                <td class="num" style="color:#506E64;">+9.254</td>
+                <td class="num" style="color:#506E64;">+33%</td>
                 <td><span class="light light-green"></span></td>
             </tr>
             <tr class="total">
@@ -1005,8 +1044,8 @@
                 <td class="num">3.300</td>
                 <td class="num">825</td>
                 <td class="num">3.870</td>
-                <td class="num" style="color:#27ae60;">+3.045</td>
-                <td class="num" style="color:#27ae60;">+369%</td>
+                <td class="num" style="color:#506E64;">+3.045</td>
+                <td class="num" style="color:#506E64;">+369%</td>
                 <td><span class="light light-green"></span></td>
             </tr>
         </tbody>
