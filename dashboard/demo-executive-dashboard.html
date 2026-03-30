@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFO Insights — Executive Dashboard Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Jost:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #032C35;
+            --teal-mid: #2A5C6A;
+            --terra: #C4634A;
+            --terra-deep: #9E4733;
+            --terra-surf: #F2EBE7;
+            --sage: #D7E5E2;
+            --sage-mid: #506E64;
+            --bg: #F5F9F8;
+            --text: #1A2E28;
+            --text-muted: #5A6E68;
+            --border: rgba(3,44,53,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 24px;
+            font-size: 14px;
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
+            zoom: 1.25;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--teal);
+        }
+        .header h1 {
+            font-family: 'Jost', sans-serif;
+            font-size: 22px;
+            color: var(--teal);
+            font-weight: 600;
+        }
+        .header .subtitle {
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.03em;
+        }
+        .header .period {
+            text-align: right;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .header .period strong {
+            display: block;
+            font-size: 16px;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .status-overall {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .grid { display: grid; gap: 16px; margin-bottom: 16px; align-items: stretch; }
+        .grid-6 { grid-template-columns: repeat(6, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+        .card {
+            background: white;
+            border-radius: 4px;
+            padding: 16px;
+            border-top: 2px solid var(--teal-mid);
+            box-shadow: 0 4px 16px rgba(3,44,53,0.08);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            min-height: 30px;
+        }
+        .card-title {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--terra-deep);
+            font-weight: 400;
+        }
+
+        .light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .light-green { background: #2ECC71; }
+        .light-amber { background: #F39C12; }
+        .light-red { background: #E74C3C; }
+
+        .kpi-value {
+            font-family: 'Jost', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--teal);
+        }
+        .kpi-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 300;
+        }
+        .kpi-change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .change-neg { color: var(--terra-deep); }
+        .change-pos { color: var(--sage-mid); }
+
+        .sparkline {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 40px;
+            margin-top: 8px;
+        }
+        .sparkline .bar {
+            flex: 1;
+            background: var(--teal-mid);
+            border-radius: 2px 2px 0 0;
+            min-height: 2px;
+        }
+        .sparkline .bar.future { background: var(--sage); }
+        .sparkline .bar.current { background: var(--teal); outline: 2px solid var(--teal-mid); }
+
+        .section-title {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--terra-deep);
+            margin: 20px 0 12px 0;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .table-simple {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .table-simple th {
+            text-align: left;
+            padding: 6px 8px;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            background: var(--sage);
+            border-bottom: 1px solid var(--border);
+            font-weight: 500;
+        }
+        .table-simple th.num { text-align: right; }
+        .table-simple td {
+            padding: 6px 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .table-simple td.num {
+            text-align: right;
+            font-family: 'Jost', sans-serif;
+            font-variant-numeric: tabular-nums;
+            font-weight: 400;
+            font-size: 13px;
+        }
+        .table-simple tr.total td {
+            font-weight: 700;
+            border-top: 2px solid var(--teal);
+            border-bottom: none;
+        }
+        .table-simple tr.subtotal td {
+            font-weight: 500;
+            background: var(--sage);
+        }
+
+        .obligation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .obligation-item:last-child { border-bottom: none; }
+        .obligation-label { font-size: 13px; }
+        .obligation-value {
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .narrative {
+            background: var(--terra-surf);
+            border-left: 3px solid var(--terra);
+            padding: 12px 16px;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            border-radius: 0 4px 4px 0;
+        }
+        .narrative strong { color: var(--teal); font-weight: 700; font-size: 14px; }
+
+        .risk-item {
+            display: flex;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+        .risk-item:last-child { border-bottom: none; }
+        .risk-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+        .risk-high { background: var(--terra-surf); color: var(--terra-deep); }
+        .risk-med { background: var(--sage); color: var(--sage-mid); }
+
+        .aging-bar {
+            height: 24px;
+            display: flex;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .aging-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            color: white;
+        }
+        .aging-current { background: #2ECC71; }
+        .aging-30 { background: #F39C12; }
+        .aging-60 { background: #E67E22; }
+        .aging-90 { background: #E74C3C; }
+
+        .footer {
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @page { size: A4 portrait; margin: 12mm 10mm; }
+        @media print {
+            body { background: white; padding: 0; font-size: 11px; zoom: 1; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .header { margin-bottom: 12px; padding-bottom: 8px; }
+            .header h1 { font-size: 18px; }
+            .section-title { margin: 12px 0 8px 0; font-size: 10px; }
+            .card { padding: 10px; box-shadow: none; border: 1px solid var(--border); border-top: 2px solid var(--teal-mid); }
+            .grid { gap: 8px; margin-bottom: 8px; }
+            .kpi-value { font-size: 20px; }
+            .narrative { padding: 8px 12px; font-size: 11px; margin-bottom: 8px; }
+            .table-simple { font-size: 11px; }
+            .table-simple th, .table-simple td { padding: 3px 6px; }
+            .sparkline { height: 28px; }
+            .footer { margin-top: 12px; }
+            .page-break-before { page-break-before: always; }
+            .no-break { page-break-inside: avoid; }
+        }
+
+        @media (max-width: 1200px) { .grid-6 { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) {
+            .grid-6 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3, .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div style="display: flex; align-items: center; gap: 14px;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--teal);">finn</div>
+        <div>
+            <h1>Executive Dashboard</h1>
+            <div style="display:flex; align-items:center; gap:16px;">
+                <div class="subtitle">GreenBrew B.V. | CFO Insights |</div>
+                <div style="display:flex; gap:12px; font-size:13px; color:#5A6E68; font-weight:300;">
+                    <span><span style="color:#2ECC71;">&#9679;</span> Op koers</span>
+                    <span><span style="color:#F39C12;">&#9679;</span> Aandacht</span>
+                    <span><span style="color:#E74C3C;">&#9679;</span> Actie vereist</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="period">
+        <strong>Maart 2026</strong>
+        Data t/m 30-03-2026
+    </div>
+</div>
+
+<!-- NARRATIVE -->
+<div class="narrative">
+    <strong>Samenvatting:</strong> Sterke start van het jaar. Omzet groeit 18% t.o.v. Q1 2025 en de cashpositie is stabiel op &euro;87K.
+    Personeelskosten stijgen door twee nieuwe hires (jan + mrt) maar worden gedekt door omzetgroei.
+    <strong>Aandachtspunt:</strong> Debiteurentermijn loopt op naar gem. 38 dagen (was 28). Twee grote klanten (&euro;24K) moeten nagebeld worden.
+</div>
+
+<!-- KPI CARDS ROW 1 -->
+<div class="section-title">Financiele kerngetallen</div>
+<div class="grid grid-6">
+
+    <!-- Cash positie -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Liquide middelen</span>
+            <span class="light light-green"></span>
+        </div>
+        <div class="kpi-value">&euro;87.342</div>
+        <div class="kpi-sub">Bankstand per 30-03-2026</div>
+        <div class="kpi-change change-pos">&#9650; +&euro;12.580 sinds jan</div>
+        <div class="sparkline">
+            <div class="bar" style="height: 70%;"></div>
+            <div class="bar" style="height: 78%;"></div>
+            <div class="bar current" style="height: 85%;"></div>
+            <div class="bar future" style="height: 82%;"></div>
+            <div class="bar future" style="height: 90%;"></div>
+            <div class="bar future" style="height: 95%;"></div>
+            <div class="bar future" style="height: 100%;"></div>
+            <div class="bar future" style="height: 92%;"></div>
+            <div class="bar future" style="height: 88%;"></div>
+            <div class="bar future" style="height: 85%;"></div>
+            <div class="bar future" style="height: 80%;"></div>
+            <div class="bar future" style="height: 78%;"></div>
+        </div>
+        <div class="kpi-sub">Jan &rarr; Mrt (actual) | Apr-Dec (forecast)</div>
+    </div>
+
+    <!-- Debiteuren / Crediteuren -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Debiteuren / Crediteuren</span>
+            <span class="light light-amber"></span>
+        </div>
+        <div class="kpi-value">&euro;58.240</div>
+        <div class="kpi-sub">Netto positie (deb. minus cred.)</div>
+        <div style="margin-top: 10px;">
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; min-width:12px; height:12px; flex-shrink:0; background:#2ECC71; border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Debiteuren</span>
+                <span style="font-size:12px; font-weight:700;">&euro;72.850</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; min-width:12px; height:12px; flex-shrink:0; background:#E74C3C; border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Crediteuren</span>
+                <span style="font-size:12px; font-weight:700;">-&euro;14.610</span>
+            </div>
+        </div>
+        <div style="display:flex; height:8px; border-radius:4px; overflow:hidden; margin-top:6px;">
+            <div style="flex:83; background:#2ECC71;"></div>
+            <div style="flex:17; background:#E74C3C;"></div>
+        </div>
+        <div style="font-size:10px; color:#5A6E68; margin-top:6px;">Wv. &euro;24K > 30 dagen (2 klanten)</div>
+    </div>
+
+    <!-- Burn rate -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Burn rate (vaste kosten)</span>
+            <span class="light light-green"></span>
+        </div>
+        <div class="kpi-value">&euro;28.500/mnd</div>
+        <div class="kpi-sub">Gem. jan+feb 2026 &mdash; Exact Online actuals</div>
+        <div style="margin-top: 8px; font-size: 11px;">
+            <table style="width:100%; font-size: 11px; color: #5A6E68;">
+                <tr><td>Salariskosten</td><td style="text-align:right">&euro;14.200</td></tr>
+                <tr><td>Huisvesting</td><td style="text-align:right">&euro;4.800</td></tr>
+                <tr><td>Auto + verzekering</td><td style="text-align:right">&euro;1.950</td></tr>
+                <tr><td>Kantoor + administratie</td><td style="text-align:right">&euro;2.100</td></tr>
+                <tr><td>Marketing</td><td style="text-align:right">&euro;3.500</td></tr>
+                <tr><td>Diversen</td><td style="text-align:right">&euro;1.950</td></tr>
+                <tr style="border-top: 1px solid var(--border); font-weight:600; color: var(--text);">
+                    <td>Totaal</td><td style="text-align:right">&euro;28.500</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Runway -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Runway</span>
+            <span class="light light-green"></span>
+        </div>
+        <div class="kpi-value">3,1 mnd</div>
+        <div class="kpi-sub">Op basis van banksaldo (&euro;87.342) en burn rate &euro;28,5K/mnd</div>
+        <div class="kpi-change change-pos" style="margin-top: 8px;">Gezond, verbeterd t.o.v. vorig kwartaal</div>
+        <div class="kpi-sub" style="margin-top: 4px; font-size: 11px;">
+            Incl. verwachte debiteurenincasso:<br>
+            <span style="color: #2ECC71; font-weight: 600;">Runway &rarr; ~5,6 maanden</span>
+        </div>
+    </div>
+
+    <!-- Omzet -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Omzet 2026</span>
+            <span class="light light-green"></span>
+        </div>
+
+        <div class="kpi-value">&euro;148.5K</div>
+        <div style="font-size:10px; font-weight:600; color:#5A6E68; text-transform:uppercase; letter-spacing:0.5px; margin-top:2px;">Q1 Actual (jan-mrt)</div>
+        <div style="margin-top: 8px;">
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; min-width:12px; height:12px; flex-shrink:0; background:#032C35; border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Koffie wholesale</span>
+                <span style="font-size:12px; font-weight:700;">&euro;82.400</span>
+                <span style="font-size:11px; color:#5A6E68;">55%</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; min-width:12px; height:12px; flex-shrink:0; background:#2A5C6A; border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Abonnementen</span>
+                <span style="font-size:12px; font-weight:700;">&euro;38.700</span>
+                <span style="font-size:11px; color:#5A6E68;">26%</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; min-width:12px; height:12px; flex-shrink:0; background:#C4634A; border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Horeca</span>
+                <span style="font-size:12px; font-weight:700;">&euro;21.900</span>
+                <span style="font-size:11px; color:#5A6E68;">15%</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; min-width:12px; height:12px; flex-shrink:0; background:#D7E5E2; border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Overig</span>
+                <span style="font-size:12px; font-weight:700;">&euro;5.500</span>
+                <span style="font-size:11px; color:#5A6E68;">4%</span>
+            </div>
+        </div>
+        <div style="display:flex; height:8px; border-radius:4px; overflow:hidden; margin-top:6px;">
+            <div style="flex:55; background:#032C35;"></div>
+            <div style="flex:26; background:#2A5C6A;"></div>
+            <div style="flex:15; background:#C4634A;"></div>
+            <div style="flex:4; background:#D7E5E2;"></div>
+        </div>
+
+        <div style="border-top:1px solid #E2E8F0; margin-top:14px; padding-top:12px;">
+            <div class="kpi-value">&euro;620.0K</div>
+            <div style="font-size:10px; font-weight:600; color:#5A6E68; text-transform:uppercase; letter-spacing:0.5px; margin-top:2px;">Heel jaar 2026 (forecast)</div>
+            <div style="font-size:10px; color:#5A6E68; margin-top:6px;">+18% t.o.v. 2025 (€525K)</div>
+        </div>
+    </div>
+
+    <!-- EBITDA -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">EBITDA Q1</span>
+            <span class="light light-green"></span>
+        </div>
+        <div class="kpi-value">&euro;24.150</div>
+        <div class="kpi-sub">Cumulatief jan-mrt</div>
+        <div style="margin-top: 8px; font-size: 12px;">
+            <span style="display:inline-block; width:36px;">Jan</span> <span style="color:#506E64; font-weight:600;">+&euro;6.2K</span><br>
+            <span style="display:inline-block; width:36px;">Feb</span> <span style="color:#506E64; font-weight:600;">+&euro;8.4K</span><br>
+            <span style="display:inline-block; width:36px;">Mrt</span> <span style="color:#506E64; font-weight:600;">+&euro;9.6K</span>
+        </div>
+    </div>
+</div>
+
+<!-- BTW KWARTAAL -->
+<div class="card no-break" style="margin-bottom: 16px;">
+    <div class="card-header">
+        <span class="card-title">BTW Q1 2026 | te betalen in april</span>
+        <span class="light light-amber"></span>
+    </div>
+    <div style="display: flex; gap: 24px; align-items: center;">
+        <div>
+            <div class="kpi-value">&euro;8.920</div>
+            <div class="kpi-sub">Netto af te dragen BTW Q1</div>
+        </div>
+        <div style="flex:1; font-size: 12px;">
+            <table style="width:100%; font-size: 11px;">
+                <tr><td>BTW stand jan</td><td style="text-align:right">&euro;2.640</td><td style="text-align:right; font-size:10px; color:#5A6E68;">schuld</td></tr>
+                <tr><td>BTW stand feb</td><td style="text-align:right">&euro;3.150</td><td style="text-align:right; font-size:10px; color:#5A6E68;">schuld</td></tr>
+                <tr><td>BTW stand mrt</td><td style="text-align:right">&euro;3.130</td><td style="text-align:right; font-size:10px; color:#5A6E68;">schuld</td></tr>
+            </table>
+            <div style="margin-top: 8px; font-size: 11px; color: var(--terra); font-weight: 600;">
+                Deadline: uiterlijk 30 april 2026
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VAKANTIEGELD -->
+<div class="card no-break" style="margin-bottom: 16px;">
+    <div class="card-header">
+        <span class="card-title">Vakantiegeld | uitbetaling mei 2026</span>
+        <span class="light light-green"></span>
+    </div>
+    <div style="display: flex; gap: 24px; align-items: center;">
+        <div>
+            <div class="kpi-value">&euro;9.450</div>
+            <div class="kpi-sub">Gereserveerd: &euro;7.088 (75%)</div>
+        </div>
+        <div style="flex:1; font-size: 12px;">
+            <table style="width:100%; font-size: 11px;">
+                <tr><td>6 medewerkers</td><td style="text-align:right">&euro;9.450</td></tr>
+                <tr><td style="color:#2ECC71;">Reeds gereserveerd</td><td style="text-align:right; color:#2ECC71;">-&euro;7.088</td></tr>
+                <tr style="font-weight:500;"><td>Nog te reserveren</td><td style="text-align:right">&euro;2.362</td></tr>
+            </table>
+            <div style="margin-top: 8px; font-size: 11px; color: var(--sage-mid); font-weight: 600;">
+                Op schema &mdash; volledig gedekt voor mei
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VERPLICHTINGEN + DEBITEUREN -->
+<div class="section-title">Cash: waar zit het geld?</div>
+<div class="grid grid-3">
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Openstaande debiteuren</span>
+            <span class="light light-amber"></span>
+        </div>
+        <div class="kpi-value" style="color:#2ECC71;">&euro;72.850</div>
+        <div class="kpi-sub" style="margin-bottom: 8px;">Balans per maart 2026</div>
+
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px;">Aging overzicht</div>
+        <div class="aging-bar">
+            <div class="aging-current" style="flex: 58;" title="< 30 dagen">58%</div>
+            <div class="aging-30" style="flex: 25;" title="30-60 dagen">25%</div>
+            <div class="aging-60" style="flex: 12;" title="60-90 dagen">12%</div>
+            <div class="aging-90" style="flex: 5;" title="> 90 dagen">5%</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:10px;">
+            <span><span style="color:#2ECC71;">&#9632;</span> <span style="color:#5A6E68;">< 30d</span></span>
+            <span><span style="color:#F39C12;">&#9632;</span> <span style="color:#5A6E68;">30-60d</span></span>
+            <span><span style="color:#E67E22;">&#9632;</span> <span style="color:#5A6E68;">60-90d</span></span>
+            <span><span style="color:#E74C3C;">&#9632;</span> <span style="color:#5A6E68;">> 90d</span></span>
+        </div>
+
+        <div style="margin-top: 12px; font-size: 12px;">
+            <strong>Top openstaand:</strong>
+            <table class="table-simple" style="margin-top: 4px;">
+                <tr><td>Koffiehuis de Zon</td><td class="num">&euro;12.400</td><td style="color:#F39C12; font-size:11px;">35d</td></tr>
+                <tr><td>Hotel Bloom</td><td class="num">&euro;11.600</td><td style="color:#F39C12; font-size:11px;">42d</td></tr>
+                <tr><td>Stadskantoor Utrecht</td><td class="num">&euro;8.200</td><td style="color:#5A6E68; font-size:11px;">18d</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Verplichtingen</span>
+            <span class="light light-green"></span>
+        </div>
+        <div class="kpi-value" style="color:#E74C3C;">&euro;14.610</div>
+        <div class="kpi-sub">Crediteuren openstaand</div>
+
+        <div style="font-size: 12px; font-weight: 600; margin: 14px 0 8px 0; color: #5A6E68;">LENINGEN</div>
+        <div class="obligation-item">
+            <span class="obligation-label">Bedrijfskrediet Rabobank
+                <span style="font-size:9px; color:#5A6E68; display:block;">36 termijnen &times; &euro;1.250/mnd</span>
+            </span>
+            <span class="obligation-value" style="color:#9E4733;">&euro;28.750</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Tegoeden van klanten</span>
+            <span class="light light-green"></span>
+        </div>
+        <div class="obligation-item">
+            <span class="obligation-label">Prepaid abonnementen
+                <span style="font-size:9px; color:#5A6E68; display:block;">Jaarabonnementen vooruitbetaald</span>
+            </span>
+            <span class="obligation-value" style="color:#C4634A;">&euro;18.400</span>
+        </div>
+        <div class="obligation-item">
+            <span class="obligation-label">Hotel Bloom tegoed
+                <span style="font-size:9px; color:#5A6E68; display:block;">Jaarcontract wholesale</span>
+            </span>
+            <span class="obligation-value" style="color:#C4634A;">&euro;6.200</span>
+        </div>
+        <div class="obligation-item" style="border-top: 2px solid var(--teal); margin-top: 8px; padding-top: 8px;">
+            <span class="obligation-label" style="font-weight: 700; color:#E74C3C;">Totaal</span>
+            <span class="obligation-value" style="font-weight: 700; color:#E74C3C;">&euro;24.600</span>
+        </div>
+        <div style="font-size: 10px; color: #5A6E68; margin-top: 8px;">
+            Vooruit ontvangen voor leveringen die nog geleverd moeten worden
+        </div>
+    </div>
+</div>
+
+<!-- MARGES -->
+<div class="section-title">Marges per activiteit (Q1 2026)</div>
+<div class="grid grid-3">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Koffie wholesale</span>
+            <span class="light light-green"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div>
+                <div class="kpi-value" style="color: #2ECC71;">62%</div>
+                <div class="kpi-sub">Bruto marge YTD</div>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <div>Omzet: &euro;82.400</div>
+                <div>Kosten: &euro;31.312</div>
+            </div>
+        </div>
+        <div style="margin-top: 8px; font-size: 11px; color: #5A6E68;">
+            Jan 60% | Feb 63% | Mrt 64%
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Abonnementen</span>
+            <span class="light light-green"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div>
+                <div class="kpi-value" style="color: #2ECC71;">78%</div>
+                <div class="kpi-sub">Bruto marge YTD</div>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <div>Omzet: &euro;38.700</div>
+                <div>Kosten: &euro;8.514</div>
+            </div>
+        </div>
+        <div style="margin-top: 8px; font-size: 11px; color: #5A6E68;">
+            Recurring &mdash; churn 2,1%/mnd
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Horeca</span>
+            <span class="light light-amber"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div>
+                <div class="kpi-value" style="color: #F39C12;">41%</div>
+                <div class="kpi-sub">Bruto marge YTD</div>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <div>Omzet: &euro;21.900</div>
+                <div>Kosten: &euro;12.921</div>
+            </div>
+        </div>
+        <div style="margin-top: 8px; font-size: 11px; color: #F39C12;">
+            &#9888; Marge onder target (50%). Prijsstrategie herzien
+        </div>
+    </div>
+</div>
+
+<!-- P&L COMPACT -->
+<div class="section-title">Resultaat Q1 2026 (compact)</div>
+<div class="card">
+    <table class="table-simple">
+        <thead>
+            <tr>
+                <th style="width: 40%;">Categorie</th>
+                <th class="num">Jan</th>
+                <th class="num">Feb</th>
+                <th class="num">Mrt</th>
+                <th class="num">Q1 Totaal</th>
+                <th class="num">% omzet</th>
+                <th style="width: 50px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Omzet</strong></td>
+                <td class="num">44.200</td>
+                <td class="num">49.800</td>
+                <td class="num">54.500</td>
+                <td class="num"><strong>148.500</strong></td>
+                <td class="num">100%</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Kostprijs</td>
+                <td class="num">17.680</td>
+                <td class="num">19.420</td>
+                <td class="num">20.345</td>
+                <td class="num">57.445</td>
+                <td class="num">39%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr class="subtotal">
+                <td>Bruto marge</td>
+                <td class="num">26.520</td>
+                <td class="num">30.380</td>
+                <td class="num">34.155</td>
+                <td class="num"><strong>91.055</strong></td>
+                <td class="num"><strong>61%</strong></td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Personeelskosten</td>
+                <td class="num">14.200</td>
+                <td class="num">14.200</td>
+                <td class="num">17.800</td>
+                <td class="num">46.200</td>
+                <td class="num">31%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Marketing</td>
+                <td class="num">3.200</td>
+                <td class="num">3.800</td>
+                <td class="num">3.500</td>
+                <td class="num">10.500</td>
+                <td class="num">7%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Overige OPEX</td>
+                <td class="num">2.920</td>
+                <td class="num">3.980</td>
+                <td class="num">3.305</td>
+                <td class="num">10.205</td>
+                <td class="num">7%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr class="total">
+                <td>EBITDA</td>
+                <td class="num" style="color:#506E64;">6.200</td>
+                <td class="num" style="color:#506E64;">8.400</td>
+                <td class="num" style="color:#506E64;">9.550</td>
+                <td class="num"><strong>24.150</strong></td>
+                <td class="num"><strong>16%</strong></td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- BUDGET vs ACTUAL -->
+<div class="section-title page-break-before">Budget vs Actual 2026 (YTD Q1)</div>
+<div class="card no-break" style="margin-bottom: 16px;">
+    <table class="table-simple">
+        <thead>
+            <tr>
+                <th style="width: 35%;">Categorie</th>
+                <th class="num">Begroting 2026</th>
+                <th class="num">Budget Q1 (25%)</th>
+                <th class="num">Actual Q1</th>
+                <th class="num">Verschil &euro;</th>
+                <th class="num">Verschil %</th>
+                <th style="width: 50px;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Omzet Totaal</strong></td>
+                <td class="num">560.000</td>
+                <td class="num">140.000</td>
+                <td class="num">148.500</td>
+                <td class="num" style="color:#506E64;">+8.500</td>
+                <td class="num" style="color:#506E64;">+6%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Kostprijs</td>
+                <td class="num">218.400</td>
+                <td class="num">54.600</td>
+                <td class="num">57.445</td>
+                <td class="num" style="color:#9E4733;">-2.845</td>
+                <td class="num" style="color:#9E4733;">-5%</td>
+                <td><span class="light light-amber"></span></td>
+            </tr>
+            <tr>
+                <td>Personeelskosten</td>
+                <td class="num">192.000</td>
+                <td class="num">48.000</td>
+                <td class="num">46.200</td>
+                <td class="num" style="color:#506E64;">+1.800</td>
+                <td class="num" style="color:#506E64;">+4%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Overige OPEX</td>
+                <td class="num">84.000</td>
+                <td class="num">21.000</td>
+                <td class="num">20.705</td>
+                <td class="num" style="color:#506E64;">+295</td>
+                <td class="num" style="color:#506E64;">+1%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr class="total">
+                <td>EBITDA</td>
+                <td class="num">65.600</td>
+                <td class="num">16.400</td>
+                <td class="num">24.150</td>
+                <td class="num" style="color:#506E64;">+7.750</td>
+                <td class="num" style="color:#506E64;">+47%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="narrative" style="margin-top: 12px; margin-bottom: 0;">
+        <strong>Analyse:</strong> Omzet 6% boven budget door sterke groei in abonnementen (+22 nieuwe klanten in Q1).
+        Kostprijs iets hoger dan verwacht door stijgende koffieprijzen (+8% inkoopprijs arabica).
+        <strong>Positief:</strong> EBITDA 47% boven budget. De nieuwe hire in maart (sales) zal Q2 omzet verder aanjagen.
+        Horeca marge verdient aandacht: 41% vs target 50%.
+    </div>
+</div>
+
+<!-- RISICO'S EN ACTIES -->
+<div class="section-title">Aandachtspunten &amp; acties</div>
+<div class="grid grid-2 no-break">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Aandachtspunten</span>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">1</span>
+            <div><strong>Debiteurentermijn loopt op.</strong> Gemiddeld 38 dagen (was 28 in Q4 2025). Twee klanten (&euro;24K) zijn > 30 dagen. Nabellen voorkomt cashflow issues.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">2</span>
+            <div><strong>Horeca marge onder target.</strong> 41% vs target 50%. Inkoopkosten stijgen, verkoopprijzen zijn niet aangepast. Prijsherziening Q2 aanbevolen.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">3</span>
+            <div><strong>Koffieprijzen volatiel.</strong> Arabica +8% in Q1. Overweeg langere termijn inkoopcontracten om marge te beschermen.</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Acties deze maand</span>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">1</span>
+            <div><strong>Debiteurenbeheer.</strong> Bel Koffiehuis de Zon (&euro;12.4K) en Hotel Bloom (&euro;11.6K) deze week. Samen &euro;24K.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">2</span>
+            <div><strong>Prijsstrategie horeca.</strong> Bereken break-even per product en stel nieuwe prijslijst op voor Q2. Target: 50% marge.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">3</span>
+            <div><strong>Inkoopcontract verlengen.</strong> Onderhandel met leverancier over 6-maands contract arabica tegen huidige prijs.</div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <span>&copy; 2026 mijnfinn | CFO Insights</span>
+    <span>Demo dashboard | Fictieve data</span>
+    <span>www.mijnfinn.nl</span>
+</div>
+
+</body>
+</html>
