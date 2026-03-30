@@ -104,8 +104,9 @@
         .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 12px;
+            min-height: 16px;
         }
         .card-title {
             font-family: 'DM Mono', monospace;
@@ -500,23 +501,25 @@
             <span class="card-title">Debiteuren / Crediteuren</span>
             <span class="light light-red"></span>
         </div>
-        <div>
-            <div style="display:flex; justify-content:space-between; align-items:baseline; padding: 4px 0;">
-                <span style="font-size: 13px;">Debiteuren</span>
-                <span class="kpi-value" style="color: #27ae60; font-size: 22px;">&euro;125.501</span>
+        <div class="kpi-value">&euro;106.349</div>
+        <div class="kpi-sub">Netto positie (deb. minus cred.)</div>
+        <div style="margin-top: 10px;">
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; height:12px; background:var(--sage-mid); border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Debiteuren</span>
+                <span style="font-size:12px; font-weight:700;">&euro;125.501</span>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:baseline; padding: 4px 0;">
-                <span style="font-size: 13px;">Crediteuren</span>
-                <span class="kpi-value" style="color: #d63031; font-size: 22px;">-&euro;19.152</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:baseline; padding: 6px 0 2px 0; border-top: 2px solid #2D3748; margin-top: 4px;">
-                <span style="font-size: 13px; font-weight: 700;">Netto positie</span>
-                <span class="kpi-value" style="color: #27ae60; font-size: 22px;">&euro;106.349</span>
-            </div>
-            <div style="font-size: 10px; color: #718096; margin-top: 4px;">
-                Wv. &euro;84.7K verlopen (Amphion &euro;42.4K + Heinz &euro;42.4K)
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <div style="width:12px; height:12px; background:var(--terra); border-radius:2px;"></div>
+                <span style="font-size:12px; flex:1;">Crediteuren</span>
+                <span style="font-size:12px; font-weight:700;">-&euro;19.152</span>
             </div>
         </div>
+        <div style="display:flex; height:8px; border-radius:4px; overflow:hidden; margin-top:6px;">
+            <div style="flex:87; background:var(--sage-mid);"></div>
+            <div style="flex:13; background:var(--terra);"></div>
+        </div>
+        <div style="font-size:10px; color:#5A6E68; margin-top:6px;">Wv. &euro;84.7K verlopen (Amphion &euro;42.4K + Heinz &euro;42.4K)</div>
     </div>
 
     <!-- Burn rate -->
@@ -528,7 +531,7 @@
         <div class="kpi-value">&euro;42.500/mnd</div>
         <div class="kpi-sub">Gem. jan+feb 2026 &mdash; Exact Online actuals</div>
         <div style="margin-top: 8px; font-size: 11px;">
-            <table style="width:100%; font-size: 9px; color: #718096;">
+            <table style="width:100%; font-size: 9px; color: #5A6E68;">
                 <tr><td>Salariskosten</td><td style="text-align:right">&euro;13.154</td></tr>
                 <tr><td>Inhuur derden</td><td style="text-align:right">&euro;16.500</td></tr>
                 <tr><td>Overig personeel</td><td style="text-align:right">&euro;630</td></tr>
@@ -539,7 +542,7 @@
                 <tr><td>NOW regeling</td><td style="text-align:right">&euro;372</td></tr>
                 <tr><td>Aflossing Foundation</td><td style="text-align:right">&euro;1.881</td></tr>
                 <tr><td>Diversen</td><td style="text-align:right">&euro;4.071</td></tr>
-                <tr style="border-top: 1px solid #ddd; font-weight:600; color: #2D3748;">
+                <tr style="border-top: 1px solid var(--border); font-weight:600; color: var(--text);">
                     <td>Totaal</td><td style="text-align:right">&euro;42.500</td></tr>
             </table>
         </div>
