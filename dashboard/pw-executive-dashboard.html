@@ -306,6 +306,41 @@
             justify-content: space-between;
         }
 
+        /* Print / A4 PDF */
+        @page {
+            size: A4 portrait;
+            margin: 12mm 10mm;
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                font-size: 11px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .header { margin-bottom: 12px; padding-bottom: 8px; }
+            .header h1 { font-size: 18px; }
+            .section-title { margin: 12px 0 8px 0; font-size: 12px; }
+            .card { padding: 10px; box-shadow: none; border: 1px solid #e0e0e0; }
+            .grid { gap: 8px; margin-bottom: 8px; }
+            .grid-6 { grid-template-columns: repeat(6, 1fr); }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+            .grid-2 { grid-template-columns: repeat(2, 1fr); }
+            .kpi-value { font-size: 20px; }
+            .narrative { padding: 8px 12px; font-size: 11px; margin-bottom: 8px; }
+            .table-simple { font-size: 11px; }
+            .table-simple th, .table-simple td { padding: 3px 6px; }
+            .risk-item { padding: 5px 0; font-size: 11px; }
+            .obligation-item { padding: 5px 0; }
+            .sparkline { height: 28px; }
+            .footer { margin-top: 12px; }
+
+            /* Page breaks */
+            .page-break-before { page-break-before: always; }
+            .no-break { page-break-inside: avoid; }
+        }
+
         /* Responsive */
         @media (max-width: 1200px) {
             .grid-6 { grid-template-columns: repeat(3, 1fr); }
@@ -489,7 +524,7 @@
 </div>
 
 <!-- SEIZOENSPATROON -->
-<div class="card" style="margin-bottom: 16px;">
+<div class="card no-break" style="margin-bottom: 16px;">
     <div class="card-header">
         <span class="card-title">Seizoenspatroon &mdash; Visseizoen half maart t/m half oktober</span>
     </div>
@@ -740,8 +775,8 @@
 </div>
 
 <!-- BUDGET vs ACTUAL -->
-<div class="section-title">Budget vs Actual 2026 (YTD Q1)</div>
-<div class="card" style="margin-bottom: 16px;">
+<div class="section-title page-break-before">Budget vs Actual 2026 (YTD Q1)</div>
+<div class="card no-break" style="margin-bottom: 16px;">
     <table class="table-simple">
         <thead>
             <tr>
@@ -840,7 +875,7 @@
 
 <!-- RISICO'S EN ACTIES -->
 <div class="section-title">Top risico's &amp; acties</div>
-<div class="grid grid-2">
+<div class="grid grid-2 no-break">
     <div class="card">
         <div class="card-header">
             <span class="card-title">Risico's</span>
