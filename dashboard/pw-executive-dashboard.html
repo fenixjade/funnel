@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFO Insights — Executive Dashboard Plastic Whale</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f6fa;
+            color: #2d3436;
+            padding: 24px;
+            font-size: 14px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #0f7669;
+        }
+        .header h1 {
+            font-size: 22px;
+            color: #0f7669;
+            font-weight: 700;
+        }
+        .header .subtitle {
+            font-size: 13px;
+            color: #636e72;
+        }
+        .header .period {
+            text-align: right;
+            font-size: 13px;
+            color: #636e72;
+        }
+        .header .period strong {
+            display: block;
+            font-size: 16px;
+            color: #2d3436;
+        }
+
+        /* Status badge */
+        .status-overall {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .status-red { background: #ffeaea; color: #d63031; }
+        .status-amber { background: #fff3e0; color: #e17055; }
+        .status-green { background: #e8f5e9; color: #27ae60; }
+
+        /* Grid */
+        .grid { display: grid; gap: 16px; margin-bottom: 16px; }
+        .grid-6 { grid-template-columns: repeat(6, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-1-2 { grid-template-columns: 1fr 2fr; }
+        .grid-2-1 { grid-template-columns: 2fr 1fr; }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .card-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #636e72;
+            font-weight: 600;
+        }
+
+        /* Traffic lights */
+        .light {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .light-green { background: #27ae60; }
+        .light-amber { background: #f39c12; }
+        .light-red { background: #d63031; }
+
+        /* KPI values */
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .kpi-sub {
+            font-size: 12px;
+            color: #636e72;
+            margin-top: 4px;
+        }
+        .kpi-change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .change-neg { color: #d63031; }
+        .change-pos { color: #27ae60; }
+
+        /* Sparkline (CSS-only bar chart) */
+        .sparkline {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 40px;
+            margin-top: 8px;
+        }
+        .sparkline .bar {
+            flex: 1;
+            background: #0f7669;
+            border-radius: 2px 2px 0 0;
+            min-height: 2px;
+            position: relative;
+        }
+        .sparkline .bar.negative {
+            background: #d63031;
+            align-self: flex-end;
+        }
+        .sparkline .bar.future {
+            background: #b2dfdb;
+        }
+        .sparkline .bar.current {
+            background: #0f7669;
+            outline: 2px solid #0a5c51;
+        }
+
+        /* Section title */
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f7669;
+            margin: 20px 0 12px 0;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Table */
+        .table-simple {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .table-simple th {
+            text-align: left;
+            padding: 6px 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #636e72;
+            border-bottom: 2px solid #e0e0e0;
+            font-weight: 600;
+        }
+        .table-simple td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .table-simple td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .table-simple tr.total td {
+            font-weight: 700;
+            border-top: 2px solid #2d3436;
+            border-bottom: none;
+        }
+        .table-simple tr.subtotal td {
+            font-weight: 600;
+            background: #f8f9fa;
+        }
+
+        /* Verplichtingen */
+        .obligation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .obligation-item:last-child { border-bottom: none; }
+        .obligation-label { font-size: 13px; }
+        .obligation-value {
+            font-weight: 700;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Cash waterfall */
+        .waterfall {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 100px;
+            padding-top: 20px;
+            position: relative;
+        }
+        .waterfall-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .waterfall-bar .bar-fill {
+            width: 80%;
+            border-radius: 3px 3px 0 0;
+            position: relative;
+        }
+        .waterfall-bar .bar-label {
+            font-size: 10px;
+            color: #636e72;
+            margin-top: 4px;
+            text-align: center;
+        }
+        .waterfall-bar .bar-value {
+            font-size: 10px;
+            font-weight: 700;
+            position: absolute;
+            top: -16px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Narrative */
+        .narrative {
+            background: #f8f9fa;
+            border-left: 4px solid #0f7669;
+            padding: 12px 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .narrative strong { color: #0f7669; }
+
+        /* Risk items */
+        .risk-item {
+            display: flex;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+        .risk-item:last-child { border-bottom: none; }
+        .risk-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+        .risk-high { background: #ffeaea; color: #d63031; }
+        .risk-med { background: #fff3e0; color: #e17055; }
+
+        /* Aging buckets */
+        .aging-bar {
+            height: 24px;
+            display: flex;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .aging-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+        }
+        .aging-current { background: #27ae60; }
+        .aging-30 { background: #f39c12; }
+        .aging-60 { background: #e17055; }
+        .aging-90 { background: #d63031; }
+
+        /* Footer */
+        .footer {
+            margin-top: 24px;
+            padding-top: 12px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 11px;
+            color: #b2bec3;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .grid-6 { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .grid-6 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .grid-1-2, .grid-2-1 { grid-template-columns: 1fr; }
+        }
+
+        /* Season indicator */
+        .season-bar {
+            height: 6px;
+            display: flex;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 8px 0 4px 0;
+        }
+        .season-off { background: #dfe6e9; }
+        .season-ramp { background: #ffeaa7; }
+        .season-peak { background: #55efc4; }
+        .season-labels {
+            display: flex;
+            font-size: 9px;
+            color: #636e72;
+        }
+        .season-labels span { flex: 1; text-align: center; }
+        .season-labels span.current-month { font-weight: 700; color: #0f7669; }
+
+        .highlight-box {
+            background: #ffeaea;
+            border: 1px solid #fab1a0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+        .highlight-box.warning {
+            background: #fff3e0;
+            border-color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div>
+        <h1>Executive Dashboard</h1>
+        <div class="subtitle">Plastic Whale B.V. &mdash; CFO Insights</div>
+    </div>
+    <div style="text-align: center;">
+        <span class="status-overall status-red">&#9679; ACTIE VEREIST</span>
+    </div>
+    <div class="period">
+        <strong>Maart 2026</strong>
+        Data t/m 30-03-2026
+    </div>
+</div>
+
+<!-- NARRATIVE -->
+<div class="narrative">
+    <strong>Samenvatting:</strong> De cashpositie daalt voor de derde maand op rij en staat op &euro;10.6K.
+    De operationele kosten in Q1 overtreffen de inkomsten. Het visseizoen is net gestart (half maart) &mdash;
+    de komende maanden moeten omzet genereren om de winterverliezen te compenseren.
+    Kritiek: &euro;84.7K aan verlopen facturen moet direct geind worden.
+    Vooruit gefactureerde verplichtingen (&euro;9.7K) en schuld Foundation moeten van het banksaldo worden afgetrokken
+    om het werkelijk beschikbare cash te bepalen.
+</div>
+
+<!-- KPI CARDS ROW 1 -->
+<div class="section-title">Financiele kerngetallen</div>
+<div class="grid grid-6">
+
+    <!-- Cash positie -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Liquide middelen</span>
+            <span class="light light-red"></span>
+        </div>
+        <div class="kpi-value" style="color: #d63031;">&euro;10.586</div>
+        <div class="kpi-change change-neg">&#9660; -&euro;22.753 sinds jan</div>
+        <div class="sparkline">
+            <div class="bar" style="height: 100%;"><span class="bar-value" style="display:none">33.3K</span></div>
+            <div class="bar" style="height: 49%;"></div>
+            <div class="bar current" style="height: 32%;"></div>
+            <div class="bar future" style="height: 28%;"></div>
+            <div class="bar future" style="height: 25%;"></div>
+            <div class="bar future" style="height: 30%;"></div>
+            <div class="bar future" style="height: 35%;"></div>
+            <div class="bar future" style="height: 40%;"></div>
+            <div class="bar future" style="height: 45%;"></div>
+            <div class="bar future" style="height: 40%;"></div>
+            <div class="bar future" style="height: 35%;"></div>
+            <div class="bar future" style="height: 28%;"></div>
+        </div>
+        <div class="kpi-sub">Jan &rarr; Mrt (actual) | Apr-Dec (forecast)</div>
+    </div>
+
+    <!-- Vrij besteedbaar -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Vrij besteedbaar cash</span>
+            <span class="light light-red"></span>
+        </div>
+        <div class="kpi-value" style="color: #d63031;">&euro;851</div>
+        <div class="kpi-sub" style="margin-top: 8px;">
+            <table style="width:100%; font-size: 12px;">
+                <tr><td>Banksaldo</td><td style="text-align:right">&euro;10.586</td></tr>
+                <tr><td>- Booking.com tegoed</td><td style="text-align:right; color:#d63031;">-&euro;9.209</td></tr>
+                <tr><td>- Vattenfall tegoed</td><td style="text-align:right; color:#d63031;">-&euro;535</td></tr>
+                <tr style="border-top: 1px solid #ddd; font-weight:700;">
+                    <td>Vrij besteedbaar</td><td style="text-align:right; color:#d63031;">&euro;851</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Burn rate -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Burn rate (gem. Q1)</span>
+            <span class="light light-red"></span>
+        </div>
+        <div class="kpi-value" style="color: #d63031;">&euro;7.584/mnd</div>
+        <div class="kpi-sub">Cash daling gemiddeld per maand</div>
+        <div class="kpi-sub" style="margin-top: 8px; font-size: 11px;">
+            Jan: -&euro;9.340 | Feb: -&euro;7.505 | Mrt: -&euro;5.908
+        </div>
+    </div>
+
+    <!-- Runway -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Runway</span>
+            <span class="light light-red"></span>
+        </div>
+        <div class="kpi-value" style="color: #d63031;">0,1 mnd</div>
+        <div class="kpi-sub">Op basis van vrij besteedbaar cash (&euro;851) en huidige burn rate</div>
+        <div class="kpi-change change-neg" style="margin-top: 8px;">Kritiek: minder dan 1 maand</div>
+    </div>
+
+    <!-- Omzet YTD -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Omzet YTD</span>
+            <span class="light light-amber"></span>
+        </div>
+        <div class="kpi-value">&euro;107.0K</div>
+        <div class="kpi-sub">Q1 actual (jan-mrt)</div>
+        <div class="sparkline">
+            <div class="bar" style="height: 52%;"></div>
+            <div class="bar" style="height: 100%;"></div>
+            <div class="bar current" style="height: 38%;"></div>
+            <div class="bar future" style="height: 42%;"></div>
+            <div class="bar future" style="height: 34%;"></div>
+            <div class="bar future" style="height: 32%;"></div>
+            <div class="bar future" style="height: 25%;"></div>
+            <div class="bar future" style="height: 25%;"></div>
+            <div class="bar future" style="height: 28%;"></div>
+            <div class="bar future" style="height: 22%;"></div>
+            <div class="bar future" style="height: 21%;"></div>
+            <div class="bar future" style="height: 2%; background: #d63031;"></div>
+        </div>
+        <div class="kpi-sub">Forecast 2026: &euro;235K</div>
+    </div>
+
+    <!-- EBITDA YTD -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">EBITDA Q1</span>
+            <span class="light light-amber"></span>
+        </div>
+        <div class="kpi-value">&euro;3.870</div>
+        <div class="kpi-sub">Cumulatief jan-mrt</div>
+        <div style="margin-top: 8px; font-size: 12px;">
+            <span style="display:inline-block; width:36px;">Jan</span> <span style="color:#d63031; font-weight:600;">-&euro;9.5K</span><br>
+            <span style="display:inline-block; width:36px;">Feb</span> <span style="color:#27ae60; font-weight:600;">+&euro;14.8K</span><br>
+            <span style="display:inline-block; width:36px;">Mrt</span> <span style="color:#d63031; font-weight:600;">-&euro;1.4K</span>
+        </div>
+    </div>
+</div>
+
+<!-- SEIZOENSPATROON -->
+<div class="card" style="margin-bottom: 16px;">
+    <div class="card-header">
+        <span class="card-title">Seizoenspatroon &mdash; Visseizoen half maart t/m half oktober</span>
+    </div>
+    <div class="season-bar">
+        <div class="season-off" style="flex: 2.5;"></div>
+        <div class="season-ramp" style="flex: 1;"></div>
+        <div class="season-peak" style="flex: 6;"></div>
+        <div class="season-ramp" style="flex: 1;"></div>
+        <div class="season-off" style="flex: 1.5;"></div>
+    </div>
+    <div class="season-labels">
+        <span>Jan</span><span>Feb</span><span class="current-month">Mrt &#9650;</span><span>Apr</span><span>Mei</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Okt</span><span>Nov</span><span>Dec</span>
+    </div>
+    <div class="kpi-sub" style="margin-top: 8px; text-align: center;">
+        &#9632; Winter (laag) &nbsp;&nbsp; &#9632; Opstart &nbsp;&nbsp; &#9632; Piekseizoen &nbsp;&nbsp; Vakantiegeld uitbetaling: mei/juni
+    </div>
+</div>
+
+<!-- VERPLICHTINGEN + DEBITEUREN -->
+<div class="section-title">Cash: waar zit het geld?</div>
+<div class="grid grid-2">
+
+    <!-- Openstaande facturen -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Openstaande debiteuren</span>
+            <span class="light light-red"></span>
+        </div>
+        <div class="kpi-value">&euro;125.501</div>
+        <div class="kpi-sub" style="margin-bottom: 8px;">Balans per maart 2026</div>
+
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px;">Aging overzicht</div>
+        <div class="aging-bar">
+            <div class="aging-current" style="flex: 25;" title="< 30 dagen">25%</div>
+            <div class="aging-30" style="flex: 8;" title="30-60 dagen">8%</div>
+            <div class="aging-60" style="flex: 2;" title="60-90 dagen">2%</div>
+            <div class="aging-90" style="flex: 65;" title="> 90 dagen">65%</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:10px; color:#636e72;">
+            <span>&#9632; < 30d</span>
+            <span>&#9632; 30-60d</span>
+            <span>&#9632; 60-90d</span>
+            <span>&#9632; > 90d</span>
+        </div>
+
+        <div style="margin-top: 12px; font-size: 12px;">
+            <strong>Top verlopen facturen:</strong>
+            <table class="table-simple" style="margin-top: 4px;">
+                <tr><td>Amphion (TUC)</td><td class="num">&euro;42.350</td><td style="color:#d63031; font-size:11px;">67d verlopen</td></tr>
+                <tr><td>HJ Heinz SellCo</td><td class="num">&euro;42.350</td><td style="color:#d63031; font-size:11px;">10d verlopen</td></tr>
+                <tr><td>BTC Impact Holding</td><td class="num">&euro;3.893</td><td style="color:#d63031; font-size:11px;">63d verlopen</td></tr>
+                <tr><td>Genmab</td><td class="num">&euro;2.722</td><td style="color:#d63031; font-size:11px;">42d verlopen</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Verplichtingen -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Verplichtingen &amp; tegoeden</span>
+            <span class="light light-amber"></span>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #636e72;">VOORUIT ONTVANGEN (niet besteedbaar)</div>
+        <div class="obligation-item">
+            <span class="obligation-label">Booking.com tegoed</span>
+            <span class="obligation-value" style="color:#d63031;">&euro;9.209</span>
+        </div>
+        <div class="obligation-item">
+            <span class="obligation-label">Vattenfall tegoed</span>
+            <span class="obligation-value" style="color:#d63031;">&euro;535</span>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #636e72;">SCHULDEN</div>
+        <div class="obligation-item">
+            <span class="obligation-label">Schuld Foundation</span>
+            <span class="obligation-value" style="color:#d63031;">~&euro;80.000</span>
+        </div>
+        <div class="obligation-item">
+            <span class="obligation-label">Langlopende leningen</span>
+            <span class="obligation-value">&euro;5.955</span>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 600; margin: 12px 0 8px 0; color: #636e72;">RESERVERINGEN (nog op te bouwen)</div>
+        <div class="obligation-item">
+            <span class="obligation-label">Vakantiegeld reservering</span>
+            <span class="obligation-value" style="color:#e17055;">Nog niet gereserveerd</span>
+        </div>
+
+        <div class="obligation-item" style="border-top: 2px solid #2d3436; margin-top: 8px; padding-top: 12px;">
+            <span class="obligation-label" style="font-weight: 700;">Crediteuren openstaand</span>
+            <span class="obligation-value">&euro;66.344</span>
+        </div>
+    </div>
+</div>
+
+<!-- MARGES -->
+<div class="section-title">Marges per activiteit (Q1 2026)</div>
+<div class="grid grid-3">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Company Fishing</span>
+            <span class="light light-green"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div>
+                <div class="kpi-value" style="color: #27ae60;">93%</div>
+                <div class="kpi-sub">Bruto marge YTD</div>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <div>Omzet: &euro;17.108</div>
+                <div>Kosten: &euro;2.585</div>
+            </div>
+        </div>
+        <div style="margin-top: 8px; font-size: 11px; color: #636e72;">
+            Jan 94% | Feb 78% | Mrt 86%
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Schoolvissen (Stichting)</span>
+            <span class="light light-red"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div>
+                <div class="kpi-value" style="color: #d63031;">-71%</div>
+                <div class="kpi-sub">Bruto marge YTD</div>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <div>Omzet: &euro;1.192</div>
+                <div>Kosten: &euro;2.043</div>
+            </div>
+        </div>
+        <div style="margin-top: 8px; font-size: 11px; color: #d63031;">
+            &#9888; Kosten hoger dan omzet &mdash; validatie nodig
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Overig (sponsoring, licenties, etc.)</span>
+            <span class="light light-green"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <div>
+                <div class="kpi-value" style="color: #27ae60;">97%</div>
+                <div class="kpi-sub">Bruto marge YTD</div>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <div>Omzet: &euro;88.855</div>
+                <div>Kosten: &euro;6.013</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- P&L COMPACT -->
+<div class="section-title">Resultaat Q1 2026 (compact)</div>
+<div class="card">
+    <table class="table-simple">
+        <thead>
+            <tr>
+                <th style="width: 40%;">Categorie</th>
+                <th class="num">Jan</th>
+                <th class="num">Feb</th>
+                <th class="num">Mrt</th>
+                <th class="num">Q1 Totaal</th>
+                <th class="num">% omzet</th>
+                <th style="width: 50px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Omzet</strong></td>
+                <td class="num">28.418</td>
+                <td class="num">57.147</td>
+                <td class="num">21.430</td>
+                <td class="num"><strong>106.996</strong></td>
+                <td class="num">100%</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Kostprijs</td>
+                <td class="num">477</td>
+                <td class="num">6.381</td>
+                <td class="num">3.783</td>
+                <td class="num">10.641</td>
+                <td class="num">10%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr class="subtotal">
+                <td>Bruto marge</td>
+                <td class="num">27.941</td>
+                <td class="num">50.766</td>
+                <td class="num">17.647</td>
+                <td class="num"><strong>96.355</strong></td>
+                <td class="num"><strong>90%</strong></td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Personeelskosten</td>
+                <td class="num">30.349</td>
+                <td class="num">30.218</td>
+                <td class="num">13.069</td>
+                <td class="num">73.636</td>
+                <td class="num">69%</td>
+                <td><span class="light light-red"></span></td>
+            </tr>
+            <tr>
+                <td>&nbsp;&nbsp;&nbsp;wv. Inhuur derden</td>
+                <td class="num" style="color:#636e72;">16.500</td>
+                <td class="num" style="color:#636e72;">16.500</td>
+                <td class="num" style="color:#636e72;">12.500</td>
+                <td class="num" style="color:#636e72;">45.500</td>
+                <td class="num" style="color:#636e72;">43%</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Marketing</td>
+                <td class="num">182</td>
+                <td class="num">94</td>
+                <td class="num">102</td>
+                <td class="num">378</td>
+                <td class="num">0%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Overige OPEX</td>
+                <td class="num">6.946</td>
+                <td class="num">5.678</td>
+                <td class="num">5.844</td>
+                <td class="num">18.468</td>
+                <td class="num">17%</td>
+                <td><span class="light light-amber"></span></td>
+            </tr>
+            <tr class="total">
+                <td>EBITDA</td>
+                <td class="num" style="color:#d63031;">-9.536</td>
+                <td class="num" style="color:#27ae60;">14.775</td>
+                <td class="num" style="color:#d63031;">-1.369</td>
+                <td class="num"><strong>3.870</strong></td>
+                <td class="num"><strong>4%</strong></td>
+                <td><span class="light light-amber"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- BUDGET vs ACTUAL -->
+<div class="section-title">Budget vs Actual 2026 (YTD Q1)</div>
+<div class="card" style="margin-bottom: 16px;">
+    <table class="table-simple">
+        <thead>
+            <tr>
+                <th style="width: 35%;">Categorie</th>
+                <th class="num">Begroting 2026</th>
+                <th class="num">Budget Q1 (25%)</th>
+                <th class="num">Actual Q1</th>
+                <th class="num">Verschil &euro;</th>
+                <th class="num">Verschil %</th>
+                <th style="width: 50px;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Omzet Totaal</strong></td>
+                <td class="num">755.000</td>
+                <td class="num">188.750</td>
+                <td class="num">106.996</td>
+                <td class="num" style="color:#d63031;">-81.754</td>
+                <td class="num" style="color:#d63031;">-43%</td>
+                <td><span class="light light-red"></span></td>
+            </tr>
+            <tr>
+                <td>&nbsp;&nbsp;wv. Company Fishing</td>
+                <td class="num" style="color:#636e72;">350.000</td>
+                <td class="num" style="color:#636e72;">87.500</td>
+                <td class="num" style="color:#636e72;">17.108</td>
+                <td class="num" style="color:#d63031;">-70.392</td>
+                <td class="num" style="color:#d63031;">-80%</td>
+                <td><span class="light light-red"></span></td>
+            </tr>
+            <tr>
+                <td>&nbsp;&nbsp;wv. Sponsoring</td>
+                <td class="num" style="color:#636e72;">200.000</td>
+                <td class="num" style="color:#636e72;">50.000</td>
+                <td class="num" style="color:#636e72;">40.481</td>
+                <td class="num" style="color:#d63031;">-9.519</td>
+                <td class="num" style="color:#d63031;">-19%</td>
+                <td><span class="light light-red"></span></td>
+            </tr>
+            <tr>
+                <td>&nbsp;&nbsp;wv. Schoolvissen</td>
+                <td class="num" style="color:#636e72;">50.000</td>
+                <td class="num" style="color:#636e72;">12.500</td>
+                <td class="num" style="color:#636e72;">1.192</td>
+                <td class="num" style="color:#d63031;">-11.308</td>
+                <td class="num" style="color:#d63031;">-90%</td>
+                <td><span class="light light-red"></span></td>
+            </tr>
+            <tr>
+                <td>Kostprijs</td>
+                <td class="num">241.600</td>
+                <td class="num">60.400</td>
+                <td class="num">10.641</td>
+                <td class="num" style="color:#27ae60;">+49.759</td>
+                <td class="num" style="color:#27ae60;">+82%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Personeelskosten</td>
+                <td class="num">397.700</td>
+                <td class="num">99.425</td>
+                <td class="num">73.636</td>
+                <td class="num" style="color:#27ae60;">+25.789</td>
+                <td class="num" style="color:#27ae60;">+26%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr>
+                <td>Overige OPEX</td>
+                <td class="num">112.400</td>
+                <td class="num">28.100</td>
+                <td class="num">18.846</td>
+                <td class="num" style="color:#27ae60;">+9.254</td>
+                <td class="num" style="color:#27ae60;">+33%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+            <tr class="total">
+                <td>EBITDA</td>
+                <td class="num">3.300</td>
+                <td class="num">825</td>
+                <td class="num">3.870</td>
+                <td class="num" style="color:#27ae60;">+3.045</td>
+                <td class="num" style="color:#27ae60;">+369%</td>
+                <td><span class="light light-green"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="narrative" style="margin-top: 12px; margin-bottom: 0;">
+        <strong>Analyse:</strong> Omzet loopt 43% achter op budget, maar dit is seizoensgebonden &mdash; Q1 is winterseizoen,
+        de bulk van de omzet komt in Q2-Q3 (visseizoen). De lage kostprijs Q1 compenseert deels.
+        Personeelskosten zijn lager dan begroot door minder inhuur derden.
+        <strong>Let op:</strong> Company Fishing zit op 5% van jaarbegroting &mdash; dit moet in het seizoen ingehaald worden.
+        Budget Q1 is lineair berekend (25%) &mdash; een seizoensgecorrigeerd budget zou een eerlijker beeld geven.
+    </div>
+</div>
+
+<!-- RISICO'S EN ACTIES -->
+<div class="section-title">Top risico's &amp; acties</div>
+<div class="grid grid-2">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Risico's</span>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-high">1</span>
+            <div><strong>Cashpositie kritiek</strong> &mdash; Vrij besteedbaar cash is &euro;851. Elke onverwachte uitgave kan problemen veroorzaken. Vakantiegeld (mei/juni) is nog niet gereserveerd.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-high">2</span>
+            <div><strong>Verlopen debiteuren &euro;84.7K</strong> &mdash; Amphion (&euro;42.4K) en Heinz (&euro;42.4K) zijn samen goed voor &euro;84.7K aan verlopen facturen. Incasso is urgent.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">3</span>
+            <div><strong>Schoolvissen negatieve marge</strong> &mdash; Kosten (&euro;2.043) overtreffen omzet (&euro;1.192). Is dit structureel of incidenteel? Moet gevalideerd worden.</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Acties deze maand</span>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-high">1</span>
+            <div><strong>Debiteurenbeheer</strong> &mdash; Bel Amphion en Heinz deze week. Samen &euro;84.7K &mdash; dit lost de cashcrisis grotendeels op.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-high">2</span>
+            <div><strong>Vakantiegeld reservering</strong> &mdash; Bereken het bedrag en begin maandelijks te reserveren. Voorkom een cashschok in mei/juni.</div>
+        </div>
+        <div class="risk-item">
+            <span class="risk-num risk-med">3</span>
+            <div><strong>Marge Schoolvissen valideren</strong> &mdash; Check of de kosten correct geboekt zijn. Is dit Foundation-gesubsidieerd? Zo ja, de subsidie moet als omzet meegenomen worden.</div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <span>CFO Insights &mdash; Plastic Whale B.V.</span>
+    <span>Dashboard mockup v1.0 &mdash; 30 maart 2026</span>
+    <span>Vertrouwelijk</span>
+</div>
+
+</body>
+</html>
