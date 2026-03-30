@@ -734,96 +734,142 @@
 </div>
 
 <!-- CASHFLOW FORECAST -->
-<div class="section-title">Cashflow forecast (apr-jun 2026)</div>
+<div class="section-title">Cashflow forecast apr-sep 2026 (vooraf factureren model)</div>
 <div class="card no-break" style="margin-bottom: 16px;">
-    <div style="display:flex; gap:16px;">
-        <!-- Waterfall -->
+    <table class="table-simple">
+        <thead>
+            <tr>
+                <th style="width:28%;">Cashflow</th>
+                <th class="num">Apr</th>
+                <th class="num">Mei</th>
+                <th class="num">Jun</th>
+                <th class="num">Jul</th>
+                <th class="num">Aug</th>
+                <th class="num">Sep</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Beginsaldo</td>
+                <td class="num">10.586</td>
+                <td class="num">30.136</td>
+                <td class="num">85.694</td>
+                <td class="num">99.094</td>
+                <td class="num">103.694</td>
+                <td class="num">126.794</td>
+            </tr>
+            <tr>
+                <td style="color:#2ECC71;">+ Sponsoring</td>
+                <td class="num" style="color:#2ECC71;">14.700</td>
+                <td class="num" style="color:#2ECC71;">15.200</td>
+                <td class="num" style="color:#2ECC71;">12.900</td>
+                <td class="num" style="color:#2ECC71;">12.200</td>
+                <td class="num" style="color:#2ECC71;">12.200</td>
+                <td class="num" style="color:#2ECC71;">11.800</td>
+            </tr>
+            <tr>
+                <td style="color:#2ECC71;">+ Activiteiten (vooraf)</td>
+                <td class="num" style="color:#2ECC71;">50.000</td>
+                <td class="num" style="color:#2ECC71;">93.700</td>
+                <td class="num" style="color:#2ECC71;">44.500</td>
+                <td class="num" style="color:#2ECC71;">34.100</td>
+                <td class="num" style="color:#2ECC71;">64.600</td>
+                <td class="num" style="color:#2ECC71;">15.600</td>
+            </tr>
+            <tr>
+                <td style="color:#2ECC71;">+ Debiteurenincasso</td>
+                <td class="num" style="color:#2ECC71;">42.350</td>
+                <td class="num" style="color:#2ECC71;">42.350</td>
+                <td class="num" style="color:#2ECC71;"></td>
+                <td class="num" style="color:#2ECC71;"></td>
+                <td class="num" style="color:#2ECC71;"></td>
+                <td class="num" style="color:#2ECC71;"></td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- Burn rate</td>
+                <td class="num" style="color:#E74C3C;">-42.500</td>
+                <td class="num" style="color:#E74C3C;">-42.500</td>
+                <td class="num" style="color:#E74C3C;">-42.500</td>
+                <td class="num" style="color:#E74C3C;">-42.500</td>
+                <td class="num" style="color:#E74C3C;">-42.500</td>
+                <td class="num" style="color:#E74C3C;">-42.500</td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- BTW Q1</td>
+                <td class="num" style="color:#E74C3C;">-4.550</td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- Vakantiegeld</td>
+                <td class="num"></td>
+                <td class="num" style="color:#E74C3C;">-5.942</td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- Kostprijs activiteiten</td>
+                <td class="num" style="color:#E74C3C;">-10.450</td>
+                <td class="num" style="color:#E74C3C;">-17.250</td>
+                <td class="num" style="color:#E74C3C;">-1.500</td>
+                <td class="num" style="color:#E74C3C;">-800</td>
+                <td class="num" style="color:#E74C3C;">-10.500</td>
+                <td class="num" style="color:#E74C3C;">-2.500</td>
+            </tr>
+            <tr class="total">
+                <td>Eindsaldo</td>
+                <td class="num">30.136</td>
+                <td class="num">85.694</td>
+                <td class="num">99.094</td>
+                <td class="num">103.694</td>
+                <td class="num">126.794</td>
+                <td class="num">109.194</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 12px; display:flex; gap:16px;">
         <div style="flex:1;">
-            <table class="table-simple">
-                <thead>
-                    <tr>
-                        <th style="width:40%;">Cashflow</th>
-                        <th class="num">Apr</th>
-                        <th class="num">Mei</th>
-                        <th class="num">Jun</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Beginsaldo</td>
-                        <td class="num">10.586</td>
-                        <td class="num" id="cf-mei-begin">—</td>
-                        <td class="num" id="cf-jun-begin">—</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#2ECC71;">+ Omzet (verwacht)</td>
-                        <td class="num" style="color:#2ECC71;">23.500</td>
-                        <td class="num" style="color:#2ECC71;">19.000</td>
-                        <td class="num" style="color:#2ECC71;">17.900</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#2ECC71;">+ Debiteurenincasso</td>
-                        <td class="num" style="color:#2ECC71;">42.350</td>
-                        <td class="num" style="color:#2ECC71;">42.350</td>
-                        <td class="num" style="color:#2ECC71;">8.000</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#E74C3C;">- Burn rate</td>
-                        <td class="num" style="color:#E74C3C;">-42.500</td>
-                        <td class="num" style="color:#E74C3C;">-42.500</td>
-                        <td class="num" style="color:#E74C3C;">-42.500</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#E74C3C;">- BTW Q1</td>
-                        <td class="num" style="color:#E74C3C;">-4.550</td>
-                        <td class="num" style="color:#E74C3C;"></td>
-                        <td class="num" style="color:#E74C3C;"></td>
-                    </tr>
-                    <tr>
-                        <td style="color:#E74C3C;">- Vakantiegeld</td>
-                        <td class="num" style="color:#E74C3C;"></td>
-                        <td class="num" style="color:#E74C3C;">-5.942</td>
-                        <td class="num" style="color:#E74C3C;"></td>
-                    </tr>
-                    <tr class="total">
-                        <td>Eindsaldo</td>
-                        <td class="num">29.386</td>
-                        <td class="num">42.294</td>
-                        <td class="num">25.694</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Cashpositie verloop</div>
+            <div style="display:flex; align-items:flex-end; gap:4px; height:50px;">
+                <div style="flex:1; height:5px; background:var(--terra); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:14px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:34px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:39px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:41px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:50px; background:var(--teal); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:43px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+            </div>
+            <div style="display:flex; font-size:9px; color:#5A6E68; margin-top:2px;">
+                <span style="flex:1; text-align:center;">Mrt</span>
+                <span style="flex:1; text-align:center;">Apr</span>
+                <span style="flex:1; text-align:center;">Mei</span>
+                <span style="flex:1; text-align:center;">Jun</span>
+                <span style="flex:1; text-align:center;">Jul</span>
+                <span style="flex:1; text-align:center;">Aug</span>
+                <span style="flex:1; text-align:center;">Sep</span>
+            </div>
         </div>
-        <!-- Scenario's -->
-        <div style="flex:1;">
-            <div style="font-size:12px; font-weight:600; margin-bottom:8px;">Scenario analyse (eindsaldo juni)</div>
-            <div style="margin-bottom: 12px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                    <span style="color:#2ECC71;">&#9632;</span>
-                    <span style="font-size:12px; flex:1;"><strong>Best case</strong> — alle debiteuren betalen</span>
-                    <span style="font-size:14px; font-weight:600; color:#2ECC71;">&euro;25.694</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                    <span style="color:#F39C12;">&#9632;</span>
-                    <span style="font-size:12px; flex:1;"><strong>Base case</strong> — 50% debiteurenincasso</span>
-                    <span style="font-size:14px; font-weight:600; color:#F39C12;">-&euro;20.656</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                    <span style="color:#E74C3C;">&#9632;</span>
-                    <span style="font-size:12px; flex:1;"><strong>Worst case</strong> — geen incasso, seizoen vertraagd</span>
-                    <span style="font-size:14px; font-weight:600; color:#E74C3C;">-&euro;78.664</span>
-                </div>
+        <div style="flex:1; font-size:11px; color:#5A6E68;">
+            <div style="margin-bottom: 8px;">
+                <strong style="color:var(--teal);">Model:</strong> Activiteiten worden ~1 maand voor uitvoering gefactureerd en betaald.
+                Volumes o.b.v. 2025 actuals (fishing + cleanups + schoolvissen = &euro;362K).
             </div>
-            <div style="display:flex; height:24px; border-radius:4px; overflow:hidden; margin-bottom:8px;">
-                <div style="flex:1; background:#E74C3C; display:flex; align-items:center; justify-content:center; color:white; font-size:9px; font-weight:500;">Worst</div>
-                <div style="flex:1; background:#F39C12; display:flex; align-items:center; justify-content:center; color:white; font-size:9px; font-weight:500;">Base</div>
-                <div style="flex:1; background:#2ECC71; display:flex; align-items:center; justify-content:center; color:white; font-size:9px; font-weight:500;">Best</div>
+            <div style="margin-bottom: 6px;">
+                <strong style="color:var(--teal);">Cruciale aannames:</strong>
             </div>
-            <div style="font-size:11px; color:#5A6E68;">
-                <strong style="color:var(--teal);">Cruciale variabele:</strong> Debiteurenincasso. Amphion (&euro;42.4K) en Heinz (&euro;42.4K) bepalen of PW positief of negatief eindigt in juni.
+            <div style="font-size:10px;">
+                &#8226; Amphion (&euro;42.4K) betaalt in april, Heinz (&euro;42.4K) in mei<br>
+                &#8226; Activiteiten cash ~1 maand voor uitvoering (boeking = betaling)<br>
+                &#8226; Burn rate constant &euro;42.5K/mnd<br>
+                &#8226; Winter (jan-feb) blijft krap &mdash; geen activiteitenomzet
             </div>
-            <div style="font-size:10px; color:#5A6E68; margin-top:6px;">
-                Aannames: omzet o.b.v. rapportage maand 2026, burn rate constant &euro;42.5K/mnd
+            <div style="margin-top:8px; font-size:11px; padding:6px 8px; background:var(--terra-surf); border-radius:4px;">
+                <strong style="color:var(--terra-deep);">Let op:</strong> Dit model lost de wintercrisis niet op. Jan-feb 2027 heeft dezelfde cash drain zonder activiteitenomzet. Oplossing: seizoensreserve opbouwen in Q3 (piek &euro;127K aug).
             </div>
         </div>
     </div>
