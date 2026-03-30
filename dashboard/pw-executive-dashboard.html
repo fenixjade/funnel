@@ -14,7 +14,7 @@
             --terra-surf: #F2EBE7;
             --sage: #D7E5E2;
             --sage-mid: #506E64;
-            --bg: #FFFFFF;
+            --bg: #F5F9F8;
             --text: #1A2E28;
             --text-muted: #5A6E68;
             --border: rgba(3,44,53,0.1);
@@ -30,7 +30,8 @@
             color: var(--text);
             padding: 24px;
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Header */
@@ -96,7 +97,8 @@
             background: white;
             border-radius: 4px;
             padding: 16px;
-            border: 1px solid var(--border);
+            border-top: 2px solid var(--teal-mid);
+            box-shadow: 0 4px 16px rgba(3,44,53,0.08);
         }
         .card-header {
             display: flex;
@@ -108,9 +110,9 @@
             font-family: 'DM Mono', monospace;
             font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
-            font-weight: 500;
+            letter-spacing: 0.18em;
+            color: var(--terra-deep);
+            font-weight: 400;
         }
 
         /* Traffic lights */
@@ -175,15 +177,15 @@
 
         /* Section title */
         .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--teal);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--terra-deep);
             margin: 20px 0 12px 0;
             padding-bottom: 6px;
             border-bottom: 1px solid var(--border);
-            text-transform: none;
-            letter-spacing: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
         }
 
         /* Table */
@@ -200,7 +202,8 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: var(--text-muted);
-            border-bottom: 2px solid var(--teal);
+            background: var(--sage);
+            border-bottom: 1px solid var(--border);
             font-weight: 500;
         }
         .table-simple th.num {
@@ -222,7 +225,7 @@
             border-bottom: none;
         }
         .table-simple tr.subtotal td {
-            font-weight: 600;
+            font-weight: 500;
             background: var(--sage);
         }
 
@@ -365,8 +368,8 @@
             }
             .header { margin-bottom: 12px; padding-bottom: 8px; }
             .header h1 { font-size: 18px; }
-            .section-title { margin: 12px 0 8px 0; font-size: 13px; }
-            .card { padding: 10px; border: 1px solid var(--border); }
+            .section-title { margin: 12px 0 8px 0; font-size: 10px; }
+            .card { padding: 10px; box-shadow: none; border: 1px solid var(--border); border-top: 2px solid var(--teal-mid); }
             .grid { gap: 8px; margin-bottom: 8px; }
             .grid-6 { grid-template-columns: repeat(6, 1fr); }
             .grid-3 { grid-template-columns: repeat(3, 1fr); }
