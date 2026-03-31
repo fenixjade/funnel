@@ -18,6 +18,9 @@
             --text: #1A2E28;
             --text-muted: #5A6E68;
             --border: rgba(3,44,53,0.1);
+            --green: #506E64;
+            --amber: #C4634A;
+            --red: #9E4733;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,6 +35,7 @@
             zoom: 1.25;
         }
 
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -65,6 +69,7 @@
             font-weight: 600;
         }
 
+        /* Status badge */
         .status-overall {
             display: inline-flex;
             align-items: center;
@@ -76,12 +81,19 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
+        .status-red { background: var(--terra-surf); color: var(--terra-deep); }
+        .status-amber { background: var(--terra-surf); color: var(--terra); }
+        .status-green { background: var(--sage); color: var(--sage-mid); }
 
+        /* Grid */
         .grid { display: grid; gap: 16px; margin-bottom: 16px; align-items: stretch; }
         .grid-6 { grid-template-columns: repeat(6, 1fr); }
         .grid-3 { grid-template-columns: repeat(3, 1fr); }
         .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-1-2 { grid-template-columns: 1fr 2fr; }
+        .grid-2-1 { grid-template-columns: 2fr 1fr; }
 
+        /* Cards */
         .card {
             background: white;
             border-radius: 4px;
@@ -108,6 +120,7 @@
             font-weight: 400;
         }
 
+        /* Traffic lights */
         .light {
             width: 12px;
             height: 12px;
@@ -118,6 +131,7 @@
         .light-amber { background: #F39C12; }
         .light-red { background: #E74C3C; }
 
+        /* KPI values */
         .kpi-value {
             font-family: 'Jost', sans-serif;
             font-size: 28px;
@@ -139,6 +153,7 @@
         .change-neg { color: var(--terra-deep); }
         .change-pos { color: var(--sage-mid); }
 
+        /* Sparkline (CSS-only bar chart) */
         .sparkline {
             display: flex;
             align-items: flex-end;
@@ -151,10 +166,21 @@
             background: var(--teal-mid);
             border-radius: 2px 2px 0 0;
             min-height: 2px;
+            position: relative;
         }
-        .sparkline .bar.future { background: var(--sage); }
-        .sparkline .bar.current { background: var(--teal); outline: 2px solid var(--teal-mid); }
+        .sparkline .bar.negative {
+            background: var(--terra);
+            align-self: flex-end;
+        }
+        .sparkline .bar.future {
+            background: var(--sage);
+        }
+        .sparkline .bar.current {
+            background: var(--teal);
+            outline: 2px solid var(--teal-mid);
+        }
 
+        /* Section title */
         .section-title {
             font-family: 'DM Mono', monospace;
             font-size: 11px;
@@ -167,6 +193,7 @@
             letter-spacing: 0.18em;
         }
 
+        /* Table */
         .table-simple {
             width: 100%;
             border-collapse: collapse;
@@ -206,6 +233,7 @@
             background: var(--sage);
         }
 
+        /* Verplichtingen */
         .obligation-item {
             display: flex;
             justify-content: space-between;
@@ -222,6 +250,45 @@
             font-variant-numeric: tabular-nums;
         }
 
+        /* Cash waterfall */
+        .waterfall {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 100px;
+            padding-top: 20px;
+            position: relative;
+        }
+        .waterfall-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .waterfall-bar .bar-fill {
+            width: 80%;
+            border-radius: 2px 2px 0 0;
+            position: relative;
+        }
+        .waterfall-bar .bar-label {
+            font-family: 'Jost', sans-serif;
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-align: center;
+        }
+        .waterfall-bar .bar-value {
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            position: absolute;
+            top: -16px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Narrative */
         .narrative {
             background: var(--terra-surf);
             border-left: 3px solid var(--terra);
@@ -233,6 +300,7 @@
         }
         .narrative strong { color: var(--teal); font-weight: 700; font-size: 14px; }
 
+        /* Risk items */
         .risk-item {
             display: flex;
             gap: 10px;
@@ -263,6 +331,7 @@
             aspect-ratio: 1;
         }
 
+        /* Aging buckets */
         .aging-bar {
             height: 24px;
             display: flex;
@@ -284,6 +353,27 @@
         .aging-60 { background: #E67E22; }
         .aging-90 { background: #E74C3C; }
 
+        /* Season indicator */
+        .season-bar {
+            height: 6px;
+            display: flex;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 8px 0 4px 0;
+        }
+        .season-off { background: var(--sage); }
+        .season-ramp { background: var(--terra-surf); }
+        .season-peak { background: var(--sage-mid); }
+        .season-labels {
+            display: flex;
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+        .season-labels span { flex: 1; text-align: center; }
+        .season-labels span.current-month { font-weight: 700; color: var(--terra); }
+
+        /* Footer */
         .footer {
             margin-top: 24px;
             padding-top: 12px;
@@ -295,28 +385,48 @@
             justify-content: space-between;
         }
 
-        @page { size: A4 portrait; margin: 12mm 10mm; }
+        /* Print / A4 PDF */
+        @page {
+            size: A4 portrait;
+            margin: 12mm 10mm;
+        }
         @media print {
-            body { background: white; padding: 0; font-size: 11px; zoom: 1; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body {
+                background: white;
+                padding: 0;
+                font-size: 11px;
+                zoom: 1;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
             .header { margin-bottom: 12px; padding-bottom: 8px; }
             .header h1 { font-size: 18px; }
             .section-title { margin: 12px 0 8px 0; font-size: 10px; }
             .card { padding: 10px; box-shadow: none; border: 1px solid var(--border); border-top: 2px solid var(--teal-mid); }
             .grid { gap: 8px; margin-bottom: 8px; }
+            .grid-6 { grid-template-columns: repeat(6, 1fr); }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+            .grid-2 { grid-template-columns: repeat(2, 1fr); }
             .kpi-value { font-size: 20px; }
             .narrative { padding: 8px 12px; font-size: 11px; margin-bottom: 8px; }
             .table-simple { font-size: 11px; }
             .table-simple th, .table-simple td { padding: 3px 6px; }
+            .risk-item { padding: 5px 0; font-size: 11px; }
+            .obligation-item { padding: 5px 0; }
             .sparkline { height: 28px; }
             .footer { margin-top: 12px; }
             .page-break-before { page-break-before: always; }
             .no-break { page-break-inside: avoid; }
         }
 
-        @media (max-width: 1200px) { .grid-6 { grid-template-columns: repeat(3, 1fr); } }
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .grid-6 { grid-template-columns: repeat(3, 1fr); }
+        }
         @media (max-width: 768px) {
             .grid-6 { grid-template-columns: repeat(2, 1fr); }
             .grid-3, .grid-2 { grid-template-columns: 1fr; }
+            .grid-1-2, .grid-2-1 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -335,7 +445,7 @@
             </svg>
             <span style="font-family: 'Jost', sans-serif; font-size: 20px; font-weight: 600; color: var(--teal); letter-spacing: -0.02em;">GreenBrew</span>
         </div>
-        <div style="width:1px; height:40px; background:var(--border); margin:0 8px;"></div>
+        <div style="width:1px; height:40px; background:var(--border); margin:0 2px;"></div>
         <div>
             <h1>Executive Dashboard</h1>
             <div style="display:flex; align-items:center; gap:16px;">
@@ -378,15 +488,15 @@
             <div class="bar" style="height: 70%;"></div>
             <div class="bar" style="height: 78%;"></div>
             <div class="bar current" style="height: 85%;"></div>
-            <div class="bar future" style="height: 82%;"></div>
-            <div class="bar future" style="height: 90%;"></div>
-            <div class="bar future" style="height: 95%;"></div>
-            <div class="bar future" style="height: 100%;"></div>
-            <div class="bar future" style="height: 92%;"></div>
-            <div class="bar future" style="height: 88%;"></div>
-            <div class="bar future" style="height: 85%;"></div>
-            <div class="bar future" style="height: 80%;"></div>
             <div class="bar future" style="height: 78%;"></div>
+            <div class="bar future" style="height: 82%;"></div>
+            <div class="bar future" style="height: 88%;"></div>
+            <div class="bar future" style="height: 92%;"></div>
+            <div class="bar future" style="height: 96%;"></div>
+            <div class="bar future" style="height: 100%;"></div>
+            <div class="bar future" style="height: 98%;"></div>
+            <div class="bar future" style="height: 95%;"></div>
+            <div class="bar future" style="height: 93%;"></div>
         </div>
         <div class="kpi-sub">Jan &rarr; Mrt (actual) | Apr-Dec (forecast)</div>
     </div>
@@ -399,7 +509,7 @@
         </div>
         <div class="kpi-value">&euro;58.240</div>
         <div class="kpi-sub">Netto positie (deb. minus cred.)</div>
-        <div style="margin-top: 10px;">
+        <div style="margin-top: 8px;">
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
                 <span style="color:#2ECC71; font-size:14px; line-height:1;">&#9632;</span>
                 <span style="font-size:12px; flex:1;">Debiteuren</span>
@@ -500,7 +610,7 @@
         <div style="border-top:1px solid #E2E8F0; margin-top:14px; padding-top:12px;">
             <div class="kpi-value">&euro;620.0K</div>
             <div style="font-size:10px; font-weight:600; color:#5A6E68; text-transform:uppercase; letter-spacing:0.5px; margin-top:2px;">Heel jaar 2026 (forecast)</div>
-            <div style="font-size:10px; color:#5A6E68; margin-top:6px;">+18% t.o.v. 2025 (€525K)</div>
+            <div style="font-size:10px; color:#5A6E68; margin-top:6px;">+18% t.o.v. 2025 (&euro;525K)</div>
         </div>
     </div>
 
@@ -563,6 +673,223 @@
             </table>
             <div style="margin-top: 8px; font-size: 11px; color: var(--sage-mid); font-weight: 600;">
                 Op schema &mdash; volledig gedekt voor mei
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CASHFLOW FORECAST -->
+<div class="section-title">Cashflow forecast apr 2026 - feb 2027</div>
+<div class="card no-break" style="margin-bottom: 16px;">
+    <table class="table-simple" style="font-size:11px;">
+        <thead>
+            <tr>
+                <th style="width:22%;">Cashflow</th>
+                <th class="num">Apr</th>
+                <th class="num">Mei</th>
+                <th class="num">Jun</th>
+                <th class="num">Jul</th>
+                <th class="num">Aug</th>
+                <th class="num">Sep</th>
+                <th class="num">Okt</th>
+                <th class="num">Nov</th>
+                <th class="num">Dec</th>
+                <th class="num" style="color:#E74C3C;">Jan 27</th>
+                <th class="num" style="color:#E74C3C;">Feb 27</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Beginsaldo</td>
+                <td class="num">87.342</td>
+                <td class="num">76.312</td>
+                <td class="num">79.862</td>
+                <td class="num">98.362</td>
+                <td class="num">97.862</td>
+                <td class="num">103.362</td>
+                <td class="num">97.862</td>
+                <td class="num">97.362</td>
+                <td class="num">111.862</td>
+                <td class="num">108.362</td>
+                <td class="num">113.862</td>
+            </tr>
+            <tr>
+                <td style="color:#2ECC71;">+ Wholesale</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+                <td class="num" style="color:#2ECC71;">28.000</td>
+            </tr>
+            <tr>
+                <td style="color:#2ECC71;">+ Abonnementen</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+                <td class="num" style="color:#2ECC71;">13.000</td>
+            </tr>
+            <tr>
+                <td style="color:#2ECC71;">+ Horeca</td>
+                <td class="num" style="color:#2ECC71;">8.000</td>
+                <td class="num" style="color:#2ECC71;">10.000</td>
+                <td class="num" style="color:#2ECC71;">12.000</td>
+                <td class="num" style="color:#2ECC71;">14.000</td>
+                <td class="num" style="color:#2ECC71;">12.000</td>
+                <td class="num" style="color:#2ECC71;">10.000</td>
+                <td class="num" style="color:#2ECC71;">8.000</td>
+                <td class="num" style="color:#2ECC71;">5.000</td>
+                <td class="num" style="color:#2ECC71;">3.000</td>
+                <td class="num" style="color:#5A6E68;">2.000</td>
+                <td class="num" style="color:#5A6E68;">2.000</td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- Burn rate</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+                <td class="num" style="color:#E74C3C;">-28.500</td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- BTW (kwartaal)</td>
+                <td class="num" style="color:#E74C3C;">-8.920</td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num" style="color:#E74C3C;">-10.000</td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num" style="color:#E74C3C;">-12.000</td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num" style="color:#E74C3C;">-2.000</td>
+                <td class="num"></td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- Vakantiegeld</td>
+                <td class="num"></td>
+                <td class="num" style="color:#E74C3C;">-9.450</td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- Crediteuren (openstaand)</td>
+                <td class="num" style="color:#E74C3C;">-14.610</td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+                <td class="num"></td>
+            </tr>
+            <tr>
+                <td style="color:#E74C3C;">- Kostprijs inkoop</td>
+                <td class="num" style="color:#E74C3C;">-8.000</td>
+                <td class="num" style="color:#E74C3C;">-9.500</td>
+                <td class="num" style="color:#E74C3C;">-6.000</td>
+                <td class="num" style="color:#E74C3C;">-7.000</td>
+                <td class="num" style="color:#E74C3C;">-6.000</td>
+                <td class="num" style="color:#E74C3C;">-6.000</td>
+                <td class="num" style="color:#E74C3C;">-6.000</td>
+                <td class="num" style="color:#E74C3C;">-5.000</td>
+                <td class="num" style="color:#E74C3C;">-5.000</td>
+                <td class="num" style="color:#E74C3C;">-5.000</td>
+                <td class="num" style="color:#E74C3C;">-5.000</td>
+            </tr>
+            <tr class="total">
+                <td>Eindsaldo</td>
+                <td class="num">76.312</td>
+                <td class="num">79.862</td>
+                <td class="num">98.362</td>
+                <td class="num">97.862</td>
+                <td class="num">103.362</td>
+                <td class="num">97.862</td>
+                <td class="num">97.362</td>
+                <td class="num">111.862</td>
+                <td class="num">108.362</td>
+                <td class="num">113.862</td>
+                <td class="num" style="color:#506E64;">123.362</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 12px; display:flex; gap:16px;">
+        <div style="flex:1;">
+            <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Cashpositie verloop</div>
+            <div style="display:flex; align-items:flex-end; gap:2px; height:70px; position:relative;">
+                <div style="flex:1; height:56px; background:var(--teal); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:49px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:51px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:63px; background:var(--teal); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:63px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:66px; background:var(--teal); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:63px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:63px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:70px; background:var(--sage-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:69px; background:var(--sage-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:70px; background:var(--sage-mid); border-radius:2px 2px 0 0;"></div>
+                <div style="flex:1; height:70px; background:var(--sage-mid); border-radius:2px 2px 0 0;"></div>
+            </div>
+            <div style="display:flex; font-size:7px; color:#5A6E68; margin-top:2px;">
+                <span style="flex:1; text-align:center;">Mrt</span>
+                <span style="flex:1; text-align:center;">Apr</span>
+                <span style="flex:1; text-align:center;">Mei</span>
+                <span style="flex:1; text-align:center;">Jun</span>
+                <span style="flex:1; text-align:center;">Jul</span>
+                <span style="flex:1; text-align:center;">Aug</span>
+                <span style="flex:1; text-align:center;">Sep</span>
+                <span style="flex:1; text-align:center;">Okt</span>
+                <span style="flex:1; text-align:center;">Nov</span>
+                <span style="flex:1; text-align:center;">Dec</span>
+                <span style="flex:1; text-align:center; color:#E74C3C;">Jan</span>
+                <span style="flex:1; text-align:center; color:#E74C3C;">Feb</span>
+            </div>
+        </div>
+        <div style="flex:1; font-size:11px; color:#5A6E68;">
+            <div style="margin-bottom: 8px;">
+                <strong style="color:var(--teal);">Model:</strong> Wholesale en abonnementen stabiel doorlopend.
+                Horeca seizoensgebonden (piek jul &euro;14K, dal dec-jan &euro;2-3K).
+                Kostprijs varieert mee met horeca-omzet.
+            </div>
+            <div style="margin-bottom: 6px;">
+                <strong style="color:var(--teal);">Cruciale aannames:</strong>
+            </div>
+            <div style="font-size:10px;">
+                &#8226; Wholesale: stabiel &euro;28K/mnd (contracten)<br>
+                &#8226; Abonnementen: &euro;13K/mnd recurring<br>
+                &#8226; BTW Q2 (&euro;10K) juli, Q3 (&euro;12K) okt, Q4 (&euro;2K) jan<br>
+                &#8226; Burn rate constant &euro;28,5K/mnd
+            </div>
+            <div style="margin-top:8px; font-size:11px; padding:6px 8px; background:var(--sage); border-radius:4px;">
+                <strong style="color:var(--sage-mid);">Gezonde cashpositie het hele jaar.</strong> Lichte dip in april door BTW + crediteuren, daarna geleidelijke opbouw richting &euro;123K in feb 2027. Horeca-seizoen (mei-sep) geeft extra buffer.
             </div>
         </div>
     </div>
@@ -793,6 +1120,70 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<!-- SEIZOENSPATROON -->
+<div class="card no-break" style="margin-bottom: 16px;">
+    <div class="card-header">
+        <span class="card-title">Seizoenspatroon | Horeca-omzet per maand (2025 actuals)</span>
+    </div>
+    <div style="display:flex; align-items:flex-end; gap:4px; height:80px; margin-top:4px;">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">2.1K</div>
+            <div style="width:100%; height:12px; background:var(--sage); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">2.8K</div>
+            <div style="width:100%; height:16px; background:var(--sage); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:var(--terra); margin-bottom:2px;">5.2K</div>
+            <div style="width:100%; height:30px; background:var(--teal-mid); border-radius:2px 2px 0 0; outline:2px solid var(--terra);"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">7.4K</div>
+            <div style="width:100%; height:42px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">9.8K</div>
+            <div style="width:100%; height:56px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">12.6K</div>
+            <div style="width:100%; height:72px; background:var(--teal); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">14.0K</div>
+            <div style="width:100%; height:80px; background:var(--teal); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">11.3K</div>
+            <div style="width:100%; height:65px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">8.9K</div>
+            <div style="width:100%; height:51px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">6.1K</div>
+            <div style="width:100%; height:35px; background:var(--teal-mid); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">3.4K</div>
+            <div style="width:100%; height:19px; background:var(--sage); border-radius:2px 2px 0 0;"></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+            <div style="font-size:8px; color:#5A6E68; margin-bottom:2px;">1.8K</div>
+            <div style="width:100%; height:10px; background:var(--sage); border-radius:2px 2px 0 0;"></div>
+        </div>
+    </div>
+    <div class="season-labels" style="margin-top:4px;">
+        <span>Jan</span><span>Feb</span><span class="current-month">Mrt &#9650;</span><span>Apr</span><span>Mei</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Okt</span><span>Nov</span><span>Dec</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:10px; color:#5A6E68;">
+        <span>Totaal horeca 2025: &euro;85,4K | Wholesale + abonnementen zijn seizoensonafhankelijk</span>
+        <span>Piek: juli &euro;14,0K | Zomerseizoen (jun-aug) = 44% jaaromzet horeca</span>
+    </div>
 </div>
 
 <!-- BUDGET vs ACTUAL -->
