@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mijnfinn B.V. -- Legal Roadmap & Equity Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Jost:wght@300;400;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --teal: #032C35;
+    --teal-mid: #2A5C6A;
+    --terra: #C4634A;
+    --terra-deep: #9E4733;
+    --sage: #D7E5E2;
+    --sage-mid: #506E64;
+    --terra-surf: #F2EBE7;
+    --bg: #FFFFFF;
+    --text: #1A2E28;
+    --muted: #5A6E68;
+    --border: rgba(3,44,53,0.1);
+  }
+
+  html { scroll-snap-type: y mandatory; overflow-y: scroll; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .slide {
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; padding: 60px 100px;
+    position: relative; scroll-snap-align: start;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.75rem, 4.5vw, 3.875rem);
+    font-weight: 400; line-height: 1.15;
+    color: var(--teal); letter-spacing: -0.02em;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.875rem, 3vw, 2.5rem);
+    font-weight: 400; line-height: 1.2;
+    color: var(--teal); margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+  h2 em { font-style: italic; color: var(--terra); }
+  h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--terra-deep); margin: 24px 0 12px;
+  }
+  p { font-size: 1rem; line-height: 1.8; color: var(--muted); max-width: 900px; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--terra-deep); margin-bottom: 2rem;
+  }
+  .eyebrow::before { content: ''; display: block; width: 18px; height: 1px; background: var(--terra-deep); }
+
+  .subtitle {
+    font-family: 'Jost', sans-serif; font-size: 1.25rem;
+    font-weight: 300; color: var(--muted); margin-top: 0.75rem;
+  }
+  .date {
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    color: var(--sage-mid); letter-spacing: 0.08em; margin-top: 1.5rem;
+  }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; max-width: 1000px; margin: 16px 0; }
+  th {
+    text-align: left; padding: 10px 16px;
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--teal-mid); border-bottom: 2px solid var(--border);
+  }
+  td { padding: 12px 16px; font-size: 0.95rem; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover td { background: var(--sage); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .highlight { color: var(--terra); font-weight: 600; }
+  .total td { border-top: 2px solid var(--teal); font-weight: 600; color: var(--teal); }
+  td .sub { color: var(--muted); font-size: 0.85em; }
+
+  /* Phase cards */
+  .phase { display: flex; gap: 20px; flex-wrap: wrap; max-width: 1100px; }
+  .phase-card {
+    flex: 1; min-width: 220px; background: var(--bg);
+    border-radius: 4px; padding: 24px;
+    border-top: 2px solid var(--border);
+  }
+  .phase-card.done { border-top-color: var(--sage-mid); background: var(--sage); }
+  .phase-card.active { border-top-color: var(--terra); background: var(--terra-surf); }
+  .phase-card.upcoming { border-top-color: var(--border); }
+  .phase-card h4 {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .phase-card .phase-title {
+    font-family: 'Playfair Display', serif; font-size: 1.125rem;
+    font-weight: 400; color: var(--teal); margin: 0 0 12px;
+  }
+  .phase-card .phase-time {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    color: var(--teal-mid); letter-spacing: 0.08em; margin-bottom: 12px;
+  }
+  .phase-card ul { list-style: none; }
+  .phase-card li { font-size: 0.875rem; color: var(--muted); padding: 3px 0; }
+  .phase-card li::before {
+    content: ""; display: inline-block; width: 5px; height: 5px;
+    border-radius: 50%; margin-right: 8px; background: var(--border); vertical-align: middle;
+  }
+  .phase-card.done li::before { background: var(--sage-mid); }
+  .phase-card.active li::before { background: var(--terra); }
+  .phase-card .done-item { text-decoration: line-through; color: var(--sage-mid); }
+
+  /* SAFE grid */
+  .safe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1000px; }
+  .safe-detail .label {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted);
+  }
+  .safe-detail .value {
+    font-family: 'Playfair Display', serif; font-size: 1.75rem;
+    font-weight: 400; color: var(--teal); margin-bottom: 20px;
+  }
+  .safe-detail .value.accent { color: var(--terra); }
+  .protecties { list-style: none; }
+  .protecties li {
+    padding: 6px 0; color: var(--text); font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .protecties li::before {
+    content: ""; display: inline-block; width: 5px; height: 5px;
+    border-radius: 50%; margin-right: 10px; background: var(--terra); vertical-align: middle;
+  }
+
+  /* Advisor grid */
+  .advisor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1000px; }
+  .advisor-box {
+    background: var(--sage); border-radius: 4px; padding: 24px;
+    border-top: 2px solid var(--teal-mid);
+  }
+  .advisor-box h3 { margin-top: 0; }
+  .advisor-box ul { list-style: none; }
+  .advisor-box li { padding: 4px 0; color: var(--sage-mid); font-size: 0.9rem; }
+  .advisor-box li::before {
+    content: ""; display: inline-block; width: 5px; height: 5px;
+    border-radius: 50%; margin-right: 8px; background: var(--teal-mid); vertical-align: middle;
+  }
+
+  /* Risk / Solution */
+  .risk-box {
+    background: var(--terra-surf); border-left: 3px solid var(--terra);
+    border-radius: 0 4px 4px 0; padding: 24px 32px; max-width: 900px; margin: 16px 0;
+  }
+  .risk-box h3 { color: var(--terra-deep); }
+  .solution-box {
+    background: var(--sage); border-left: 3px solid var(--sage-mid);
+    border-radius: 0 4px 4px 0; padding: 24px 32px; max-width: 900px; margin: 16px 0;
+  }
+  .solution-box h3 { color: var(--sage-mid); }
+  .solution-box ol { padding-left: 20px; }
+  .solution-box li { padding: 4px 0; color: var(--text); font-size: 0.95rem; }
+
+  /* Open items */
+  .open-items { max-width: 800px; }
+  .open-items li {
+    font-size: 0.95rem; color: var(--text); padding: 10px 0;
+    border-bottom: 1px solid var(--border); list-style: none;
+  }
+  .open-items li::before {
+    content: ""; display: inline-block; width: 14px; height: 14px;
+    border: 1.5px solid var(--teal-mid); border-radius: 2px;
+    margin-right: 12px; vertical-align: middle;
+  }
+
+  /* Structure tree */
+  .structure-tree { font-family: 'DM Mono', monospace; font-size: 0.85rem; line-height: 2.2; }
+  .structure-tree .name { color: var(--teal); font-weight: 500; }
+  .structure-tree .pct { color: var(--terra); font-weight: 500; }
+  .structure-tree .arrow { color: var(--sage-mid); }
+  .structure-tree .holding { color: var(--muted); }
+
+  /* Footer elements */
+  .slide-num {
+    position: absolute; bottom: 30px; right: 50px;
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    color: var(--sage-mid); letter-spacing: 0.08em;
+  }
+  .logo {
+    position: absolute; bottom: 30px; left: 50px;
+    font-family: 'Playfair Display', serif; font-size: 1rem;
+    font-weight: 700; color: var(--teal); letter-spacing: -0.03em;
+    opacity: 0.3;
+  }
+
+  /* Divider */
+  .slide-divider {
+    width: 40px; height: 1px; background: var(--teal-mid);
+    margin: 1.5rem 0;
+  }
+
+  /* Info table (key-value) */
+  .info-table { max-width: 600px; margin-top: 24px; }
+  .info-table td:first-child {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); width: 160px; vertical-align: top; padding-top: 14px;
+  }
+  .info-table td:last-child { color: var(--text); }
+
+  @media print {
+    .slide { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+  <div class="eyebrow" style="justify-content:center;">Intern werkdocument</div>
+  <h1>mijnfinn B.V.</h1>
+  <p class="subtitle">Legal Roadmap & Equity Plan</p>
+  <p class="date">9 april 2026</p>
+  <span class="slide-num">1 / 9</span>
+</div>
+
+<!-- Slide 2: Structuur -->
+<div class="slide">
+  <div class="eyebrow">Structuur</div>
+  <h2>Holding-structuur <em>aandeelhouders</em></h2>
+  <div class="structure-tree">
+    <div><span class="name">Phuong Do</span> <span class="arrow">&rarr;</span> <span class="holding">BTQ Consultancy B.V.</span> <span class="arrow">&rarr;</span> mijnfinn B.V. <span class="pct">75%</span></div>
+    <div><span class="name">Sander Heikens</span> <span class="arrow">&rarr;</span> <span class="holding">S.C.H. Holding B.V.</span> <span class="arrow">&rarr;</span> mijnfinn B.V. <span class="pct">25%</span></div>
+    <div style="margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px;">
+    <span class="name">Quan</span> <span class="arrow">&rarr;</span> <span class="holding">[Holding B.V.]</span> <span class="arrow">&rarr;</span> mijnfinn B.V. <span class="pct">15%</span></div>
+    <div><span class="name">Vuong</span> <span class="arrow">&rarr;</span> <span class="holding">[Holding B.V.]</span> <span class="arrow">&rarr;</span> mijnfinn B.V. <span class="pct">5%</span></div>
+    <div><span class="name">Leon Ramakers</span> <span class="arrow">&rarr;</span> <span class="holding">Toy of a Joy</span> <span class="arrow">&rarr;</span> mijnfinn B.V. <span class="pct">5%</span></div>
+  </div>
+  <table class="info-table">
+    <tr><td>Opgericht</td><td>7 april 2026</td></tr>
+    <tr><td>Notaris</td><td>Mr. H.L.J. Kamps, TeekensKarstens, Leiden</td></tr>
+    <tr><td>Kapitaal</td><td>1.200 aandelen @ EUR 0,01</td></tr>
+    <tr><td>Bestuur</td><td>BTQ Consultancy + S.C.H. Holding (gezamenlijk)</td></tr>
+  </table>
+  <span class="logo">finn</span>
+  <span class="slide-num">2 / 9</span>
+</div>
+
+<!-- Slide 3: Cap Table bij oprichting -->
+<div class="slide">
+  <div class="eyebrow">Cap Table</div>
+  <h2>Bij <em>oprichting</em></h2>
+  <p style="margin-bottom: 24px;">7 april 2026 -- 1.200 aandelen @ EUR 0,01</p>
+  <table>
+    <thead><tr><th>Aandeelhouder</th><th>Aandelen</th><th>Nummers</th><th class="num">%</th></tr></thead>
+    <tbody>
+      <tr><td>BTQ Consultancy B.V. <span class="sub">(Phuong)</span></td><td class="num">900</td><td>1 - 900</td><td class="num highlight">75,0%</td></tr>
+      <tr><td>S.C.H. Holding B.V. <span class="sub">(Sander)</span></td><td class="num">300</td><td>901 - 1200</td><td class="num highlight">25,0%</td></tr>
+      <tr class="total"><td>Totaal</td><td class="num">1.200</td><td></td><td class="num">100%</td></tr>
+    </tbody>
+  </table>
+  <span class="logo">finn</span>
+  <span class="slide-num">3 / 9</span>
+</div>
+
+<!-- Slide 4: Cap Table beoogd -->
+<div class="slide">
+  <div class="eyebrow">Cap Table</div>
+  <h2>Beoogde <em>verdeling</em></h2>
+  <p style="margin-bottom: 24px;">Na alle overdrachten vanuit BTQ Consultancy. Phuong effectief 50% (47,5% + opties + pool).</p>
+  <table>
+    <thead><tr><th>Aandeelhouder</th><th class="num">Aandelen</th><th class="num">%</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td>BTQ Consultancy <span class="sub">(Phuong)</span></td><td class="num">570</td><td class="num highlight">47,5%</td><td>Founder</td></tr>
+      <tr><td>S.C.H. Holding <span class="sub">(Sander)</span></td><td class="num">300</td><td class="num highlight">25,0%</td><td>Founder</td></tr>
+      <tr><td>Quan's Holding</td><td class="num">180</td><td class="num">15,0%</td><td>Founder</td></tr>
+      <tr><td>Vuong's Holding</td><td class="num">60</td><td class="num">5,0%</td><td>Founder</td></tr>
+      <tr><td>Toy of a Joy <span class="sub">(Leon, advisor)</span></td><td class="num">30</td><td class="num">2,5%</td><td>Advisor</td></tr>
+      <tr><td>Toy of a Joy <span class="sub">(Leon, investering)</span></td><td class="num">30</td><td class="num">2,5%</td><td>SAFE</td></tr>
+      <tr><td>Guido & Leen <span class="sub">(opties, geen echte aandelen)</span></td><td class="num">12</td><td class="num">1,0%</td><td>Opties</td></tr>
+      <tr><td>Advisor pool <span class="sub">(bij BTQ)</span></td><td class="num">18</td><td class="num">1,5%</td><td>Reserve</td></tr>
+      <tr class="total"><td>Totaal</td><td class="num">1.200</td><td class="num">100%</td><td></td></tr>
+    </tbody>
+  </table>
+  <span class="logo">finn</span>
+  <span class="slide-num">4 / 9</span>
+</div>
+
+<!-- Slide 5: Tijdlijn -->
+<div class="slide">
+  <div class="eyebrow">Tijdlijn</div>
+  <h2>Legal <em>roadmap</em></h2>
+  <div class="phase">
+    <div class="phase-card done">
+      <h4>Fase 1</h4>
+      <div class="phase-title">Fundament</div>
+      <div class="phase-time">April, week 1-2</div>
+      <ul>
+        <li class="done-item">BV opgericht (7 april)</li>
+        <li class="done-item">Digitaal getekend</li>
+        <li>Bankrekening aanvragen</li>
+        <li>SAFE + advisor docs opstellen</li>
+      </ul>
+    </div>
+    <div class="phase-card active">
+      <h4>Fase 2</h4>
+      <div class="phase-title">Investering</div>
+      <div class="phase-time">April - Mei</div>
+      <ul>
+        <li>Bankrekening open</li>
+        <li>SAFE tekenen met Leon</li>
+        <li>EUR 60.000 ontvangen</li>
+      </ul>
+    </div>
+    <div class="phase-card upcoming">
+      <h4>Fase 3</h4>
+      <div class="phase-title">Trigger Event</div>
+      <div class="phase-time">Mei - Juni</div>
+      <ul>
+        <li>Quan, Vuong, Leon toetreden</li>
+        <li>SAFE converteert naar equity</li>
+        <li>Advisor overeenkomst actief</li>
+      </ul>
+    </div>
+    <div class="phase-card upcoming">
+      <h4>Fase 4</h4>
+      <div class="phase-title">Operationeel</div>
+      <div class="phase-time">Q3 2026+</div>
+      <ul>
+        <li>Aandeelhoudersovereenkomst</li>
+        <li>Vesting start Guido & Leen</li>
+        <li>Jaarlijkse AVA</li>
+      </ul>
+    </div>
+  </div>
+  <span class="logo">finn</span>
+  <span class="slide-num">5 / 9</span>
+</div>
+
+<!-- Slide 6: SAFE -->
+<div class="slide">
+  <div class="eyebrow">Investering</div>
+  <h2>SAFE -- Leon <em>Ramakers</em></h2>
+  <div class="safe-grid">
+    <div>
+      <div class="safe-detail">
+        <div class="label">Bedrag</div>
+        <div class="value accent">EUR 60.000</div>
+      </div>
+      <div class="safe-detail">
+        <div class="label">Valuation Cap (post-money)</div>
+        <div class="value">EUR 3.000.000</div>
+      </div>
+      <div class="safe-detail">
+        <div class="label">Discount</div>
+        <div class="value accent">20%</div>
+      </div>
+      <div class="safe-detail">
+        <div class="label">Implied waardering</div>
+        <div class="value">EUR 2.400.000</div>
+      </div>
+    </div>
+    <div>
+      <div class="safe-detail">
+        <div class="label">Conversie</div>
+        <div class="value">2,5% <span style="font-size:0.5em; color:var(--muted)">(30 aandelen)</span></div>
+      </div>
+      <div class="safe-detail">
+        <div class="label">Trigger event</div>
+        <div class="value" style="font-size:1.2rem;">Toetreding Quan & Vuong</div>
+      </div>
+      <h3 style="margin-top:24px;">Protecties</h3>
+      <ul class="protecties">
+        <li>Pro-rata recht</li>
+        <li>MFN (Most Favored Nation)</li>
+        <li>Board observer seat</li>
+      </ul>
+      <p style="margin-top:16px; font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--terra-deep);">+ 2,5% advisor-equity (cadeau van Phuong)</p>
+    </div>
+  </div>
+  <span class="logo">finn</span>
+  <span class="slide-num">6 / 9</span>
+</div>
+
+<!-- Slide 7: Advisor -->
+<div class="slide">
+  <div class="eyebrow">Advisors</div>
+  <h2>Guido & Leen -- <em>1% opties</em></h2>
+  <p style="margin-bottom: 24px;">12 aandelen gezamenlijk, 4 jaar vesting</p>
+  <div class="advisor-grid">
+    <div class="advisor-box">
+      <h3>Vesting</h3>
+      <ul>
+        <li>4 jaar totaal</li>
+        <li>1 jaar cliff (25%)</li>
+        <li>Na cliff: per kwartaal</li>
+        <li>Instrument: aandelenopties</li>
+        <li>Start: bij activering (Fase 3)</li>
+      </ul>
+    </div>
+    <div class="advisor-box">
+      <h3>Bijdrage-eisen</h3>
+      <ul>
+        <li>2x/maand: protocol + strategische meeting</li>
+        <li>Software feedback (boekhouder-expertise)</li>
+        <li>Portaal naar administratiekantoren</li>
+        <li>Beschikbaar voor ad-hoc vragen</li>
+      </ul>
+    </div>
+    <div class="advisor-box">
+      <h3>Good / Bad leaver</h3>
+      <ul>
+        <li>Good leaver: behoudt gevestigde opties</li>
+        <li>Bad leaver: verliest alle opties</li>
+        <li>Inactiviteit 3+ maanden = bad leaver</li>
+      </ul>
+    </div>
+    <div class="advisor-box">
+      <h3>Fiscaal</h3>
+      <ul>
+        <li>Bij toekenning: geen belasting</li>
+        <li>Bij uitoefening: FMV - uitoefenprijs = box 1</li>
+        <li>Alternatief: SAR (eenvoudiger)</li>
+        <li>Advies: fiscalist raadplegen</li>
+      </ul>
+    </div>
+  </div>
+  <span class="logo">finn</span>
+  <span class="slide-num">7 / 9</span>
+</div>
+
+<!-- Slide 8: Fiscaal -->
+<div class="slide">
+  <div class="eyebrow">Fiscaal</div>
+  <h2>Fiscale structuur <em>gewaarborgd</em></h2>
+  <div class="solution-box">
+    <h3>Waarom de SAFE-structuur werkt</h3>
+    <ol>
+      <li><strong>Leon tekent nu een SAFE</strong> -- juridisch een lening, geen equity. Er is dus geen waardering op dit moment.</li>
+      <li><strong>Quan & Vuong treden toe bij trigger event</strong> (bijv. 1 augustus) -- BV is dan nog pre-revenue, pre-product. Aandelen zijn nominale waarde waard.</li>
+      <li><strong>SAFE converteert tegelijk</strong> -- pas op dat moment ontstaat equity voor Leon, simultaan met toetreding founders.</li>
+      <li><strong>Geen waardeversprong</strong> -- er is geen moment waarop aandelen al "meer waard" zijn voordat Quan/Vuong erin zitten.</li>
+    </ol>
+  </div>
+  <div class="risk-box">
+    <h3>Risico alleen bij verkeerde volgorde</h3>
+    <p style="margin-top:8px; color:var(--text);">Als Leon eerst equity zou krijgen en daarna pas Quan/Vuong toetreden, kan de Belastingdienst het verschil als schenking of loon aanmerken. De SAFE + simultaan trigger event voorkomt dit.</p>
+  </div>
+  <p style="margin-top: 24px; color: var(--sage-mid); font-size: 0.9rem;">Bevestig structuur met TeekensKarstens bij het plannen van het trigger event.</p>
+  <span class="logo">finn</span>
+  <span class="slide-num">8 / 9</span>
+</div>
+
+<!-- Slide 9: Open items -->
+<div class="slide">
+  <div class="eyebrow">Volgende stappen</div>
+  <h2>Open <em>items</em></h2>
+  <ul class="open-items">
+    <li>KvK-nummers holdings Quan, Vuong en Leon opvragen</li>
+    <li>Exacte datum trigger event bepalen</li>
+    <li>Aandeelhoudersovereenkomst opstellen (stem, veto, drag/tag along)</li>
+    <li>Fiscalist raadplegen over overdracht-structuur</li>
+    <li>Presentatie/pitch deck bijwerken met actuele cap table</li>
+    <li>KvK-inschrijving mijnfinn B.V. verifieren</li>
+  </ul>
+  <div class="slide-divider" style="margin-top:48px;"></div>
+  <p style="font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--sage-mid); letter-spacing:0.08em;">
+    Intern werkdocument -- geen juridisch advies. Raadpleeg TeekensKarstens of een fiscalist voor definitieve structurering.
+  </p>
+  <span class="logo">finn</span>
+  <span class="slide-num">9 / 9</span>
+</div>
+
+</body>
+</html>
