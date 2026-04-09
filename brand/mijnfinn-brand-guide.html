@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mijnfinn Brand Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;600&family=DM+Mono:wght@300;400;500&family=Lavishly+Yours&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --teal: #032C35;
+    --teal-mid: #2A5C6A;
+    --terra: #C4634A;
+    --terra-deep: #9E4733;
+    --sage: #D7E5E2;
+    --sage-mid: #506E64;
+    --terra-surf: #F2EBE7;
+    --bg: #FFFFFF;
+    --text: #1A2E28;
+    --muted: #5A6E68;
+    --border: rgba(3,44,53,0.1);
+  }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Nav */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 100;
+  }
+  .nav-logo { display: flex; align-items: baseline; text-decoration: none; }
+  .nav-title { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+  /* Sections */
+  .section { max-width: 960px; margin: 0 auto; padding: 4rem; }
+  .section-dark { background: var(--teal); color: var(--sage); }
+  .section-sage { background: var(--sage); }
+  .section-terra { background: var(--terra-surf); }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--terra-deep); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--terra-deep); }
+  .section-dark .eyebrow { color: var(--terra); }
+  .section-dark .eyebrow::before { background: var(--terra); }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 400; color: var(--teal);
+    letter-spacing: -0.02em; margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 400; color: var(--teal);
+    letter-spacing: -0.02em; margin-bottom: 1.5rem;
+  }
+  h2 em { font-style: italic; color: var(--terra); }
+  .section-dark h2 { color: var(--sage); }
+  .section-dark h2 em { color: var(--terra); }
+
+  h3 {
+    font-family: 'Jost', sans-serif; font-size: 1rem; font-weight: 600;
+    color: var(--teal); margin: 2rem 0 0.75rem;
+  }
+
+  p { margin-bottom: 1rem; color: var(--muted); max-width: 640px; }
+  .section-dark p { color: rgba(215,229,226,0.7); }
+
+  /* Logo display */
+  .logo-display {
+    display: flex; align-items: baseline; padding: 3rem;
+    border-radius: 4px; margin: 1.5rem 0;
+  }
+  .logo-display.on-white { background: var(--bg); border: 1px solid var(--border); }
+  .logo-display.on-teal { background: var(--teal); }
+  .logo-display.on-terra-surf { background: var(--terra-surf); }
+
+  .logo-mijn {
+    font-family: 'Lavishly Yours', cursive;
+    font-weight: 400; letter-spacing: 0; margin-right: 6px;
+  }
+  .logo-finn {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; letter-spacing: -0.03em;
+    font-feature-settings: "liga" 1, "clig" 1, "dlig" 1;
+    font-variant-ligatures: common-ligatures discretionary-ligatures;
+  }
+
+  .logo-label {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; color: var(--muted); margin-left: auto;
+  }
+
+  /* Color swatches */
+  .colors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  .swatch { border-radius: 4px; overflow: hidden; }
+  .swatch-color { height: 80px; }
+  .swatch-info { padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-top: none; }
+  .swatch-name { font-family: 'Jost', sans-serif; font-weight: 500; font-size: 0.85rem; color: var(--teal); }
+  .swatch-hex { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+  .swatch-var { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--sage-mid); }
+
+  /* Font samples */
+  .font-sample { margin: 1.5rem 0; padding: 2rem; background: var(--sage); border-radius: 4px; }
+  .font-sample-name {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-mid); margin-bottom: 0.75rem;
+  }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  th {
+    text-align: left; padding: 8px 12px;
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--teal-mid); border-bottom: 2px solid var(--border);
+  }
+  td { padding: 10px 12px; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+
+  /* Spacing */
+  .spacer { height: 2rem; }
+
+  /* Do / Don't */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+  .do-box, .dont-box { padding: 1.5rem; border-radius: 4px; }
+  .do-box { background: var(--sage); border-top: 3px solid var(--sage-mid); }
+  .dont-box { background: var(--terra-surf); border-top: 3px solid var(--terra); }
+  .do-box h4, .dont-box h4 {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.75rem;
+  }
+  .do-box h4 { color: var(--sage-mid); }
+  .dont-box h4 { color: var(--terra-deep); }
+  .do-box li, .dont-box li { font-size: 0.85rem; padding: 3px 0; color: var(--text); }
+
+  @media print {
+    .section { padding: 2rem; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <span class="logo-mijn" style="font-size:1.8rem; color:#9E4733;">mijn</span>
+    <span class="logo-finn" style="font-size:1.2rem; color:#032C35;">finn</span>
+  </a>
+  <span class="nav-title">Brand Guide</span>
+</nav>
+
+<!-- Hero -->
+<div class="section">
+  <div class="eyebrow">Brand Identity</div>
+  <h1>mijnfinn</h1>
+  <p>Jouw financiele partner. Dit document beschrijft de visuele identiteit van mijnfinn: logo, kleuren, typografie en gebruik.</p>
+</div>
+
+<!-- Logo -->
+<div class="section">
+  <div class="eyebrow">Logo</div>
+  <h2>Het <em>mijnfinn</em> logo</h2>
+  <p>Het logo bestaat uit twee delen: "mijn" in Lavishly Yours (handgeschreven, terra) en "finn" in Playfair Display Bold (serif, teal). De fi-ligature in "finn" is essentieel: het bolletje van de f en de i overlappen.</p>
+
+  <h3>Primair logo (terra + teal op wit)</h3>
+  <div class="logo-display on-white">
+    <span class="logo-mijn" style="font-size:4rem; color:#9E4733;">mijn</span>
+    <span class="logo-finn" style="font-size:3rem; color:#032C35;">finn</span>
+    <span class="logo-label">Primair</span>
+  </div>
+
+  <h3>Op donkere achtergrond (terra + sage op teal)</h3>
+  <div class="logo-display on-teal">
+    <span class="logo-mijn" style="font-size:4rem; color:#C4634A;">mijn</span>
+    <span class="logo-finn" style="font-size:3rem; color:#D7E5E2;">finn</span>
+    <span class="logo-label" style="color:#5a8a7e;">Donker</span>
+  </div>
+
+  <h3>Monochroom teal</h3>
+  <div class="logo-display on-white">
+    <span class="logo-mijn" style="font-size:4rem; color:#032C35;">mijn</span>
+    <span class="logo-finn" style="font-size:3rem; color:#032C35;">finn</span>
+    <span class="logo-label">Monochroom</span>
+  </div>
+
+  <h3>Monochroom zwart</h3>
+  <div class="logo-display on-white">
+    <span class="logo-mijn" style="font-size:4rem; color:#111;">mijn</span>
+    <span class="logo-finn" style="font-size:3rem; color:#111;">finn</span>
+    <span class="logo-label">Zwart</span>
+  </div>
+
+  <h3>Submark: alleen "finn"</h3>
+  <div class="logo-display on-white">
+    <span class="logo-finn" style="font-size:3rem; color:#032C35;">finn</span>
+    <span class="logo-label">Submark</span>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="do-dont">
+    <div class="do-box">
+      <h4>Wel</h4>
+      <ul>
+        <li>Gebruik altijd de fi-ligature in "finn"</li>
+        <li>Houd "mijn" in Lavishly Yours handgeschreven stijl</li>
+        <li>Gebruik de vastgestelde kleurcombinaties</li>
+        <li>Houd voldoende witruimte rond het logo</li>
+      </ul>
+    </div>
+    <div class="dont-box">
+      <h4>Niet</h4>
+      <ul>
+        <li>De fi-ligature verbreken (losse f en i)</li>
+        <li>"mijn" in een ander font zetten</li>
+        <li>Het logo vervormen of schuin zetten</li>
+        <li>Andere kleuren gebruiken dan hieronder beschreven</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Kleuren -->
+<div class="section section-sage">
+  <div class="eyebrow">Kleuren</div>
+  <h2>Kleurenpalet</h2>
+
+  <h3>Primaire kleuren</h3>
+  <div class="colors">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#032C35;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Teal</div>
+        <div class="swatch-hex">#032C35</div>
+        <div class="swatch-var">--teal</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#C4634A;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Terra</div>
+        <div class="swatch-hex">#C4634A</div>
+        <div class="swatch-var">--terra</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#D7E5E2;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Sage</div>
+        <div class="swatch-hex">#D7E5E2</div>
+        <div class="swatch-var">--sage</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FFFFFF; border:1px solid #eee;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">White</div>
+        <div class="swatch-hex">#FFFFFF</div>
+        <div class="swatch-var">--bg</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Secundaire kleuren</h3>
+  <div class="colors">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2A5C6A;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Teal Mid</div>
+        <div class="swatch-hex">#2A5C6A</div>
+        <div class="swatch-var">--teal-mid</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#9E4733;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Terra Deep</div>
+        <div class="swatch-hex">#9E4733</div>
+        <div class="swatch-var">--terra-deep</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#506E64;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Sage Mid</div>
+        <div class="swatch-hex">#506E64</div>
+        <div class="swatch-var">--sage-mid</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F2EBE7;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Terra Surf</div>
+        <div class="swatch-hex">#F2EBE7</div>
+        <div class="swatch-var">--terra-surf</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Tekstkleuren</h3>
+  <div class="colors">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1A2E28;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Text</div>
+        <div class="swatch-hex">#1A2E28</div>
+        <div class="swatch-var">--text</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#5A6E68;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Muted</div>
+        <div class="swatch-hex">#5A6E68</div>
+        <div class="swatch-var">--muted</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Typografie -->
+<div class="section">
+  <div class="eyebrow">Typografie</div>
+  <h2>Fonts</h2>
+
+  <h3>Logo: "mijn"</h3>
+  <div class="font-sample">
+    <div class="font-sample-name">Lavishly Yours -- Google Fonts</div>
+    <span style="font-family:'Lavishly Yours',cursive; font-size:3rem; color:var(--terra-deep);">mijn finn abcdefghijklmnopqrstuvwxyz</span>
+  </div>
+
+  <h3>Logo + Headings: "finn"</h3>
+  <div class="font-sample">
+    <div class="font-sample-name">Playfair Display 700 -- Google Fonts</div>
+    <span style="font-family:'Playfair Display',serif; font-weight:700; font-size:2.5rem; color:var(--teal); font-feature-settings:'liga' 1,'clig' 1,'dlig' 1; font-variant-ligatures:common-ligatures discretionary-ligatures;">finn ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
+  </div>
+  <p style="font-size:0.85rem;">Let op: de fi-ligature moet ALTIJD aan staan via <code>font-feature-settings: "liga" 1, "clig" 1, "dlig" 1</code></p>
+
+  <h3>Body tekst</h3>
+  <div class="font-sample">
+    <div class="font-sample-name">Jost 300 -- Google Fonts</div>
+    <span style="font-family:'Jost',sans-serif; font-weight:300; font-size:1.2rem; color:var(--text);">Finn is je persoonlijke CFO via WhatsApp. Stel een vraag, stuur een bon, vraag een factuur. 0123456789</span>
+  </div>
+
+  <h3>Labels, mono, technisch</h3>
+  <div class="font-sample">
+    <div class="font-sample-name">DM Mono 400 -- Google Fonts</div>
+    <span style="font-family:'DM Mono',monospace; font-size:1rem; color:var(--teal-mid);">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 @#$%</span>
+  </div>
+
+  <div class="spacer"></div>
+
+  <h3>Typografie hiërarchie</h3>
+  <table>
+    <thead>
+      <tr><th>Element</th><th>Font</th><th>Weight</th><th>Grootte</th><th>Kleur</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>H1</td><td>Playfair Display</td><td>400</td><td>clamp(2.75rem, 4.5vw, 3.875rem)</td><td>Teal</td></tr>
+      <tr><td>H2</td><td>Playfair Display</td><td>400</td><td>clamp(1.875rem, 3vw, 2.5rem)</td><td>Teal, italic accent in Terra</td></tr>
+      <tr><td>Eyebrow</td><td>DM Mono</td><td>400</td><td>0.75rem</td><td>Terra Deep</td></tr>
+      <tr><td>Body</td><td>Jost</td><td>300</td><td>19px / 1.7</td><td>Text (#1A2E28)</td></tr>
+      <tr><td>Body muted</td><td>Jost</td><td>300</td><td>0.9375rem</td><td>Muted (#5A6E68)</td></tr>
+      <tr><td>Labels</td><td>DM Mono</td><td>400</td><td>0.75rem</td><td>Teal Mid / Sage Mid</td></tr>
+      <tr><td>Logo "mijn"</td><td>Lavishly Yours</td><td>400</td><td>Variabel</td><td>Terra Deep (#9E4733)</td></tr>
+      <tr><td>Logo "finn"</td><td>Playfair Display</td><td>700</td><td>Variabel</td><td>Teal (#032C35)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Gebruik -->
+<div class="section section-dark" style="max-width:100%; padding:4rem;">
+  <div style="max-width:960px; margin:0 auto;">
+    <div class="eyebrow">Gebruik</div>
+    <h2>CSS <em>tokens</em></h2>
+    <p>Kopieer dit blok in elke HTML/CSS file:</p>
+    <div style="background:rgba(0,0,0,0.3); border-radius:4px; padding:1.5rem; margin:1rem 0; font-family:'DM Mono',monospace; font-size:0.8rem; color:var(--sage); line-height:1.8;">
+      :root {<br>
+      &nbsp;&nbsp;--teal: #032C35;<br>
+      &nbsp;&nbsp;--teal-mid: #2A5C6A;<br>
+      &nbsp;&nbsp;--terra: #C4634A;<br>
+      &nbsp;&nbsp;--terra-deep: #9E4733;<br>
+      &nbsp;&nbsp;--sage: #D7E5E2;<br>
+      &nbsp;&nbsp;--sage-mid: #506E64;<br>
+      &nbsp;&nbsp;--terra-surf: #F2EBE7;<br>
+      &nbsp;&nbsp;--bg: #FFFFFF;<br>
+      &nbsp;&nbsp;--text: #1A2E28;<br>
+      &nbsp;&nbsp;--muted: #5A6E68;<br>
+      &nbsp;&nbsp;--border: rgba(3,44,53,0.1);<br>
+      }
+    </div>
+
+    <div class="spacer"></div>
+
+    <p>Google Fonts import:</p>
+    <div style="background:rgba(0,0,0,0.3); border-radius:4px; padding:1rem; margin:1rem 0; font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--sage); line-height:1.6; word-break:break-all;">
+      https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;600&family=DM+Mono:wght@300;400;500&family=Lavishly+Yours&display=swap
+    </div>
+  </div>
+</div>
+
+<!-- Document styling -->
+<div class="section">
+  <div class="eyebrow">Documenten</div>
+  <h2>Juridische <em>documenten</em></h2>
+  <p>Voor formele documenten (SAFE, overeenkomsten, presentaties) gebruiken we dezelfde brand tokens met de volgende specifieke instellingen:</p>
+
+  <table>
+    <thead>
+      <tr><th>Element</th><th>Specificatie</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Logo header</td><td>"mijn" Lavishly Yours 2.2rem terra-deep + "finn" Playfair 1.5rem teal</td></tr>
+      <tr><td>Body font</td><td>Jost 300, 10.5pt, line-height 1.65</td></tr>
+      <tr><td>Artikelnummers</td><td>DM Mono 0.8rem, teal-mid</td></tr>
+      <tr><td>Sub-labels (h4)</td><td>DM Mono 0.7rem, uppercase, terra-deep</td></tr>
+      <tr><td>Definities</td><td>Jost 500, teal</td></tr>
+      <tr><td>Gedefinieerde termen</td><td>Jost 500, terra-deep</td></tr>
+      <tr><td>Highlight box</td><td>Sage achtergrond, teal-mid border-left 3px</td></tr>
+      <tr><td>Pagina</td><td>A4, marges 2.2cm boven/onder, 2.5cm links/rechts</td></tr>
+      <tr><td>Paginanummering</td><td>DM Mono 11px, sage-mid, gecentreerd onderaan</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Footer -->
+<div style="padding:2rem 4rem; border-top:3px solid var(--teal-mid); display:flex; align-items:center; justify-content:space-between;">
+  <div>
+    <span class="logo-mijn" style="font-size:1.4rem; color:#9E4733;">mijn</span>
+    <span class="logo-finn" style="font-size:1rem; color:#032C35;">finn</span>
+  </div>
+  <span style="font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--sage-mid); letter-spacing:0.08em;">Brand Guide v1.0 -- April 2026</span>
+</div>
+
+</body>
+</html>
