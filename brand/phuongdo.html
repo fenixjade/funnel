@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phuong Do</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Jost:wght@200;300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black:      #111;
+      --dark:       #1A1A1A;
+      --white:      #FFF;
+      --off-white:  #FAFAFA;
+      --grey:       #999;
+      --light-grey: #CCC;
+      --ultra-light:#F0F0F0;
+      --border:     rgba(0,0,0,0.08);
+      --pink:       #F0C4B8;
+      --pink-d:     #D9A090;
+      --blue:       #B8D8D8;
+      --blue-d:     #8FBFBF;
+      --green:      #D7E5E2;
+      --green-d:    #A8C9C0;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      font-size: 20px; line-height: 1.7;
+      color: var(--black); background: var(--white);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    ::selection { background: var(--pink); color: var(--black); }
+
+    .rv { opacity:0; transform:translateY(20px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .rv.v { opacity:1; transform:none; }
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+    /* LANG (integrated in nav) */
+    .lang { display:inline-flex;align-items:center;font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin-left:1rem;padding-left:1.5rem;border-left:1px solid var(--border); }
+    .lang button { background:none;border:none;color:var(--grey);cursor:pointer;padding:.2rem .4rem;opacity:.5;font:inherit;transition:opacity .2s; }
+    .lang button.active { opacity:1;color:var(--black); }
+    .lang button:hover { opacity:1; }
+
+    /* NAV */
+    .nav { position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:1.75rem 3rem;transition:all .4s; }
+    .nav.scrolled { background:rgba(255,255,255,.95);backdrop-filter:blur(16px);padding:1.25rem 3rem;border-bottom:1px solid var(--border); }
+    .nav-logo { font-family:'Playfair Display',serif;font-size:1.375rem;color:var(--black);text-decoration:none; }
+    .nav-links { display:flex;gap:2rem; }
+    .nav-links a { font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);text-decoration:none;transition:color .2s; }
+    .nav-links a:hover { color:var(--black); }
+
+    /* HERO */
+    .hero { min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:0 3rem 5rem 12rem;position:relative;background:var(--white);background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px);background-size:24px 24px;overflow:hidden; }
+    .hero-bg-text { position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:clamp(16rem,26vw,28rem);font-style:italic;font-weight:400;color:var(--off-white);line-height:.8;white-space:nowrap;pointer-events:none;user-select:none; }
+
+    .hero-circle-wrap { display:flex;flex-direction:column;align-items:center;gap:1.5rem;flex-shrink:0;margin-top:200px; }
+    .hero-circle { width:250px;height:250px;border-radius:50%;overflow:hidden; }
+    .hero-concerns { position:relative;height:2.5rem;max-width:400px;overflow:hidden;text-align:center; }
+    .concerns-track { display:flex;flex-direction:column;animation:concernSwap 15s step-end infinite; }
+    .concern { font-family:'Playfair Display',serif;font-size:1.125rem;font-style:italic;color:var(--black);height:2.5rem;line-height:2.5rem;white-space:nowrap; }
+    .hero-circle .face-slot { width:250px;height:250px;border-radius:50%;margin:0; }
+    .hero-circle .face-track { animation-name:faceSwapLg;animation-duration:15s; }
+    .hero-circle .face-img { width:250px;height:250px;border-radius:50%; }
+
+    .hero-content { position:relative;z-index:2;width:100%;display:flex;justify-content:flex-start;align-items:center;gap:4rem; }
+    .hero h1 { font-family:'Playfair Display',serif;font-size:clamp(3.5rem,7vw,6.5rem);font-weight:700;line-height:.95;letter-spacing:-.04em;max-width:700px; }
+    .hero h1 em { font-style:italic;font-weight:400; }
+    .hero-right { text-align:right;max-width:320px; }
+    .hero-sub { font-family:'DM Mono',monospace;font-size:.875rem;line-height:1.8;color:var(--grey);letter-spacing:.02em;margin-bottom:2rem; }
+    .hero-cta { font-family:'DM Mono',monospace;font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);background:none;text-decoration:none;display:inline-flex;align-items:center;gap:.75rem;padding:1rem 0;border-bottom:1.5px solid var(--black);transition:all .35s cubic-bezier(.16,1,.3,1); }
+    .hero-cta:hover { color:var(--pink-d);border-color:var(--pink-d);gap:1.25rem; }
+
+    /* INLINE FACE SCROLLER -- circle in hero */
+    .face-slot {
+      display:inline-block;
+      width:100px;height:100px;
+      border-radius:50%;
+      overflow:hidden;
+      vertical-align:middle;
+      margin:0 .25rem;
+      position:relative;
+    }
+    .face-track {
+      display:flex;
+      flex-direction:column;
+      animation:faceSwap 15s step-end infinite;
+    }
+    .face-img {
+      width:100px;height:100px;
+      object-fit:cover;
+      flex-shrink:0;
+    }
+    .face-slot .face-img { border-radius:50%; }
+    /* faceSwap generated via JS for flexibility */
+
+    /* FULL-WIDTH PHOTO STATEMENT */
+    .photo-statement {
+      position:relative;
+      width:100%;
+      min-height:70vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .photo-statement-bg {
+      position:absolute;inset:0;
+      z-index:0;
+    }
+    .photo-statement-bg img {
+      width:100%;height:100%;
+      object-fit:cover;
+      filter:brightness(.85);
+    }
+    .photo-statement-card {
+      position:relative;z-index:1;
+      background:var(--white);
+      padding:4rem 5rem;
+      max-width:700px;
+      text-align:center;
+    }
+    .photo-statement-card h2 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.75rem,3.5vw,2.75rem);
+      font-weight:600;line-height:1.4;
+      letter-spacing:-.03em;
+      margin-bottom:1rem;
+    }
+    .photo-statement-card h2 em { font-style:italic;font-weight:400; }
+    .photo-statement-card p {
+      font-size:1.0625rem;color:var(--grey);line-height:1.8;
+    }
+    /* square in photo statement */
+    .face-slot-lg {
+      display:inline-block;
+      width:125px;height:125px;
+      border-radius:50%;
+      overflow:hidden;
+      vertical-align:middle;
+      margin:0 .25rem;
+      position:relative;
+    }
+    .face-slot-lg .face-track {
+      animation:faceSwapSm 5s step-end infinite;
+    }
+    @keyframes faceSwapSm {
+      0%   { transform:translateY(0); }
+      20%  { transform:translateY(-56px); }
+      40%  { transform:translateY(-112px); }
+      60%  { transform:translateY(-168px); }
+      80%  { transform:translateY(-224px); }
+      100% { transform:translateY(0); }
+    }
+    .face-slot-lg .face-img {
+      width:125px;height:125px;
+      border-radius:50%;
+    }
+
+    /* SCROLL ARROW */
+    .scroll-arrow {
+      color:var(--blue);text-decoration:none;
+      display:block;text-align:center;margin-top:2rem;
+      animation:arrowBounce 2s ease-in-out infinite;
+      z-index:2;line-height:1;
+    }
+    @keyframes arrowBounce {
+      0%,100% { transform:translateY(0); }
+      50% { transform:translateY(16px); }
+    }
+
+    /* MARQUEE */
+    .marquee { padding:1.25rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;white-space:nowrap; }
+    .marquee-track { display:inline-flex;animation:slide 25s linear infinite; }
+    .marquee-item { font-family:'Playfair Display',serif;font-size:1.25rem;font-style:italic;color:var(--black);padding:0 1.5rem; }
+    .marquee-dot { color:var(--light-grey);padding:0 .25rem;font-size:1rem; }
+    @keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* UTILS */
+    .e-s { padding:7rem 3rem; }
+    .e-sm { padding:5rem 3rem; }
+    .mx { max-width:1200px;margin:0 auto; }
+
+    .e-label { font-family:'DM Mono',monospace;font-size:.6875rem;letter-spacing:.22em;text-transform:uppercase;color:var(--grey);margin-bottom:1.75rem;display:flex;align-items:center;gap:1rem; }
+    .e-label::before { content:'';width:20px;height:1px;background:var(--black); }
+
+    .e-h { font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.25rem);font-weight:600;line-height:1.1;letter-spacing:-.03em; }
+    .e-h em { font-style:italic;font-weight:400; }
+
+    /* SLIDE-OVER CARD SYSTEM */
+    .sticky-hero {
+      position:sticky;top:0;z-index:1;
+    }
+    .page-body {
+      position:relative;z-index:2;
+      background:var(--green);
+      border-radius:0;
+      box-shadow:0 -30px 80px rgba(0,0,0,.1);
+    }
+    .page-body-inner {
+      background:var(--white);
+      background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px);
+      background-size:24px 24px;
+    }
+    .pink-intro {
+      padding:5rem 3rem;
+    }
+    .tension-grid { display:grid;grid-template-columns:1fr 1fr 1fr;gap:0; }
+    .tension-cell { padding:3rem 2.5rem;border-right:1px solid rgba(0,0,0,.06);position:relative; }
+    .tension-cell:last-child { border-right:none; }
+    .tension-num { font-family:'Playfair Display',serif;font-size:3.5rem;font-style:italic;color:rgba(0,0,0,.08);line-height:1;margin-bottom:1.5rem;transition:color .3s; }
+    .tension-cell:hover .tension-num { color:rgba(0,0,0,.2); }
+    .tension-cell h3 { font-family:'Jost',sans-serif;font-size:1.0625rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem; }
+    .tension-cell p { font-size:1rem;color:rgba(0,0,0,.5);line-height:1.7; }
+
+    /* ABOUT */
+    .about-layout { display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start; }
+    .about-pull { font-family:'Playfair Display',serif;font-size:2.25rem;font-weight:500;font-style:italic;line-height:1.3;color:var(--black);position:sticky;top:8rem;letter-spacing:-.02em; }
+    .about-pull .accent-p { color:var(--pink-d); }
+    .about-pull .accent-b { color:var(--blue-d); }
+    .about-pull .accent-g { color:var(--green-d); }
+    .about-body p { font-size:1.0625rem;color:var(--grey);line-height:1.9;margin-bottom:1.5rem; }
+
+    /* WORK */
+    .work-grid { display:grid;grid-template-columns:1.3fr 1fr;grid-template-rows:auto auto;gap:1px;background:var(--ultra-light); }
+    .w-card { background:var(--white);padding:3.5rem 3rem;transition:background .4s; }
+    .w-card:hover { background:var(--off-white); }
+    .w-card.main { grid-row:span 2;background:var(--pink);display:flex;flex-direction:column;justify-content:space-between; }
+    .w-card.main:hover { background:var(--pink-d); }
+    .w-card:nth-child(2) { border-left:3px solid var(--blue); }
+    .w-card:nth-child(3) { border-left:3px solid var(--green); }
+    .w-tag { font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:2rem; }
+    .w-card.main .w-tag { color:var(--black);opacity:.6; }
+    .w-card h3 { font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;margin-bottom:.75rem;letter-spacing:-.02em; }
+    .w-card.main h3 { font-size:2.25rem;font-weight:600;color:var(--black); }
+    .w-type { font-family:'DM Mono',monospace;font-size:.625rem;font-weight:400;text-transform:uppercase;letter-spacing:.1em;color:var(--grey);margin-bottom:1rem; }
+    .w-card p { font-size:1rem;color:var(--grey);line-height:1.75; }
+    .w-card.main p { color:rgba(0,0,0,.6); }
+    .w-link { display:inline-flex;align-items:center;gap:.5rem;font-family:'DM Mono',monospace;font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--black);text-decoration:none;margin-top:2rem;transition:gap .3s; }
+    .w-link:hover { gap:1rem; }
+    .w-link::after { content:'\2192';font-size:1rem; }
+
+    /* PROCESS */
+    .process-row { display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border); }
+    .p-step { padding:3rem 2.5rem;border-right:1px solid var(--border); }
+    .p-step:last-child { border-right:none; }
+    .p-step:nth-child(1) .p-num { color:var(--pink); }
+    .p-step:nth-child(2) .p-num { color:var(--blue); }
+    .p-step:nth-child(3) .p-num { color:var(--green); }
+    .p-num { font-family:'Playfair Display',serif;font-size:4.5rem;font-style:italic;line-height:1;margin-bottom:1.5rem;transition:color .3s; }
+    .p-step:nth-child(1):hover .p-num { color:var(--pink-d); }
+    .p-step:nth-child(2):hover .p-num { color:var(--blue-d); }
+    .p-step:nth-child(3):hover .p-num { color:var(--green-d); }
+    .p-step h3 { font-family:'Jost',sans-serif;font-size:1rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem; }
+    .p-step p { font-size:1rem;color:var(--grey);line-height:1.75; }
+
+    /* TIMELINE */
+    .tl-section { background:var(--off-white); }
+    .tl-wrap { display:grid;grid-template-columns:.35fr 1fr;gap:5rem; }
+    .tl-side { position:sticky;top:8rem; }
+    .tl-row { display:grid;grid-template-columns:80px 1fr;gap:2rem;padding:1.25rem 0;border-bottom:1px solid var(--border);transition:padding-left .3s; }
+    .tl-row:hover { padding-left:.5rem; }
+    .tl-row:first-child { border-top:1px solid var(--border); }
+    .tl-yr { font-family:'DM Mono',monospace;font-size:.75rem;color:var(--grey); }
+    .tl-name { font-family:'Playfair Display',serif;font-size:1.125rem; }
+    .tl-role { font-size:.8125rem;color:var(--grey); }
+    /* alternate pastel dots on timeline */
+    .tl-row:nth-child(3n+1) .tl-yr { color:var(--pink-d); }
+    .tl-row:nth-child(3n+2) .tl-yr { color:var(--blue-d); }
+    .tl-row:nth-child(3n+3) .tl-yr { color:var(--green-d); }
+
+    /* AUDIENCE */
+    .aud-row { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem; }
+    .aud-cell { padding:3rem 2.5rem;border:1px solid var(--border);background:var(--white);transition:all .35s;position:relative;overflow:hidden; }
+    .aud-cell:first-child::before { content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1); }
+    .aud-cell:last-child::before { content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1); }
+    .aud-cell:hover { transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.04); }
+    .aud-cell:hover::before { transform:scaleX(1); }
+    .aud-tag { font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:1.25rem; }
+    .aud-cell h3 { font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;margin-bottom:.5rem; }
+    .aud-cell p { font-size:1rem;color:var(--grey);line-height:1.75; }
+
+    /* QUOTE */
+    .quote-band { background:var(--off-white);padding:7rem 3rem;text-align:center;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border); }
+    .quote-band blockquote { font-family:'Playfair Display',serif;font-size:clamp(1.75rem,3.5vw,3rem);font-style:italic;font-weight:400;line-height:1.3;color:var(--black);max-width:750px;margin:0 auto 2rem;letter-spacing:-.02em;position:relative; }
+    .quote-band .q-who { font-size:1rem;font-weight:500;color:var(--black); }
+    .quote-band .q-role { font-family:'DM Mono',monospace;font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-top:.25rem; }
+
+    /* WORK WITH ME */
+    .work-with-me {
+      text-align:center;padding:8rem 3rem 6rem;position:relative;
+    }
+    .wwm-annotation {
+      font-family:'Playfair Display',serif;font-size:1.125rem;font-style:italic;
+      color:var(--blue-d);position:absolute;
+      top:6rem;left:calc(50% + 120px);
+      transform:rotate(-8deg);
+    }
+    .wwm-arrow {
+      position:absolute;top:7.5rem;left:calc(50% + 60px);
+      transform:rotate(5deg);
+    }
+    .wwm-title {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(4rem,10vw,8rem);font-weight:700;
+      line-height:.95;letter-spacing:-.04em;
+      margin-bottom:2rem;
+    }
+    .wwm-title em { font-style:italic;font-weight:400; }
+    .wwm-links { display:flex;gap:2rem;justify-content:center; }
+    .wwm-links a {
+      font-family:'DM Mono',monospace;font-size:.75rem;
+      letter-spacing:.1em;text-transform:uppercase;
+      color:var(--grey);text-decoration:none;transition:color .2s;
+    }
+    .wwm-links a:hover { color:var(--black); }
+
+    /* CONTACT */
+    .contact-layout { display:grid;grid-template-columns:1fr 1fr;gap:0; }
+    .contact-l { padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center; }
+    .contact-l h2 { font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;line-height:.95;letter-spacing:-.04em;margin-bottom:2rem; }
+    .contact-l h2 em { font-style:italic;color:var(--pink-d); }
+    .contact-l > p { font-size:1.0625rem;color:var(--grey);line-height:1.8;max-width:360px;margin-bottom:3rem; }
+    .cd { display:flex;align-items:center;gap:1rem;margin-bottom:.75rem; }
+    .cd-label { font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);width:50px; }
+    .cd a { font-size:1.0625rem;color:var(--black);text-decoration:none;transition:color .2s; }
+    .cd a:hover { color:var(--pink-d); }
+    .contact-r { padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center;background:var(--off-white); }
+    .cf { display:flex;flex-direction:column; }
+    .cf-field { border-bottom:1px solid var(--ultra-light);transition:border-color .3s; }
+    .cf-field:focus-within { border-color:var(--black); }
+    .cf-field label { display:block;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);padding:1.25rem 0 .4rem; }
+    .cf-field input,.cf-field textarea { width:100%;font-family:'Jost',sans-serif;font-size:1rem;font-weight:400;padding:0 0 1rem;background:transparent;border:none;color:var(--black);outline:none; }
+    .cf-field textarea { min-height:80px;resize:none; }
+    .cf-field input::placeholder,.cf-field textarea::placeholder { color:var(--light-grey); }
+    .cf button { align-self:flex-start;margin-top:2rem;font-family:'DM Mono',monospace;font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;padding:1.125rem 2.75rem;background:var(--pink);color:var(--black);border:none;cursor:pointer;transition:background .3s; }
+    .cf button:hover { background:var(--pink-d); }
+
+    /* FOOTER */
+    .footer { padding:2rem 3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--white); }
+    .footer-name { font-family:'Playfair Display',serif;font-size:1rem; }
+    .footer-mid { display:flex;gap:2rem; }
+    .footer-mid a { font-family:'DM Mono',monospace;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);text-decoration:none;transition:color .2s; }
+    .footer-mid a:hover { color:var(--black); }
+    .footer-end { font-family:'DM Mono',monospace;font-size:.6875rem;color:var(--grey); }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .nav{padding:1.25rem 1.5rem}.hero{padding:0 1.5rem 3rem}.hero-content{flex-direction:column;align-items:flex-start;gap:2rem}.hero-right{text-align:left}.hero-photo{display:none}.hero-bg-text{font-size:10rem}
+      .e-s{padding:5rem 1.5rem}.e-sm{padding:3.5rem 1.5rem}.page-body{border-radius:0}.pink-intro{padding:3rem 1.5rem}.photo-statement{min-height:50vh}.photo-statement-card{padding:2.5rem 2rem;margin:0 1rem}.face-slot{width:52px;height:52px}.face-slot .face-img{width:52px;height:52px}.face-slot-lg{width:44px;height:44px}.face-slot-lg .face-img{width:44px;height:44px}.tension-grid{grid-template-columns:1fr}.tension-cell{border-right:none;border-bottom:1px solid rgba(0,0,0,.06)}
+      .about-layout{grid-template-columns:1fr;gap:2.5rem}.about-pull{position:static;font-size:1.625rem}
+      .work-grid{grid-template-columns:1fr}.w-card.main{grid-row:auto}.w-card:nth-child(2),.w-card:nth-child(3){border-left:none;border-top:3px solid}
+      .process-row{grid-template-columns:1fr}.p-step{border-right:none;border-bottom:1px solid var(--border)}
+      .tl-wrap{grid-template-columns:1fr;gap:2rem}.tl-side{position:static}.tl-row{grid-template-columns:1fr;gap:.15rem}
+      .aud-row{grid-template-columns:1fr}
+      .contact-layout{grid-template-columns:1fr}.contact-l{padding:3rem 1.5rem}.contact-r{padding:3rem 1.5rem}
+      .quote-band{padding:5rem 1.5rem}
+      .footer{flex-direction:column;gap:1rem;text-align:center;padding:1.5rem}
+      .lang{top:1.25rem;right:1rem}
+    }
+    @media(max-width:480px){.hero h1{font-size:2.75rem}.hero-bg-text{font-size:7rem}.nav-links a:not(:last-child){display:none}}
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-links">
+      <a href="#about" data-nl="Over" data-en="About">Over</a>
+      <a href="#work" data-nl="Werk" data-en="Work">Werk</a>
+      <a href="#contact" data-nl="Contact" data-en="Contact">Contact</a>
+      <div class="lang">
+        <button class="active" onclick="switchLang('nl')">NL</button>
+        <span style="opacity:.3">/</span>
+        <button onclick="switchLang('en')">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sticky-hero">
+  <section class="hero">
+    <div class="hero-bg-text">Phuong</div>
+    <div class="hero-content">
+      <h1 class="rv">Financiele<br>helderheid voor<br><em style="background:var(--pink);padding:0 .15em;margin-left:125px;">ambitieuze</em><br>founders.</h1>
+      <div class="hero-circle-wrap"><div class="hero-circle"><span class="face-slot"><span class="face-track"><img class="face-img" src="faces/face-1.jpeg" alt=""><img class="face-img" src="faces/face-2.jpeg" alt=""><img class="face-img" src="faces/face-3.jpeg" alt=""><img class="face-img" src="faces/face-4.jpeg" alt=""><img class="face-img" src="faces/face-5.jpeg" alt=""><img class="face-img" src="faces/face-6.jpeg" alt=""><img class="face-img" src="faces/face-7.jpeg" alt=""><img class="face-img" src="faces/face-8.jpeg" alt=""><img class="face-img" src="faces/face-9.jpeg" alt=""><img class="face-img" src="faces/face-10.jpeg" alt=""><img class="face-img" src="faces/face-11.jpeg" alt=""><img class="face-img" src="faces/face-12.jpeg" alt=""><img class="face-img" src="faces/face-13.jpeg" alt=""><img class="face-img" src="faces/face-14.jpeg" alt=""><img class="face-img" src="faces/face-15.jpeg" alt=""></span></span></div>
+        <div class="hero-concerns"><div class="concerns-track">
+          <span class="concern">&ldquo;Ik weet niet of ik break-even draai&rdquo;</span>
+          <span class="concern">&ldquo;Mijn boekhouder snapt mijn business niet&rdquo;</span>
+          <span class="concern">&ldquo;Ik durf geen grote beslissingen te nemen&rdquo;</span>
+          <span class="concern">&ldquo;Waar blijft mijn geld eigenlijk?&rdquo;</span>
+          <span class="concern">&ldquo;Ik groei, maar het voelt niet veilig&rdquo;</span>
+          <span class="concern">&ldquo;Kan ik die investering eigenlijk wel aan?&rdquo;</span>
+          <span class="concern">&ldquo;Ik weet niet wat ik mezelf moet betalen&rdquo;</span>
+          <span class="concern">&ldquo;Mijn cashflow is een black box&rdquo;</span>
+          <span class="concern">&ldquo;Ik zou moeten groeien maar durf niet&rdquo;</span>
+          <span class="concern">&ldquo;Wat als ik een verkeerde hire maak?&rdquo;</span>
+          <span class="concern">&ldquo;Ik heb geen idee wat mijn marge is per klant&rdquo;</span>
+          <span class="concern">&ldquo;Mijn omzet groeit maar mijn winst niet&rdquo;</span>
+          <span class="concern">&ldquo;Ik weet niet of ik klaar ben voor een investeerder&rdquo;</span>
+          <span class="concern">&ldquo;Ik besteed meer tijd aan admin dan aan mijn vak&rdquo;</span>
+          <span class="concern">&ldquo;Ik heb geen plan B als het tegenvalt&rdquo;</span>
+        </div></div>
+        <a href="#next" class="scroll-arrow"><svg width="110" height="140" viewBox="0 0 80 100" fill="currentColor"><rect x="25" y="0" width="30" height="60"/><polygon points="0,55 40,100 80,55"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <div class="marquee-track">
+      <span class="marquee-item">Startupbootcamp</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">BTQ Ventures</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Finn</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Innoleaps</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">LayerGloss</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Studio Fenix</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">StartupKids</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Rietveld Academie</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Startupbootcamp</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">BTQ Ventures</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Finn</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Innoleaps</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">LayerGloss</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Studio Fenix</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">StartupKids</span><span class="marquee-dot">&bull;</span>
+      <span class="marquee-item">Rietveld Academie</span><span class="marquee-dot">&bull;</span>
+    </div>
+  </div>
+  </div>
+
+  <div class="page-body" id="next">
+
+  <!-- PINK INTRO -->
+  <div class="pink-intro">
+    <div class="mx">
+      <div class="e-label rv" data-nl="Herkenbaar?" data-en="Sound familiar?">Herkenbaar?</div>
+      <h2 class="e-h rv" style="margin-bottom:3rem;" data-nl="Het bedrijf groeit. De grip op de cijfers <em>niet</em>." data-en="The business is growing. The grip on the numbers <em>isn't</em>.">Het bedrijf groeit. De grip op de cijfers <em>niet</em>.</h2>
+    </div>
+    <div class="tension-grid mx">
+      <div class="tension-cell rv">
+        <div class="tension-num">01</div>
+        <h3 data-nl="Beslissingen op gevoel" data-en="Decisions on gut feeling">Beslissingen op gevoel</h3>
+        <p data-nl="De omzet stijgt, maar niemand kan de marge benoemen. Strategie zonder data is gokken." data-en="Revenue is up, but nobody can name the margin. Strategy without data is gambling.">De omzet stijgt, maar niemand kan de marge benoemen. Strategie zonder data is gokken.</p>
+      </div>
+      <div class="tension-cell rv d1">
+        <div class="tension-num">02</div>
+        <h3 data-nl="Boekhouder kijkt achteruit" data-en="Accountant looks backward">Boekhouder kijkt achteruit</h3>
+        <p data-nl="Kwartaalcijfers die drie weken te laat komen. Geen sparringpartner die vooruit denkt." data-en="Quarterly numbers that arrive three weeks late. No sparring partner thinking ahead.">Kwartaalcijfers die drie weken te laat komen. Geen sparringpartner die vooruit denkt.</p>
+      </div>
+      <div class="tension-cell rv d2">
+        <div class="tension-num">03</div>
+        <h3 data-nl="Te vroeg, te duur" data-en="Too early, too expensive">Te vroeg, te duur</h3>
+        <p data-nl="Een fulltime CFO past niet in het budget. Maar het punt van &laquo;zelf uitzoeken&raquo; is voorbij." data-en="A full-time CFO doesn't fit the budget. But the point of 'figuring it out yourself' has passed.">Een fulltime CFO past niet in het budget. Maar het punt van &laquo;zelf uitzoeken&raquo; is voorbij.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- REST OF PAGE (white bg with grid) -->
+  <div class="page-body-inner">
+
+  <section class="e-s" id="about">
+    <div class="mx">
+      <div class="about-layout">
+        <div class="rv" style="position:sticky;top:8rem;">
+          <img src="phuong.jpg" alt="Phuong Do" style="width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center center;display:block;border-radius:50%;">
+        </div>
+        <div class="about-body">
+          <div class="e-label rv" data-nl="Over Phuong" data-en="About Phuong">Over Phuong</div>
+          <p class="rv" data-nl="Zeven bedrijven opgericht. Van creatief bureau tot no-code startup tot venture capital. Als Investment Director bij BTQ Ventures investeert ze in early-stage tech. Die combinatie van bouwen en investeren geeft een perspectief dat de meeste CFO's niet hebben." data-en="Seven companies founded. From creative agency to no-code startup to venture capital. As Investment Director at BTQ Ventures, she invests in early-stage tech. That combination of building and investing provides a perspective most CFOs don't have.">Zeven bedrijven opgericht. Van creatief bureau tot no-code startup tot venture capital. Als Investment Director bij BTQ Ventures investeert ze in early-stage tech. Die combinatie van bouwen en investeren geeft een perspectief dat de meeste CFO's niet hebben.</p>
+          <p class="rv" data-nl="Opgeleid aan de Gerrit Rietveld Academie. Global Managing Director bij Startupbootcamp. De rode draad: complexe dingen helder maken en bedrijven helpen slimmer te groeien." data-en="Educated at the Gerrit Rietveld Academy. Global Managing Director at Startupbootcamp. The common thread: making complex things clear and helping businesses grow smarter.">Opgeleid aan de Gerrit Rietveld Academie. Global Managing Director bij Startupbootcamp. De rode draad: complexe dingen helder maken en bedrijven helpen slimmer te groeien.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="e-sm" id="work">
+    <div class="mx">
+      <div class="e-label rv" data-nl="Werk" data-en="Work">Werk</div>
+      <h2 class="e-h rv" style="margin-bottom:3rem;" data-nl="Drie sporen." data-en="Three tracks.">Drie sporen.</h2>
+      <div class="work-grid">
+        <div class="w-card main rv">
+          <div><div class="w-tag">Fractional CFO</div><h3 data-nl="Financieel leiderschap zonder de fulltime prijs." data-en="Financial leadership without the full-time price.">Financieel leiderschap zonder de fulltime prijs.</h3></div>
+          <div><p data-nl="Van cashflow forecasting en financiele scan tot strategische beslissingen en investor readiness. Niet spreadsheets invullen, maar richting geven." data-en="From cashflow forecasting and financial scan to strategic decisions and investor readiness. Not filling spreadsheets, but setting direction.">Van cashflow forecasting en financiele scan tot strategische beslissingen en investor readiness. Niet spreadsheets invullen, maar richting geven.</p><a href="#contact" class="w-link" data-nl="Start het gesprek" data-en="Start the conversation">Start het gesprek</a></div>
+        </div>
+        <div class="w-card rv d1">
+          <div class="w-tag">Finn</div><h3 data-nl="CFO via WhatsApp." data-en="CFO via WhatsApp.">CFO via WhatsApp.</h3>
+          <div class="w-type" data-nl="Voor ZZP'ers" data-en="For freelancers">Voor ZZP'ers</div>
+          <p data-nl="Slimme administratie, facturen, BTW en real-time financieel inzicht. Direct via WhatsApp." data-en="Smart bookkeeping, invoicing, VAT, and real-time financial insight. Directly via WhatsApp.">Slimme administratie, facturen, BTW en real-time financieel inzicht. Direct via WhatsApp.</p>
+          <a href="https://www.mijnfinn.nl" target="_blank" rel="noopener" class="w-link" data-nl="Ontdek Finn" data-en="Discover Finn">Ontdek Finn</a>
+        </div>
+        <div class="w-card rv d2">
+          <div class="w-tag">BTQ Ventures</div><h3 data-nl="Early-stage investeringen." data-en="Early-stage investments.">Early-stage investeringen.</h3>
+          <div class="w-type">Seed & Pre-seed</div>
+          <p data-nl="Tech investeringen in health, sustainability, media en blockchain." data-en="Tech investments in health, sustainability, media, and blockchain.">Tech investeringen in health, sustainability, media en blockchain.</p>
+          <a href="#contact" class="w-link" data-nl="Pitch" data-en="Pitch">Pitch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="e-sm">
+    <div class="mx">
+      <div class="e-label rv" data-nl="Proces" data-en="Process">Proces</div>
+      <h2 class="e-h rv" style="margin-bottom:3rem;" data-nl="Van kennismaking naar <em>helderheid</em>." data-en="From introduction to <em>clarity</em>.">Van kennismaking naar <em>helderheid</em>.</h2>
+      <div class="process-row">
+        <div class="p-step rv"><div class="p-num">01</div><h3 data-nl="Kennismaken" data-en="Meet">Kennismaken</h3><p data-nl="Een open gesprek. Waar sta je, waar wil je naartoe, waar schuurt het. Geen verplichtingen." data-en="An open conversation. Where you are, where you want to go, where it hurts. No strings attached.">Een open gesprek. Waar sta je, waar wil je naartoe, waar schuurt het. Geen verplichtingen.</p></div>
+        <div class="p-step rv d1"><div class="p-num">02</div><h3 data-nl="Doorlichten" data-en="Diagnose">Doorlichten</h3><p data-nl="Een duik in de cijfers, processen en structuur. Een helder beeld van de situatie en wat er nodig is." data-en="A dive into the numbers, processes and structure. A clear picture of the situation and what's needed.">Een duik in de cijfers, processen en structuur. Een helder beeld van de situatie en wat er nodig is.</p></div>
+        <div class="p-step rv d2"><div class="p-num">03</div><h3 data-nl="Bouwen" data-en="Build">Bouwen</h3><p data-nl="Dashboards, forecasts, en de strategische beslissingen die het bedrijf vooruit brengen." data-en="Dashboards, forecasts, and the strategic decisions that move the business forward.">Dashboards, forecasts, en de strategische beslissingen die het bedrijf vooruit brengen.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="e-s tl-section">
+    <div class="mx">
+      <div class="tl-wrap">
+        <div class="tl-side">
+          <div class="e-label rv" data-nl="Traject" data-en="Journey">Traject</div>
+          <h2 class="e-h rv" data-nl="20 jaar bouwen, investeren, <em>leren</em>." data-en="20 years of building, investing, <em>learning</em>.">20 jaar bouwen, investeren, <em>leren</em>.</h2>
+        </div>
+        <div>
+          <div class="tl-row rv"><div class="tl-yr">2025</div><div><div class="tl-name">Finn / MijnFinn</div><div class="tl-role">Co-Founder & Co-CEO</div></div></div>
+          <div class="tl-row rv"><div class="tl-yr">2024</div><div><div class="tl-name">Subcurrents</div><div class="tl-role">Co-Founder</div></div></div>
+          <div class="tl-row rv"><div class="tl-yr">2020</div><div><div class="tl-name">BTQ Ventures</div><div class="tl-role">Investment Director</div></div></div>
+          <div class="tl-row rv"><div class="tl-yr">2019</div><div><div class="tl-name">Startupbootcamp</div><div class="tl-role">Global Managing Director</div></div></div>
+          <div class="tl-row rv"><div class="tl-yr">2016</div><div><div class="tl-name">Innoleaps</div><div class="tl-role">Managing Director</div></div></div>
+          <div class="tl-row rv"><div class="tl-yr">2011</div><div><div class="tl-name">LayerGloss</div><div class="tl-role">Co-Founder & CEO</div></div></div>
+          <div class="tl-row rv"><div class="tl-yr">2004</div><div><div class="tl-name">Studio Fenix</div><div class="tl-role">Founder</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTO STATEMENT -->
+  <section class="photo-statement rv">
+    <div class="photo-statement-bg">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80" alt="" loading="lazy"><!-- TODO: replace with own team/workspace photo -->
+    </div>
+    <div class="photo-statement-card">
+      <h2 data-nl="Achter elk <span class='face-slot-lg'><span class='face-track'><img class='face-img' src='faces/face-1.jpeg' alt=''><img class='face-img' src='faces/face-3.jpeg' alt=''><img class='face-img' src='faces/face-5.jpeg' alt=''><img class='face-img' src='faces/face-8.jpeg' alt=''><img class='face-img' src='faces/face-11.jpeg' alt=''></span></span> succesvol bedrijf zit een founder die <em>helderheid</em> verdient." data-en="Behind every <span class='face-slot-lg'><span class='face-track'><img class='face-img' src='faces/face-2.jpeg' alt=''><img class='face-img' src='faces/face-6.jpeg' alt=''><img class='face-img' src='faces/face-9.jpeg' alt=''><img class='face-img' src='faces/face-12.jpeg' alt=''><img class='face-img' src='faces/face-14.jpeg' alt=''></span></span> successful business is a founder who deserves <em>clarity</em>.">Achter elk <span class="face-slot-lg"><span class="face-track"><img class="face-img" src="faces/face-1.jpeg" alt=""><img class="face-img" src="faces/face-3.jpeg" alt=""><img class="face-img" src="faces/face-5.jpeg" alt=""><img class="face-img" src="faces/face-8.jpeg" alt=""><img class="face-img" src="faces/face-11.jpeg" alt=""></span></span> succesvol bedrijf zit een founder die <em>helderheid</em> verdient.</h2>
+      <p data-nl="De cijfers laten zien waar je staat. Een goede CFO laat zien waar je naartoe kunt." data-en="The numbers show where you are. A good CFO shows where you can go.">De cijfers laten zien waar je staat. Een goede CFO laat zien waar je naartoe kunt.</p>
+    </div>
+  </section>
+
+  <section class="e-sm">
+    <div class="mx">
+      <div class="e-label rv" data-nl="Voor wie" data-en="For whom">Voor wie</div>
+      <h2 class="e-h rv" style="margin-bottom:3rem;" data-nl="Voor wie <em>groter</em> wil denken." data-en="For those who want to think <em>bigger</em>.">Voor wie <em>groter</em> wil denken.</h2>
+      <div class="aud-row">
+        <div class="aud-cell rv"><div class="aud-tag" data-nl="Schaal" data-en="Scale">Schaal</div><h3 data-nl="Founders & CEO's" data-en="Founders & CEOs">Founders & CEO's</h3><p data-nl="Bedrijven tot 5-6M omzet die financieel volwassen willen worden zonder een fulltime CFO." data-en="Companies up to 5-6M revenue who want financial maturity without a full-time CFO.">Bedrijven tot 5-6M omzet die financieel volwassen willen worden zonder een fulltime CFO.</p></div>
+        <div class="aud-cell rv d1"><div class="aud-tag" data-nl="Groei" data-en="Growth">Groei</div><h3 data-nl="ZZP'ers & freelancers" data-en="Freelancers & solopreneurs">ZZP'ers & freelancers</h3><p data-nl="Ondernemers die grip willen op hun financien. Via Finn of via cursussen." data-en="Entrepreneurs who want financial control. Via Finn or through courses.">Ondernemers die grip willen op hun financien. Via Finn of via cursussen.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-band">
+    <blockquote class="rv" data-nl="&ldquo;Niet de blik van een accountant. De blik van een ondernemer op je cijfers. Dat is een wereld van verschil.&rdquo;" data-en="&ldquo;Not the gaze of an accountant. The gaze of an entrepreneur on your numbers. That makes all the difference.&rdquo;">&ldquo;Niet de blik van een accountant. De blik van een ondernemer op je cijfers. Dat is een wereld van verschil.&rdquo;</blockquote>
+    <div class="q-who rv" data-nl="Naam Achternaam" data-en="First Last">Naam Achternaam</div>
+    <div class="q-role rv" data-nl="Founder &middot; Bedrijfsnaam" data-en="Founder &middot; Company">Founder &middot; Bedrijfsnaam</div>
+  </section>
+
+  <!-- WORK WITH ME CTA -->
+  <section class="work-with-me rv">
+    <div class="wwm-annotation" data-nl="je weet dat je het wilt" data-en="you know you want to">je weet dat je het wilt</div>
+    <svg class="wwm-arrow" width="80" height="60" viewBox="0 0 80 60" fill="none"><path d="M75 5C55 5 20 8 15 35C12 48 20 55 30 50" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/><path d="M22 45L30 50L35 42" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h2 class="wwm-title rv" data-nl="Werk met <em>mij</em>." data-en="Work with <em>me</em>.">Werk met <em>mij</em>.</h2>
+    <div class="wwm-links rv">
+      <a href="mailto:phuong@subcurrents.nl">Email</a>
+      <a href="https://www.linkedin.com/in/phuong-do-nl/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-layout">
+      <div class="contact-l">
+        <div class="e-label rv" data-nl="Contact" data-en="Get in touch">Contact</div>
+        <h2 class="rv" data-nl="Laten we<br><em>praten</em>." data-en="Let's<br><em>talk</em>.">Laten we<br><em>praten</em>.</h2>
+        <p class="rv" data-nl="Sparren over financiele strategie, een samenwerking verkennen, of gewoon kennismaken." data-en="Discuss financial strategy, explore a collaboration, or just get acquainted.">Sparren over financiele strategie, een samenwerking verkennen, of gewoon kennismaken.</p>
+        <div class="rv">
+          <div class="cd"><div class="cd-label">Email</div><a href="mailto:phuong@subcurrents.nl">phuong@subcurrents.nl</a></div>
+          <div class="cd"><div class="cd-label">LinkedIn</div><a href="https://www.linkedin.com/in/phuong-do-nl/" target="_blank" rel="noopener">phuong-do-nl</a></div>
+        </div>
+      </div>
+      <div class="contact-r">
+        <form class="cf" onsubmit="event.preventDefault();this.querySelector('button').textContent='Verstuurd!';this.querySelector('button').style.background='var(--pink-d)';">
+          <div class="cf-field"><label data-nl="Naam" data-en="Name">Naam</label><input type="text" placeholder="..." required></div>
+          <div class="cf-field"><label>Email</label><input type="email" placeholder="..." required></div>
+          <div class="cf-field"><label data-nl="Bericht" data-en="Message">Bericht</label><textarea placeholder="..."></textarea></div>
+          <button type="submit" data-nl="Verstuur &rarr;" data-en="Send &rarr;">Verstuur &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" style="background:var(--white);">
+    <div class="footer-name">Phuong Do</div>
+    <div class="footer-mid">
+      <a href="https://www.linkedin.com/in/phuong-do-nl/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:phuong@subcurrents.nl">Email</a>
+    </div>
+    <div class="footer-end">&copy; 2026</div>
+  </footer>
+
+  </div><!-- /page-body-inner -->
+  </div><!-- /page-body -->
+
+  <script>
+    /* Generate faceSwap keyframes dynamically */
+    (function(){
+      function genSwap(name,size,count){
+        let kf='@keyframes '+name+'{';
+        for(let i=0;i<count;i++){
+          kf+=(i/count*100).toFixed(2)+'%{transform:translateY(-'+(i*size)+'px)}';
+        }
+        kf+='100%{transform:translateY(0)}}';
+        const s=document.createElement('style');s.textContent=kf;document.head.appendChild(s);
+      }
+      genSwap('faceSwap',100,15);
+      genSwap('faceSwapLg',250,15);
+      genSwap('faceSwapSm',125,5);
+      /* concernSwap: 15 items, each 40px, 1 per second */
+      let ckf='@keyframes concernSwap{';
+      for(let i=0;i<15;i++){
+        ckf+=(i/15*100).toFixed(2)+'%{transform:translateY(-'+(i*40)+'px)}';
+      }
+      ckf+='100%{transform:translateY(0)}}';
+      const cs=document.createElement('style');cs.textContent=ckf;document.head.appendChild(cs);
+    })();
+
+    const nav=document.getElementById('nav');
+    window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60)},{passive:true});
+    const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+    function switchLang(lang){document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');document.querySelectorAll('[data-nl]').forEach(el=>{if(el.tagName==='INPUT'||el.tagName==='TEXTAREA')return;el.innerHTML=el.getAttribute('data-'+lang)});document.documentElement.lang=lang}
+  </script>
+
+</body>
+</html>
